@@ -30,6 +30,22 @@
   </div>
 <?php endif ?>
 
+<?php if (auth()->user()?->can('athletes.manage')): ?>
+  <div class="portal-panel">
+    <h2>Expedientes deportivos</h2>
+    <p class="portal-muted">Registro administrativo de atletas, categorías y responsables. El acceso familiar se habilita únicamente tras verificar vínculos.</p>
+    <a class="portal-action-link" href="<?= esc(site_url('app/atletas'), 'attr') ?>">Gestionar atletas</a>
+  </div>
+<?php endif ?>
+
+<?php if (auth()->user()?->inGroup('guardian')): ?>
+  <div class="portal-panel">
+    <h2>Mi equipo familiar</h2>
+    <p class="portal-muted">Consulta los atletas vinculados y verificados con tu cuenta.</p>
+    <a class="portal-action-link" href="<?= esc(site_url('app/mis-atletas'), 'attr') ?>">Ver mis atletas</a>
+  </div>
+<?php endif ?>
+
 <div class="portal-cards">
   <article class="portal-card"><span aria-hidden="true">01</span><h3>Gestión deportiva</h3><p>Entrenamientos, convocatorias y resultados.</p><small>Próximamente</small></article>
   <article class="portal-card"><span aria-hidden="true">02</span><h3>Administración</h3><p>Inscripciones, comprobantes y uniformes.</p><small>Próximamente</small></article>
