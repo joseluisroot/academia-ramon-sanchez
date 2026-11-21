@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Academia de Fútbol Ramón Sánchez: formación deportiva, disciplina y valores.">
+    <meta name="theme-color" content="#071B49">
+    <title><?= esc($title ?? 'Academia Ramón Sánchez') ?></title>
+    <link rel="stylesheet" href="<?= esc(base_url('assets/css/academia.css'), 'attr') ?>">
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<header class="site-header">
+    <div class="container nav-wrap">
+        <a class="brand" href="<?= esc(site_url('/'), 'attr') ?>" aria-label="Academia Ramón Sánchez, inicio">
+            <span class="brand-mark" aria-hidden="true">RS</span>
+            <span class="brand-copy"><strong>RAMÓN SÁNCHEZ</strong><small>ACADEMIA DE FÚTBOL</small></span>
+        </a>
+        <nav class="main-nav" aria-label="Navegación principal">
+            <a href="#academia">La academia</a>
+            <a href="#categorias">Categorías</a>
+            <a href="#beneficios">Formación</a>
+            <a class="nav-cta" href="#contacto">Primera clase gratuita</a>
+        </nav>
+    </div>
+</header>
+<main id="contenido">
+    <?= $this->renderSection('content') ?>
+</main>
+<footer class="site-footer">
+    <div class="container footer-content">
+        <p><strong>Academia de Fútbol Ramón Sánchez</strong><br><span>Formación deportiva y valores.</span></p>
+        <p>© <?= date('Y') ?> Academia Ramón Sánchez. Sitio institucional en construcción.</p>
+    </div>
+</footer>
+</body>
+</html>
