@@ -42,6 +42,14 @@ $routes->post('activar-cuenta/(:segment)', 'AccountActivation::accept/$1', ['as'
 $routes->group('app', ['filter' => ['session', 'permission:portal.access']], static function (RouteCollection $routes): void {
     $routes->get('/', 'App\\Dashboard::index', ['as' => 'app.dashboard']);
 
+    // El expediente global requiere autorización administrativa expresa.
+    $routes->get('atletas', 'App\\Athletes::index', ['as' => 'app.athletes.index', 'filter' => 'permission:athletes.manage']);
+    $routes->get('atletas/nuevo', 'App\\Athletes::create', ['as' => 'app.athletes.create', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas', 'App\\Athletes::store', ['as' => 'app.athletes.store', 'filter' => 'permission:athletes.manage']);
+
+    // La consulta familiar filtra por usuario activo y vínculo verificado.
+    $routes->get('mis-atletas', 'App\\MyAthletes::index', ['as' => 'app.family.athletes', 'filter' => 'permission:family.athletes.view']);
+
     // Consultas de primera clase: acceso limitado a administración y utilero autorizado.
     $routes->get('consultas', 'App\\EnrollmentInquiries::index', ['as' => 'app.inquiries.index', 'filter' => 'permission:inquiries.view']);
     $routes->post('consultas/contactada', 'App\\EnrollmentInquiries::contacted', ['as' => 'app.inquiries.contacted', 'filter' => 'permission:inquiries.manage']);
