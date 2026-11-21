@@ -147,3 +147,14 @@ Prueba unitaria adicional:
 ```powershell
 vendor\\bin\\phpunit --bootstrap vendor/autoload.php tests/unit/InvitationPolicyTest.php
 ```
+
+
+### Captura de correo SMTP local sin envíos reales
+
+En la raíz del proyecto ejecutar:
+
+```powershell
+docker compose -f docker-compose.mailpit.yml up -d
+```
+
+Mailpit SMTP: `127.0.0.1:1025`; bandeja web: `http://127.0.0.1:8025`. Configurar los valores `email.*` del `.env` siguiendo [invitaciones.md](invitaciones.md). No enviar invitaciones reales hasta validar la implementación en entorno controlado.
