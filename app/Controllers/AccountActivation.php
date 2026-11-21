@@ -26,7 +26,8 @@ final class AccountActivation extends BaseController
     {
         if ((string) $this->request->getPost('password') === ''
             || (string) $this->request->getPost('password_confirmation') === '') {
-            return redirect()->back()->withInput()->with('error', 'Completa la contraseña y su confirmación.');
+            return redirect()->to(site_url('activar-cuenta/' . $token))
+                ->with('error', 'Completa la contraseña y su confirmación.');
         }
 
         try {
@@ -37,7 +38,8 @@ final class AccountActivation extends BaseController
                 (string) $this->request->getPost('password_confirmation'),
             );
         } catch (DomainException|RuntimeException $exception) {
-            return redirect()->back()->with('error', $exception->getMessage());
+            return redirect()->to(site_url('activar-cuenta/' . $token))
+                ->with('error', $exception->getMessage());
         }
 
         return redirect()->to('/login')
