@@ -31,6 +31,8 @@ final class AthleteRegistrationService
         $last = trim($input['last_name'] ?? '');
         $birth = $input['birth_date'] ?? '';
         $joined = $input['joined_on'] ?? '';
+        $existingPersonId = filter_var($input['existing_person_id'] ?? '', FILTER_VALIDATE_INT);
+        $useExisting = $existingPersonId !== false && $existingPersonId > 0;
         $guardianFirst = trim($input['guardian_first_name'] ?? '');
         $guardianLast = trim($input['guardian_last_name'] ?? '');
         $phone = trim($input['guardian_phone'] ?? '');
@@ -39,8 +41,8 @@ final class AthleteRegistrationService
 
         if (! AthleteRegistrationPolicy::validName($first)
             || ! AthleteRegistrationPolicy::validName($last)
-            || ! AthleteRegistrationPolicy::validName($guardianFirst)
-            || ! AthleteRegistrationPolicy::validName($guardianLast)) {
+            || (! $useExisting && ! AthleteRegistrationPolicy::validName($guardianFirst))
+            || (! $useExisting && ! AthleteRegistrationPolicy::validName($guardianLast))) {
             throw new DomainException('Verifica los nombres y apellidos del atleta y del adulto responsable.');
         }
 
@@ -49,7 +51,7 @@ final class AthleteRegistrationService
         }
 
         if (! AthleteRegistrationPolicy::validRelationship($relation)
-            || ! AthleteRegistrationPolicy::validPhone($phone)) {
+            || (! $useExisting && ! AthleteRegistrationPolicy::validPhone($phone))) {
             throw new DomainException('Verifica el parentesco y teléfono del responsable.');
         }
 
@@ -68,12 +70,22 @@ final class AthleteRegistrationService
 
         try {
             $now = date('Y-m-d H:i:s');
-            $personId = (new PersonModel())->insert([
-                'first_name' => $guardianFirst,
-                'last_name' => $guardianLast,
-                'phone' => $phone === '' ? null : $phone,
-                'status' => 'active',
-            ], true);
+            if ($useExisting) {
+                $existing = (new PersonModel())->find($existingPersonId);
+
+                if ($existing === null || $existing['status'] !== 'active') {
+                    throw new DomainException('El adulto seleccionado no está disponible.');
+                }
+
+                $personId = $existingPersonId;
+            } else {
+                $personId = (new PersonModel())->insert([
+                    'first_name' => $guardianFirst,
+                    'last_name' => $guardianLast,
+                    'phone' => $phone === '' ? null : $phone,
+                    'status' => 'active',
+                ], true);
+            }
 
             if (! is_numeric($personId)) {
                 throw new RuntimeException('No fue posible registrar al responsable.');
