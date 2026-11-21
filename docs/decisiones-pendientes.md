@@ -28,3 +28,10 @@ Las siguientes definiciones **no deben convertirse en reglas automáticas** sin 
 - Fondo de Junta separado de los cobros ordinarios de los fundadores.
 - Informes del fondo de Junta privados para familias autenticadas, agregados y aprobados.
 - Dennis y fundadores administradores institucionales; asignación de permisos centralizada.
+
+## INC-003 — Decisiones de dorsales y responsables adicionales
+
+- **Dorsal:** el rango **1–99 es provisional** en el primer prototipo; confirmar si hay números reservados, dorsales fuera de rango, conflictos entre temporadas y reglas por categorías.
+- **Cambio de categoría:** la aplicación exige liberación previa del dorsal para evitar asignaciones inconsistentes. Dirección deportiva debe decidir conservación, reasignación, reserva y comunicación del cambio.
+- **Representación familiar:** definir criterios comprobables para autorizar segundo responsable, cambios de tutela, casos de desacuerdo y revocaciones. Hasta entonces, no verificar relaciones con datos reales sin proceso institucional aprobado.
+- **Historial:** no eliminar registros de auditoría para simular revocaciones o cambios deportivos; usar transiciones trazables.
