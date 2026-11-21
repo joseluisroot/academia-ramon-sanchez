@@ -64,7 +64,7 @@ final class Athletes extends BaseController
         $athlete = (new AthleteModel())->find($id);
 
         if ($athlete === null) {
-            return (new \App\Controllers\ErrorPages())->notFound();
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
         $history = db_connect()->table('athlete_category_history h')
