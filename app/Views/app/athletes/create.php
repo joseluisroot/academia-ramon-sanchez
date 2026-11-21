@@ -39,12 +39,21 @@
     <fieldset>
       <legend>Adulto responsable</legend>
       <p class="portal-muted">El parentesco se registra administrativamente; el vínculo con una cuenta digital queda pendiente de revisión independiente.</p>
+      <label class="registry-existing-label">Adulto responsable registrado (opcional)
+        <select name="existing_person_id">
+          <option value="">Registrar un adulto nuevo</option>
+          <?php foreach ($adults as $adult): ?>
+            <option value="<?= (int) $adult['id'] ?>">#<?= (int) $adult['id'] ?> — <?= esc($adult['first_name'] . ' ' . $adult['last_name']) ?></option>
+          <?php endforeach ?>
+        </select>
+      </label>
+      <p class="portal-muted">Si seleccionas a un adulto existente, los campos de nombre, apellido y teléfono de abajo se omiten. Úsalo cuando un responsable tenga varios hijos.</p>
       <div class="registry-fields">
-        <label>Nombre(s)
-          <input type="text" name="guardian_first_name" minlength="2" maxlength="100" autocomplete="off" required>
+        <label>Nombre(s) (solo adulto nuevo)
+          <input type="text" name="guardian_first_name" minlength="2" maxlength="100" autocomplete="off">
         </label>
         <label>Apellido(s)
-          <input type="text" name="guardian_last_name" minlength="2" maxlength="100" autocomplete="off" required>
+          <input type="text" name="guardian_last_name" minlength="2" maxlength="100" autocomplete="off">
         </label>
         <label>Teléfono (opcional)
           <input type="tel" name="guardian_phone" maxlength="30" autocomplete="off">
