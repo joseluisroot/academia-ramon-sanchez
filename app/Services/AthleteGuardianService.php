@@ -137,6 +137,81 @@ final class AthleteGuardianService
         }
     }
 
+    /**
+     * Elimina únicamente una asociación no verificada, no la persona adulta.
+     * Impide quitar el responsable principal o dejar un atleta sin responsables.
+     */
+    public function removePending(User $actor, int $athleteId, int $relationshipId): void
+    {
+        if (! $actor->can('family.links.verify')) {
+            throw new DomainException('Solo administración institucional puede quitar responsables pendientes.');
+        }
+
+        if ($athleteId <= 0 || $relationshipId <= 0) {
+            throw new DomainException('Selecciona una relación familiar válida.');
+        }
+
+        $db = db_connect();
+        $db->transBegin();
+
+        try {
+            // Bloquear primero el atleta para serializar modificaciones de relaciones.
+            $athlete = $db->query('SELECT id FROM athletes WHERE id = ? FOR UPDATE', [$athleteId])->getRowArray();
+
+            if ($athlete === null) {
+                throw new DomainException('El atleta no existe.');
+            }
+
+            $relation = $db->table('athlete_guardians')
+                ->where('id', $relationshipId)
+                ->where('athlete_id', $athleteId)
+                ->get()->getRowArray();
+
+            if ($relation === null) {
+                throw new DomainException('No se encontró la relación familiar.');
+            }
+
+            if ($relation['verified_at'] !== null || (bool) $relation['is_primary']) {
+                throw new DomainException('Solo se puede quitar una relación pendiente que no sea principal.');
+            }
+
+            $total = $db->table('athlete_guardians')->where('athlete_id', $athleteId)->countAllResults();
+
+            if ($total <= 1) {
+                throw new DomainException('No se puede dejar al atleta sin responsable registrado.');
+            }
+
+            $db->table('athlete_guardians')
+                ->where('id', $relationshipId)
+                ->where('athlete_id', $athleteId)
+                ->where('verified_at IS NULL', null, false)
+                ->where('is_primary', 0)
+                ->delete();
+
+            if ($db->affectedRows() !== 1) {
+                throw new DomainException('La relación cambió. Recarga el expediente y vuelve a revisar.');
+            }
+
+            (new AuditLogger())->record(
+                (int) $actor->id,
+                'family.relation.pending_removed',
+                'athlete_guardian',
+                (string) $relationshipId,
+                'Asociación pendiente retirada administrativamente',
+                ['source' => 'portal', 'result' => 'removed'],
+            );
+
+            if ($db->transStatus() === false) {
+                throw new RuntimeException('No se pudo quitar la relación pendiente.');
+            }
+
+            $db->transCommit();
+        } catch (Throwable $exception) {
+            $db->transRollback();
+            throw $exception;
+        }
+    }
+
     public function revoke(User $actor, int $relationshipId): void
     {
         if (! $actor->can('family.links.verify')) {
