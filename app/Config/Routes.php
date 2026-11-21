@@ -24,6 +24,9 @@ $routes->get('sin-acceso', 'ErrorPages::forbidden', ['as' => 'error.forbidden'])
 // Rutas públicas. No se permite el registro autónomo de usuarios.
 $routes->get('/', 'Home::index');
 
+// Aviso informativo para quienes utilizan el formulario público.
+$routes->get('privacidad', static fn (): string => view('public/privacy'), ['as' => 'public.privacy']);
+
 // Contacto público de responsables adultos, sin registro de menores.
 $routes->post('solicitar-informacion', 'EnrollmentInquiries::submit', ['as' => 'public.inquiry.submit']);
 
