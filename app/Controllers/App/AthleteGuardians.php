@@ -41,6 +41,35 @@ final class AthleteGuardians extends BaseController
         return redirect()->to('/app/atletas/' . $athleteId . '/editar')->with('message', 'Responsable añadido. Su acceso familiar queda pendiente de verificación.');
     }
 
+    public function addNew(int $athleteId): RedirectResponse|ResponseInterface
+    {
+        $actor = auth()->user();
+
+        if ($actor === null || ! $actor->can('athletes.manage')) {
+            return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
+        }
+
+        try {
+            (new AthleteGuardianService())->addNew(
+                $actor,
+                $athleteId,
+                (string) $this->request->getPost('first_name'),
+                (string) $this->request->getPost('last_name'),
+                (string) $this->request->getPost('phone'),
+                (string) $this->request->getPost('relationship'),
+            );
+        } catch (DomainException $exception) {
+            return redirect()->to('/app/atletas/' . $athleteId . '/editar')->with('error', $exception->getMessage());
+        } catch (Throwable $exception) {
+            log_message('error', 'Error al registrar adulto nuevo en expediente familiar.');
+
+            return redirect()->to('/app/atletas/' . $athleteId . '/editar')->with('error', 'No se pudo registrar al adulto responsable.');
+        }
+
+        return redirect()->to('/app/atletas/' . $athleteId . '/editar')
+            ->with('message', 'Adulto registrado. Su vínculo digital requiere verificación antes de acceder a los datos del atleta.');
+    }
+
     public function revoke(int $athleteId): RedirectResponse|ResponseInterface
     {
         $actor = auth()->user();
