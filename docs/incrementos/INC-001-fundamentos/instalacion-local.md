@@ -126,3 +126,24 @@ vendor\\bin\\phpunit --bootstrap vendor/autoload.php tests/unit/RoleAssignmentPo
 ```
 
 Pendientes las pruebas de rutas, CSRF, persistencia y auditoría en la base local.
+
+
+## Invitaciones individuales por correo (versión inicial)
+
+La rama incorpora `/app/invitaciones` para el responsable con permiso `users.invite`. Antes de probarla ejecuta las migraciones nuevas:
+
+```powershell
+php spark migrate --all
+php spark migrate:status
+php spark routes
+```
+
+La tabla `user_invitations` debe figurar como migrada. El formulario bloqueará el envío si SMTP institucional no está configurado. **No enviar correos de prueba a padres reales** mientras el enlace de la aplicación apunte a `http://localhost:8080`, porque esa dirección solo funciona en el equipo local.
+
+Configura primero un servidor de pruebas SMTP y un dominio accesible en un ambiente controlado. Consulta [documentación de invitaciones](invitaciones.md).
+
+Prueba unitaria adicional:
+
+```powershell
+vendor\\bin\\phpunit --bootstrap vendor/autoload.php tests/unit/InvitationPolicyTest.php
+```
