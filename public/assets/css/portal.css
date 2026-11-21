@@ -170,3 +170,12 @@
 .family-check{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--muted);line-height:1.5}
 .family-check input{flex-shrink:0;margin-top:5px}
 @media(max-width:750px){.family-verification-item{grid-template-columns:1fr;gap:12px}}
+
+/* INC-003 tercer corte: dorsales y responsables */
+.jersey-form{display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin:22px 0}
+.jersey-form label{display:flex;flex-direction:column;gap:8px;font-size:13px;font-weight:700;color:var(--navy)}
+.jersey-form input{width:135px;min-height:44px;border:1px solid #cbd5e5;border-radius:9px;padding:9px 12px;color:var(--ink);background:#fff}
+.registry-danger{background:#fff4f4;color:#a02334;border:1px solid #f0b8c0;padding:10px 13px;font-size:12px;font-weight:700;border-radius:9px;cursor:pointer}
+.registry-danger:hover{background:#ffe5e8}
+.registry-subheading{font-size:19px;color:var(--navy);margin:32px 0 15px;font-weight:750}
+.registry-form>.registry-actions{margin:16px 0 24px}
