@@ -21,7 +21,7 @@
   <p class="portal-muted">El alta administrativa no habilita automáticamente acceso al expediente. Verifica los vínculos familiares antes de autorizar la consulta desde una cuenta de padre o responsable.</p>
   <div class="table-scroll">
     <table class="access-table">
-      <thead><tr><th scope="col">Atleta</th><th scope="col">Categoría</th><th scope="col">Fecha de ingreso</th><th scope="col">Estado</th></tr></thead>
+      <thead><tr><th scope="col">Atleta</th><th scope="col">Categoría</th><th scope="col">Fecha de ingreso</th><th scope="col">Estado</th><th scope="col">Acciones</th></tr></thead>
       <tbody>
       <?php foreach ($athletes as $athlete): ?>
         <tr>
@@ -29,10 +29,11 @@
           <td><?= esc($athlete['category_code']) ?></td>
           <td><?= esc($athlete['joined_on']) ?></td>
           <td><?= esc($athlete['status'] === 'active' ? 'Activo' : 'En revisión') ?></td>
+          <td><a class="registry-cancel" href="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/editar'), 'attr') ?>">Editar expediente</a></td>
         </tr>
       <?php endforeach ?>
       <?php if ($athletes === []): ?>
-        <tr><td colspan="4">Aún no hay atletas registrados. Inicia con un expediente de prueba ficticio.</td></tr>
+        <tr><td colspan="5">Aún no hay atletas registrados. Inicia con un expediente de prueba ficticio.</td></tr>
       <?php endif ?>
       </tbody>
     </table>
