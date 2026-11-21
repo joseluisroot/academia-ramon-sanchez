@@ -76,13 +76,11 @@ php spark migrate --all
 php spark migrate:status
 # No ejecutar shield:setup: ya existen los archivos Auth y AuthGroups configurados.
 
-# Para el primer administrador institucional en entorno local:
-php spark shield:user create -n usuario_institucional -e persona@example.invalid -g institutional_admin
-# Designar únicamente al responsable autorizado de permisos:
-php spark shield:user addgroup -n usuario_institucional -g access_manager
+# La habilitación de la primera cuenta se explica en primer-acceso.md.
+# No crear cuentas administrativas sin designación institucional.
 ```
 
-Se espera encontrar la ruta pública `/`. Todavía **no hay inicio de sesión, tablas de usuarios ni dashboard privado funcional**: se implementarán y probarán en los próximos cambios de este mismo incremento.
+Se esperan las rutas públicas `/`, `/login` y `/app` protegida. El código de login, Shield y el dashboard privado ya se incorporó; su funcionamiento real debe verificarse en WAMP. Antes de ingresar, habilita una cuenta mediante el [procedimiento de primer acceso](primer-acceso.md).
 
 ## Seguridad
 
