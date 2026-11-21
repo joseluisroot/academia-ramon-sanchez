@@ -46,6 +46,8 @@ $routes->group('app', ['filter' => ['session', 'permission:portal.access']], sta
     $routes->get('atletas', 'App\\Athletes::index', ['as' => 'app.athletes.index', 'filter' => 'permission:athletes.manage']);
     $routes->get('atletas/nuevo', 'App\\Athletes::create', ['as' => 'app.athletes.create', 'filter' => 'permission:athletes.manage']);
     $routes->post('atletas', 'App\\Athletes::store', ['as' => 'app.athletes.store', 'filter' => 'permission:athletes.manage']);
+    $routes->get('atletas/(:num)/editar', 'App\\Athletes::edit/$1', ['as' => 'app.athletes.edit', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)', 'App\\Athletes::update/$1', ['as' => 'app.athletes.update', 'filter' => 'permission:athletes.manage']);
 
     // Verificación de parentesco exclusiva de administradores institucionales.
     $routes->get('familias/verificar', 'App\\FamilyLinks::index', ['as' => 'app.family.verify.index', 'filter' => 'permission:family.links.verify']);
