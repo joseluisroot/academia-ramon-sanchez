@@ -20,6 +20,7 @@
             <a href="#academia">La academia</a>
             <a href="#categorias">Categorías</a>
             <a href="#beneficios">Formación</a>
+            <a class="nav-login" href="<?= esc(site_url('login'), 'attr') ?>">Ingresar</a>
             <a class="nav-cta" href="#contacto">Primera clase gratuita</a>
         </nav>
     </div>
