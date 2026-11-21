@@ -22,6 +22,7 @@ $routes->group('app', ['filter' => ['session', 'permission:portal.access']], sta
     // Invitaciones individuales controladas por el responsable designado.
     $routes->get('invitaciones', 'App\\Invitations::index', ['as' => 'app.invitations.index', 'filter' => 'permission:users.invite']);
     $routes->post('invitaciones', 'App\\Invitations::send', ['as' => 'app.invitations.send', 'filter' => 'permission:users.invite']);
+    $routes->post('invitaciones/cancelar', 'App\\Invitations::cancel', ['as' => 'app.invitations.cancel', 'filter' => 'permission:users.invite']);
 
     // Acceso a roles ordinarios solo para el responsable designado.
     $routes->get('accesos', 'App\\AccessManagement::index', ['as' => 'app.access.index', 'filter' => 'permission:users.assign']);
