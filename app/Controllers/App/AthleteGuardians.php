@@ -70,6 +70,36 @@ final class AthleteGuardians extends BaseController
             ->with('message', 'Adulto registrado. Su vínculo digital requiere verificación antes de acceder a los datos del atleta.');
     }
 
+    public function removePending(int $athleteId): RedirectResponse|ResponseInterface
+    {
+        $actor = auth()->user();
+
+        if ($actor === null || ! $actor->can('family.links.verify')) {
+            return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
+        }
+
+        $relationId = filter_var($this->request->getPost('relation_id'), FILTER_VALIDATE_INT);
+
+        try {
+            (new AthleteGuardianService())->removePending(
+                $actor,
+                $athleteId,
+                $relationId === false ? 0 : $relationId,
+            );
+        } catch (DomainException $exception) {
+            return redirect()->to('/app/atletas/' . $athleteId . '/editar')
+                ->with('error', $exception->getMessage());
+        } catch (Throwable $exception) {
+            log_message('error', 'Error al quitar un responsable pendiente.');
+
+            return redirect()->to('/app/atletas/' . $athleteId . '/editar')
+                ->with('error', 'No se pudo quitar la relación pendiente.');
+        }
+
+        return redirect()->to('/app/atletas/' . $athleteId . '/editar')
+            ->with('message', 'La relación pendiente fue retirada. El adulto permanece registrado y puede asociarse nuevamente.');
+    }
+
     public function revoke(int $athleteId): RedirectResponse|ResponseInterface
     {
         $actor = auth()->user();
