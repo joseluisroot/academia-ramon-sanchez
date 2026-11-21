@@ -145,7 +145,7 @@
                     </select>
                     <label for="inquiry-message">Mensaje (opcional)</label>
                     <textarea id="inquiry-message" name="message" maxlength="500" rows="3" placeholder="Cuéntanos qué información necesitas. No incluyas nombres ni datos médicos de menores."></textarea>
-                    <label class="inquiry-consent"><input type="checkbox" name="privacy_consent" value="1" required><span>Confirmo que soy mayor de edad y autorizo que la academia utilice estos datos únicamente para responder a mi solicitud.</span></label>
+                    <label class="inquiry-consent"><input type="checkbox" name="privacy_consent" value="1" required><span>Confirmo que soy mayor de edad y autorizo que la academia utilice estos datos únicamente para responder a mi solicitud. <a href="<?= esc(site_url('privacidad'), 'attr') ?>" target="_blank" rel="noopener">Leer aviso de privacidad</a>.</span></label>
                     <button type="submit">Enviar consulta</button>
                 </form>
             </div>
