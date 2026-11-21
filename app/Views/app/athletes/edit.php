@@ -164,7 +164,34 @@
       <?php endif ?>
     </div>
   </form>
-  <p class="portal-muted">Si el adulto todavía no está registrado, utiliza el formulario de alta de otro atleta solo cuando corresponda; la creación independiente de adultos será una mejora adicional del INC-003.</p>
+  <h3 class="registry-subheading">Registrar un nuevo adulto responsable</h3>
+  <p class="portal-muted">Completa esta sección únicamente si la persona no existe en el catálogo de adultos. Su acceso a los datos del atleta no estará autorizado hasta completar la verificación de identidad y parentesco.</p>
+  <form class="registry-form" method="post" action="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/responsables/nuevo'), 'attr') ?>">
+    <?= csrf_field() ?>
+    <div class="registry-fields">
+      <label>Nombre(s) del adulto
+        <input type="text" name="first_name" minlength="2" maxlength="100" autocomplete="off" required>
+      </label>
+      <label>Apellido(s) del adulto
+        <input type="text" name="last_name" minlength="2" maxlength="100" autocomplete="off" required>
+      </label>
+      <label>Teléfono (opcional)
+        <input type="tel" name="phone" maxlength="30" autocomplete="off">
+      </label>
+      <label>Relación
+        <select name="relationship" required>
+          <option value="">Seleccionar relación</option>
+          <option value="mother">Madre</option>
+          <option value="father">Padre</option>
+          <option value="legal_guardian">Representante legal</option>
+          <option value="other_authorized">Otro adulto autorizado</option>
+        </select>
+      </label>
+    </div>
+    <div class="registry-actions">
+      <button type="submit" class="portal-action-link registry-submit">Registrar adulto y asociarlo</button>
+    </div>
+  </form>
 </div>
 
 <?= $this->endSection() ?>
