@@ -23,7 +23,7 @@
       <?php foreach ($users as $user): ?>
         <?php $currentGroups = $user->getGroups() ?? []; ?>
         <?php $protected = (int) $user->id === (int) auth()->id()
-            || count(array_intersect(['institutional_admin', 'access_manager', 'technical_support'], $currentGroups)) > 0; ?>
+            || \App\Services\RoleAssignmentPolicy::isProtectedAccount($currentGroups); ?>
         <tr>
           <td><strong><?= esc((string) $user->username) ?></strong><small>Cuenta #<?= (int) $user->id ?></small></td>
           <td><?= esc(implode(', ', $currentGroups) ?: 'Sin grupos') ?></td>
