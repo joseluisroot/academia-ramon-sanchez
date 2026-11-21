@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <meta name="theme-color" content="#071B49">
+  <link rel="icon" type="image/svg+xml" href="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>">
   <title>Iniciar sesión · Academia Ramón Sánchez</title>
   <link rel="stylesheet" href="<?= esc(base_url('assets/css/academia.css'), 'attr') ?>">
   <link rel="stylesheet" href="<?= esc(base_url('assets/css/portal.css'), 'attr') ?>">
@@ -14,7 +15,7 @@
 <main id="contenido" class="auth-shell">
   <section class="auth-brand-panel" aria-labelledby="brand-title">
     <a href="<?= esc(site_url('/'), 'attr') ?>" class="auth-brand">
-      <span class="brand-mark" aria-hidden="true">RS</span>
+      <img class="brand-logo brand-logo-light" src="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>" alt="Escudo oficial de la Academia Ramón Sánchez" width="64" height="64">
       <span><strong>RAMÓN SÁNCHEZ</strong><small>ACADEMIA DE FÚTBOL</small></span>
     </a>
     <div class="auth-brand-content">
