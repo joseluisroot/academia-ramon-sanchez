@@ -86,3 +86,14 @@ INC-004: sesiones y asistencia. INC-005/006: torneos y resultados. INC-008/009: 
 Se registró el primer atleta en WAMP (validación comunicada por el usuario). Las mejoras UX de SweetAlert2, DataTables, toast, notificaciones personales y AJAX se trasladaron a [parking lot transversal](../../parking-lot-ux-plataforma.md) para ejecutarse después del flujo completo. El registro del atleta **no equivale a verificación del vínculo familiar ni a prueba de permisos**.
 
 **Próximo recorrido prioritario:** revisar la relación pendiente desde `/app/familias/verificar`, asociar un adulto registrado con su cuenta Shield `guardian` tras comprobación institucional, y confirmar mediante pruebas con dos usuarios familiares separados que `/app/mis-atletas` nunca permite consultar los hijos de otra familia. Usar datos ficticios.
+
+
+## Segundo corte — edición básica e historial de categoría
+
+Se agregó una migración `2026-11-21-000006_CreateAthleteCategoryHistory.php` que crea `athlete_category_history` y migra automáticamente la categoría inicial de los atletas ya registrados (incluido el primer registro de pruebas) usando su fecha de ingreso.
+
+Las altas posteriores incluyen la categoría inicial en una transacción junto al expediente. La pantalla `/app/atletas/{id}/editar` permite únicamente modificar nombres y categoría con permiso `athletes.manage`; si cambia la categoría, se agrega una entrada con fecha actual y auditoría. No se permite editar fechas de nacimiento/ingreso ni modificar vínculos familiares desde este formulario; los procesos de corrección especial quedan pendientes.
+
+**Después de actualizar la rama:** ejecutar `php spark migrate --all`; revisar `/app/atletas` y seleccionar **Editar expediente**. No cambiar la categoría de un atleta real hasta validar el procedimiento institucional de categorías.
+
+Esta funcionalidad aún **no ha sido probada en WAMP**.
