@@ -66,6 +66,7 @@ class AuthGroups extends ShieldAuthGroups
         'inquiries.manage'     => 'Gestionar el seguimiento de consultas de familias',
         'athletes.view'        => 'Consultar expedientes autorizados',
         'athletes.manage'      => 'Gestionar atletas autorizados',
+        'family.athletes.view'  => 'Consultar únicamente atletas familiares vinculados y verificados',
         'training.manage'      => 'Gestionar entrenamientos y asistencia',
         'matches.manage'       => 'Gestionar partidos y convocatorias',
         'matches.verify'       => 'Verificar resultados oficiales',
@@ -98,7 +99,7 @@ class AuthGroups extends ShieldAuthGroups
         'board_treasurer' => ['portal.access', 'treasury.manage', 'treasury.report'],
         'board_member' => ['portal.access', 'treasury.report', 'content.draft'],
         'media_contributor' => ['portal.access', 'content.draft'],
-        'guardian' => ['portal.access', 'billing.view-own', 'treasury.view-family'],
+        'guardian' => ['portal.access', 'family.athletes.view', 'billing.view-own', 'treasury.view-family'],
         'technical_support' => ['portal.access', 'system.support'],
     ];
 }
