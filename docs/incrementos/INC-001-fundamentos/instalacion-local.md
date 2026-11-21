@@ -29,7 +29,9 @@ No eliminar ni descartar modificaciones locales si `git status` indica cambios.
 php -v
 composer --version
 composer install
-# Si Composer informa ausencia de lock, resolverá versiones compatibles
+# Si ya existe composer.lock local anterior sin Shield, en su lugar ejecutar:
+# composer update codeigniter4/shield --with-all-dependencies
+# Conservar composer.lock en la rama cuando esté validado
 ```
 
 **Nota:** el repositorio todavía no incluye `composer.lock`, por lo que Composer resolverá dependencias compatibles. Guardar el archivo `composer.lock` generado en la rama para fijar versiones de instalación.
@@ -72,6 +74,7 @@ También se puede configurar un VirtualHost de Apache que apunte a `C:\wamp64\ww
 php spark routes
 php spark migrate --all
 php spark migrate:status
+# No ejecutar shield:setup: ya existen los archivos Auth y AuthGroups configurados.
 
 # Para el primer administrador institucional en entorno local:
 php spark shield:user create -n usuario_institucional -e persona@example.invalid -g institutional_admin
