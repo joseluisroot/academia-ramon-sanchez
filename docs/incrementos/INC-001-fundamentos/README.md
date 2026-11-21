@@ -125,3 +125,16 @@ Se incorporó un primer flujo de invitación administrativa por correo: `/app/in
 Se agregó un historial limitado a 25 invitaciones con estado, vencimiento y cancelación protegida mediante POST, CSRF y autorización `users.invite`. La operación queda auditada; el reenvío se hace generando un **token nuevo** después de cancelar la invitación anterior. También se incluyó `docker-compose.mailpit.yml` para capturar correos localmente sin enviarlos a familias reales.
 
 Las pruebas end-to-end de SMTP, apertura del enlace, activación y cancelación **siguen pendientes de ejecutar en WAMP**. Ver [guía de invitaciones y Mailpit](invitaciones.md).
+
+## INC-001B — Páginas institucionales de error y checklist de QA
+
+Se agregó el control vivo de pruebas [`pruebas-pendientes.md`](pruebas-pendientes.md), que separa los resultados reportados como exitosos de las pruebas sin ejecutar, e identifica casos INV/AUT/UI para registrar evidencias.
+
+- **403 — acceso restringido:** `/sin-acceso` muestra un mensaje alusivo al trabajo en equipo y a los roles de la academia, acompañado de una ilustración SVG de una portería protegida. Shield redirige a esta ruta cuando deniega permisos o grupos; la respuesta del destino es HTTP 403.
+- **404 — enlace inexistente:** un `set404Override` llama a `ErrorPages::notFound`; ilustra un recorrido de fútbol extraviado y responde HTTP 404.
+- Ambas pantallas utilizan escudo, paleta institucional, diseño responsive, enlaces adecuados y evitan publicar errores técnicos.
+- El historial de invitaciones ahora diferencia **«Invitación finalizada»** (aceptada) y **«Sin operaciones disponibles»** de un usuario sin permisos.
+
+**Pendiente de aceptación en WAMP:** confirmar código HTTP real, protección por roles, renderizado correcto en móvil, rutas desconocidas y ausencia de ciclos de redirección. Los SVG se crean como assets locales y no dependen de servicios de terceros.
+
+> La página 403 se presenta después de una redirección HTTP 302 de Shield. Es importante comprobar que la URL final devuelve 403 y no 200. La 404 debe responder 404 directamente, sin redirigir a inicio.
