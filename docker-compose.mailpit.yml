@@ -1,0 +1,12 @@
+# SMTP de prueba para desarrollo local.
+# Mailpit captura mensajes; NO los entrega a destinatarios reales.
+# Puertos publicados exclusivamente en la interfaz de loopback.
+services:
+  mailpit:
+    image: axllent/mailpit:v1.27
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+    environment:
+      MP_MAX_MESSAGES: "500"
