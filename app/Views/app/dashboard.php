@@ -18,6 +18,7 @@
     <h2>Administración de accesos</h2>
     <p class="portal-muted">Como responsable designado, puedes asignar roles ordinarios con registro de auditoría.</p>
     <a class="portal-action-link" href="<?= esc(site_url('app/accesos'), 'attr') ?>">Administrar accesos</a>
+    <a class="portal-action-link" href="<?= esc(site_url('app/invitaciones'), 'attr') ?>">Invitar usuarios</a>
   </div>
 <?php endif ?>
 
