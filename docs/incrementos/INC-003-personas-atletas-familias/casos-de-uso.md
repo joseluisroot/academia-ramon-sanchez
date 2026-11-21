@@ -28,3 +28,11 @@
 ## Pendientes de negocio
 
 El registro de otro adulto responsable, edición de fichas, verificación documental formal, disputas de relación familiar, separación de permisos de imagen y política de dorsales se definirán en cortes posteriores de INC-003 antes de habilitar el sistema en producción.
+
+
+## UC-003-05 — Editar información administrativa del atleta
+
+**Actor:** personal con `athletes.manage`.  
+**Acceso:** `GET /app/atletas/{id}/editar` y `POST /app/atletas/{id}`.  
+**Resultado:** corregir nombres y gestionar categoría deportiva vigente con registro en `athlete_category_history`.  
+**Reglas:** cambio transaccional, actor y fecha auditados; datos de nacimiento/ingreso y responsabilidad legal no editables en este corte. No permitir editar sin autorización. La política definitiva de categorías permanece pendiente de validación institucional.
