@@ -120,6 +120,19 @@ final class AthleteRegistrationService
                 throw new RuntimeException('No fue posible asociar al adulto responsable.');
             }
 
+            $historySaved = $db->table('athlete_category_history')->insert([
+                'athlete_id' => (int) $athleteId,
+                'sports_category_id' => $categoryId,
+                'effective_on' => $joined,
+                'reason' => 'initial',
+                'recorded_by' => (int) $actor->id,
+                'created_at' => $now,
+            ]);
+
+            if (! $historySaved) {
+                throw new RuntimeException('No fue posible registrar la categoría inicial.');
+            }
+
             (new AuditLogger())->record(
                 (int) $actor->id,
                 'athlete.registered',
