@@ -47,6 +47,10 @@ final class AthleteRecordService
             $changedName = trim($firstName) !== (string) $athlete['first_name']
                 || trim($lastName) !== (string) $athlete['last_name'];
 
+            if ($changedCategory && $db->table('jersey_assignments')->where('athlete_id', $id)->countAllResults() > 0) {
+                throw new DomainException('Libera primero el dorsal vigente antes de cambiar al atleta de categoría.');
+            }
+
             if (! $changedCategory && ! $changedName) {
                 throw new DomainException('No hay cambios que guardar.');
             }
