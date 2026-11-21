@@ -72,12 +72,23 @@ Conservar una plataforma institucional **elegante, moderna, profesional, consist
 Cualquier propuesta de modernización añadida aquí **no interrumpe por sí sola** el orden de incrementos ni crea deuda técnica invisible. Las correcciones críticas de funcionamiento y seguridad se resuelven en el incremento vigente. Cuando se termine el flujo principal, priorizar este inventario como un proyecto formal de mejora de experiencia.
 
 
-## UX-PL-006 — Mejora pendiente del proceso de vinculación familiar
+## UX-PL-006 — Separar verificación familiar de vinculación de cuenta digital
 
-**Origen:** observación del usuario tras validar el registro del primer atleta y el flujo de verificación del responsable (21/11/2026).
+**Origen:** mejora detectada por el usuario al registrar a una madre como segunda responsable de un atleta durante el INC-003 (21/11/2026). Esta es la mejora a la que se refería cuando solicitó enviarla al parking lot; el registro anterior era demasiado genérico.
 
-**Observación:** se identificó una oportunidad de mejora en este punto del recorrido, **sin especificación funcional detallada todavía**. Se conserva expresamente como pendiente de levantar y evaluar, en vez de inventar requisitos o interrumpir la implementación de los incrementos originales.
+**Problema observado:** la pantalla `/app/familias/verificar` exige el correo electrónico de una **cuenta activada** para verificar la relación del adulto con el atleta. En el proceso real, el padre o la madre puede estar registrado como responsable **sin tener correo ni cuenta en el portal**. Se han combinado indebidamente dos decisiones independientes.
 
-**Alcance por aclarar posteriormente:** comportamiento esperado, pasos que generan fricción, mensajes de confirmación, experiencia del responsable y controles necesarios antes de conceder acceso a los datos de menores.
+**Mejora requerida (para análisis e implementación posterior):**
+1. Permitir registrar al padre, madre u otro responsable autorizado sin requerir correo ni cuenta.
+2. Separar **validación de identidad/parentesco o responsabilidad legal** de **habilitación de acceso digital**.
+3. Permitir verificar administrativamente la relación familiar sin crear una cuenta Shield.
+4. Cuando el adulto quiera utilizar el portal, ofrecer un proceso adicional y opcional de invitación por correo, activación de cuenta y asociación controlada con la persona previamente verificada.
+5. Admitir escenarios en los que solo un padre tenga cuenta, ambos tengan cuentas individuales o ninguno tenga acceso digital.
+6. Mantener la revocación independiente del acceso digital y de la condición de responsable; auditar quién valida, quién vincula y quién revoca.
+7. Conservar el principio de que **no se concede acceso a información de menores por compartir apellido, conocer un correo o simplemente estar registrado**.
 
-**Estado:** parking lot — pendiente de definición con el usuario; respetar siempre la verificación humana y controles de autorización existentes.
+**Situación actual:** el formulario de verificación exige correo; **no utilizar datos ficticios, el correo del otro progenitor ni una cuenta ajena para sortear el requisito**. El adulto puede permanecer registrado con relación pendiente de verificación digital hasta rediseñar este flujo.
+
+**Estado:** parking lot — requerimiento ya identificado, pendiente de modelado, validación institucional, implementación y pruebas de seguridad. No interrumpir el flujo de incrementos por esta mejora; reconsiderar el alcance antes de producción porque afecta a las autorizaciones sobre datos de menores.
+
+**Pruebas futuras:** verificar responsable sin correo; cuenta no creada; invitación posterior; ambos padres con cuentas distintas; uno sin cuenta; revocación del acceso sin borrar parentesco; no acceso entre familias.
