@@ -5,7 +5,18 @@ use CodeIgniter\Router\RouteCollection;
 /** @var RouteCollection $routes */
 
 // Manejador de rutas inexistentes con respuesta HTTP 404.
-$routes->set404Override([\App\Controllers\ErrorPages::class, 'notFound']);
+$routes->set404Override(static function (): string {
+    // Evitar volver a lanzar una excepción al crear un controlador durante el 404.
+    // CodeIgniter conserva la respuesta HTTP 404 para el override.
+    return view('errors/institutional', [
+        'statusCode' => 404,
+        'eyebrow' => 'NOS SALIMOS DE LA CANCHA',
+        'title' => 'No encontramos esa jugada.',
+        'message' => 'La página que buscas no existe o el enlace ya no está disponible. Regresa al inicio para continuar tu recorrido con la academia.',
+        'illustration' => 'not-found.svg',
+        'illustrationAlt' => 'Recorrido de fútbol con una lupa que muestra el número 404.',
+    ]);
+});
 
 // Ruta pública sin filtro para evitar bucles de redirección por falta de permisos.
 $routes->get('sin-acceso', 'ErrorPages::forbidden', ['as' => 'error.forbidden']);
