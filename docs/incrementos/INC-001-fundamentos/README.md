@@ -138,3 +138,8 @@ Se agregó el control vivo de pruebas [`pruebas-pendientes.md`](pruebas-pendient
 **Pendiente de aceptación en WAMP:** confirmar código HTTP real, protección por roles, renderizado correcto en móvil, rutas desconocidas y ausencia de ciclos de redirección. Los SVG se crean como assets locales y no dependen de servicios de terceros.
 
 > La página 403 se presenta después de una redirección HTTP 302 de Shield. Es importante comprobar que la URL final devuelve 403 y no 200. La 404 debe responder 404 directamente, sin redirigir a inicio.
+
+
+### Corrección 404 reportada durante validación
+
+El usuario reportó `The error view file was not specified` al visitar una URL inexistente. El override 404 ahora utiliza una closure y el proyecto incluye vistas fallback de errores HTML/CLI para evitar esa salida por falta de plantillas. **La corrección está subida, pero su funcionamiento sigue pendiente de confirmación en WAMP.** Véase [control de pruebas](pruebas-pendientes.md).
