@@ -114,3 +114,22 @@
 .invitation-cancel-button{padding:9px 13px;border:1px solid #b42318;border-radius:9px;background:#fff;color:#9f1f17;font-size:13px;font-weight:700;cursor:pointer}
 .invitation-cancel-button:hover,.invitation-cancel-button:focus-visible{background:#fff1ef}
 .invitation-history .access-table{min-width:750px}
+
+/* INC-001B: estados HTTP institucionales */
+.institutional-error-page{min-height:100vh;display:flex;flex-direction:column;background:var(--portal-bg)}
+.institutional-error-header{background:#fff;border-bottom:1px solid var(--portal-border)}
+.institutional-error-header .container{min-height:90px;display:flex;align-items:center}
+.institutional-error-main{flex:1;display:grid;place-items:center;padding-block:60px 84px}
+.institutional-error-panel{width:100%;display:grid;grid-template-columns:minmax(260px,.9fr) minmax(300px,1.1fr);gap:28px;align-items:center;border:1px solid var(--portal-border);background:#fff;border-radius:26px;padding:clamp(28px,5vw,65px);box-shadow:var(--portal-shadow)}
+.institutional-error-illustration{display:block;width:100%;max-width:480px;height:auto;margin-inline:auto}
+.institutional-error-number{display:block;font-weight:900;font-size:16px;letter-spacing:.14em;color:var(--action);margin-top:12px}
+.institutional-error-copy h1{font-size:clamp(31px,4vw,53px);line-height:1.1;letter-spacing:-.05em;color:var(--navy);margin:12px 0 22px}
+.institutional-error-copy p{max-width:540px;font-size:16px;line-height:1.7;color:var(--muted)}
+.institutional-error-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.institutional-error-primary{color:#fff;background:var(--navy)}
+.institutional-error-primary:hover{background:var(--action)}
+.institutional-error-secondary{border:1px solid #cbd5e5;background:#fff;color:var(--navy)}
+.institutional-error-secondary:hover{background:var(--portal-bg)}
+.institutional-error-footer{background:#061633;color:#dbe4f5;padding:23px 0;text-align:center;font-size:12px}
+@media(max-width:820px){.institutional-error-panel{grid-template-columns:1fr;gap:4px}.institutional-error-illustration{max-width:330px}.institutional-error-copy{text-align:center}.institutional-error-copy p{margin-inline:auto}.institutional-error-actions{justify-content:center}}
+@media(max-width:480px){.institutional-error-main{padding-block:24px 44px}.institutional-error-panel{padding:24px 18px}.institutional-error-actions{flex-direction:column}.institutional-error-actions .btn{justify-content:center}}
