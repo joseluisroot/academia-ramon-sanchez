@@ -6,6 +6,7 @@ namespace App\Controllers\App;
 
 use App\Controllers\BaseController;
 use App\Models\AthleteModel;
+use App\Models\PersonModel;
 use App\Models\SportsCategoryModel;
 use App\Services\AthleteRegistrationService;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -48,6 +49,7 @@ final class Athletes extends BaseController
         return view('app/athletes/create', [
             'title' => 'Registrar atleta · Academia Ramón Sánchez',
             'categories' => (new SportsCategoryModel())->where('active', 1)->orderBy('code')->findAll(),
+            'adults' => (new PersonModel())->where('status', 'active')->orderBy('last_name')->orderBy('first_name')->findAll(),
         ]);
     }
 
@@ -66,6 +68,7 @@ final class Athletes extends BaseController
                 'birth_date' => (string) $this->request->getPost('birth_date'),
                 'joined_on' => (string) $this->request->getPost('joined_on'),
                 'sports_category_id' => (string) $this->request->getPost('sports_category_id'),
+                'existing_person_id' => (string) $this->request->getPost('existing_person_id'),
                 'guardian_first_name' => (string) $this->request->getPost('guardian_first_name'),
                 'guardian_last_name' => (string) $this->request->getPost('guardian_last_name'),
                 'guardian_phone' => (string) $this->request->getPost('guardian_phone'),
