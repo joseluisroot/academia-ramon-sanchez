@@ -118,3 +118,10 @@ Como la plataforma todavía no tiene cuentas activas, se documentó un procedimi
 Se incorporó un primer flujo de invitación administrativa por correo: `/app/invitaciones` (requiere `users.invite`) y `/activar-cuenta/{token}`. El enlace lleva un token aleatorio de 32 bytes, almacenado únicamente como hash, con 48 horas de vigencia y consumo único. La activación solicita nombre de usuario y contraseña y genera la cuenta Shield con un rol ordinario autorizado. Se agregaron migración, modelo, servicio, política y pruebas unitarias.
 
 **Estado:** código subido, no probado aún en WAMP ni con SMTP. **No desplegar a producción** sin verificar mailer, flujo de activación, CSRF, auditoría y doble uso. Ver [invitaciones](invitaciones.md).
+
+
+## Invitaciones — cancelación y pruebas de correo local
+
+Se agregó un historial limitado a 25 invitaciones con estado, vencimiento y cancelación protegida mediante POST, CSRF y autorización `users.invite`. La operación queda auditada; el reenvío se hace generando un **token nuevo** después de cancelar la invitación anterior. También se incluyó `docker-compose.mailpit.yml` para capturar correos localmente sin enviarlos a familias reales.
+
+Las pruebas end-to-end de SMTP, apertura del enlace, activación y cancelación **siguen pendientes de ejecutar en WAMP**. Ver [guía de invitaciones y Mailpit](invitaciones.md).
