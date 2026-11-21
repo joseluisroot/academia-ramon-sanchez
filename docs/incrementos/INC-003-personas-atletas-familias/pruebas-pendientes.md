@@ -51,3 +51,17 @@ Todas estas pruebas están **pendientes de ejecución en WAMP**. Registrar fecha
 - [ ] **SEC-05** Revisar compatibilidad de PHP/CI4/MySQL y pruebas de integración.
 
 **Criterio:** no fusionar ni habilitar producción sin revisión de controles parentales, migraciones y permisos.
+
+
+## Segundo corte — edición e historial (pendiente)
+
+- [ ] **HIS-01** Migrar atleta ya inscrito y crear una sola fila de categoría inicial con fecha de ingreso.
+- [ ] **HIS-02** Inscribir nuevo atleta y guardar categoría inicial dentro de la transacción.
+- [ ] **HIS-03** Editar solo nombre/apellido sin duplicar fila de historial de categoría.
+- [ ] **HIS-04** Cambiar categoría y registrar historial, fecha, actor y auditoría.
+- [ ] **HIS-05** Rechazar categoría inexistente o inactiva, campos inválidos y cambios sin modificaciones.
+- [ ] **HIS-06** Rechazar edición sin `athletes.manage`, incluso si se intenta POST manual.
+- [ ] **HIS-07** Rechazar ruta de atleta inexistente con HTTP 404, sin revelar datos.
+- [ ] **HIS-08** Simular fallo al insertar historial y comprobar rollback del cambio de categoría.
+- [ ] **HIS-09** Confirmar que la modificación no altera vínculos familiares, fecha de nacimiento ni fecha de ingreso.
+- [ ] **HIS-10** Verificar consistencia móvil/escritorio en el formulario y el historial.
