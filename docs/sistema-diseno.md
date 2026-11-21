@@ -52,3 +52,36 @@ Barra superior, navegación contextual según rol, panel de tareas priorizadas, 
 ## Definition of Done UI
 
 Se considera terminado cuando cumple las vistas móvil/escritorio, estados y mensajes, permisos, manejo de error, accesibilidad básica y consistencia con tokens aprobados.
+
+
+## Identidad oficial — actualización INC-001A
+
+**Fuente:** escudo oficial proporcionado por la academia (incluye el nombre completo y año 2023). Su uso prevalece frente a cualquier monograma o logo genérico.
+
+**Recurso en el repositorio:** `public/assets/img/brand/escudo-oficial.svg`. El SVG contiene una copia WebP compacta de la imagen entregada, optimizada para espacios pequeños. No es una vectorización del escudo ni sustituye el archivo maestro original.
+
+### Ubicaciones implementadas
+
+- Encabezado del sitio público, junto a nombre institucional.
+- Pie de página público.
+- Pantalla de inicio de sesión.
+- Encabezado del portal privado.
+- Ícono del sitio (favicon SVG).
+
+### Reglas de uso
+
+1. No deformar, girar, recolorear ni alterar elementos del escudo.
+2. Mantener proporción cuadrada con `object-fit:contain`.
+3. En fondos oscuros utilizar superficie blanca detrás del emblema para conservar contraste.
+4. Conservar texto alternativo descriptivo cuando el escudo comunica identidad.
+5. Evitar escalar el derivado WebP compacto para portadas, impresos o documentos de gran formato: usar la imagen maestra de mayor resolución.
+6. No reemplazar el nombre institucional por el emblema en pantallas móviles; mostrar ambos cuando quepan sin pérdida de legibilidad.
+7. Probar lectura y tamaño mínimo en móvil, especialmente por la cantidad de texto dentro del escudo.
+
+### Mejoras previstas
+
+- Preparar un archivo PNG/WebP de alta resolución y fondo transparente si existe una versión aprobada.
+- Generar variantes favicon de 16/32/48 píxeles con símbolo simplificado **solo después de autorización institucional**.
+- Definir una versión horizontal oficial, si los fundadores disponen de ella.
+
+> El recurso actual se creó con la imagen oficial facilitada durante el análisis. No se han alterado nombres ni elementos del escudo. El archivo original en mayor resolución debe conservarse fuera de las variantes optimizadas para web.
