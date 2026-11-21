@@ -101,3 +101,13 @@ La academia proporcionó `Academia de Futbol.docx` con quiénes somos, misión, 
 Se incorporaron `RoleAssignmentService`, `RoleAssignmentPolicy`, `AccessManagement`, vista `/app/accesos`, estilos y pruebas unitarias de la política. Los cambios de grupos ordinarios quedan limitados al responsable con `users.assign` y su motivo se registra en `audit_logs`. **Aún no se han ejecutado las pruebas en WAMP**, ni se ha diseñado el procedimiento para conceder roles financieros o institucionales sensibles.
 
 Ver [alcance, diagrama y pruebas](gestion-de-accesos.md).
+
+
+## Primer acceso administrativo (arranque local)
+
+Como la plataforma todavía no tiene cuentas activas, se documentó un procedimiento seguro de creación inicial mediante `php spark shield:user create`, sin contraseñas ni usuarios de demostración en Git. La designación institucional del responsable de permisos es un paso separado. Ver [primer acceso](primer-acceso.md).
+
+- [ ] Ejecutar migraciones locales de Shield y aplicación.
+- [ ] Crear primera cuenta únicamente con autorización institucional.
+- [ ] Verificar entrada por `/login` y protección de `/app`.
+- [ ] Validar acceso a `/app/accesos` únicamente con el grupo delegado.
