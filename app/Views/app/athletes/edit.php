@@ -60,4 +60,111 @@
     </table>
   </div>
 </div>
+<div class="portal-panel">
+  <h2>Dorsal deportivo</h2>
+  <p class="portal-muted">El dorsal es exclusivo dentro de cada categoría. No se traslada automáticamente al cambiar de categoría: primero debes liberarlo y después realizar el cambio autorizado.</p>
+  <?php if ($currentJersey !== null): ?>
+    <p><strong>Dorsal actual: #<?= (int) $currentJersey['jersey_number'] ?></strong></p>
+    <form method="post" action="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/dorsal/liberar'), 'attr') ?>">
+      <?= csrf_field() ?>
+      <button class="registry-danger" type="submit">Liberar dorsal actual</button>
+    </form>
+  <?php else: ?>
+    <p class="portal-muted">Este atleta no tiene dorsal asignado.</p>
+  <?php endif ?>
+  <form class="jersey-form" method="post" action="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/dorsal'), 'attr') ?>">
+    <?= csrf_field() ?>
+    <label>Dorsal a asignar (1 a 99)
+      <input type="number" name="jersey_number" min="1" max="99" required>
+    </label>
+    <button type="submit" class="portal-action-link registry-submit"><?= $currentJersey === null ? 'Asignar dorsal' : 'Cambiar dorsal' ?></button>
+  </form>
+  <h3 class="registry-subheading">Historial de dorsales</h3>
+  <div class="table-scroll">
+    <table class="access-table">
+      <thead><tr><th scope="col">Dorsal</th><th scope="col">Categoría</th><th scope="col">Movimiento</th><th scope="col">Fecha</th></tr></thead>
+      <tbody>
+      <?php foreach ($jerseyHistory as $entry): ?>
+        <tr>
+          <td>#<?= (int) $entry['jersey_number'] ?></td>
+          <td><?= esc($entry['category_code']) ?></td>
+          <td><?= esc($entry['event'] === 'assigned' ? 'Asignado' : 'Liberado') ?></td>
+          <td><?= esc($entry['occurred_at']) ?></td>
+        </tr>
+      <?php endforeach ?>
+      <?php if ($jerseyHistory === []): ?>
+        <tr><td colspan="4">No hay movimientos de dorsales.</td></tr>
+      <?php endif ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="portal-panel">
+  <h2>Responsables del atleta</h2>
+  <p class="portal-muted">Puedes registrar más de un adulto responsable. La relación se mantiene sin acceso digital hasta su verificación por administración institucional.</p>
+  <div class="table-scroll">
+    <table class="access-table">
+      <thead><tr><th scope="col">Adulto</th><th scope="col">Relación</th><th scope="col">Vinculación</th><th scope="col">Acción</th></tr></thead>
+      <tbody>
+        <?php foreach ($guardians as $guardian): ?>
+          <tr>
+            <td><?= esc($guardian['first_name'] . ' ' . $guardian['last_name']) ?></td>
+            <td><?= esc(match ($guardian['relationship']) {
+                'mother' => 'Madre', 'father' => 'Padre',
+                'legal_guardian' => 'Representante legal',
+                default => 'Adulto autorizado',
+            }) ?></td>
+            <td><?= esc($guardian['verified_at'] === null ? 'Pendiente de verificación' : 'Verificada') ?></td>
+            <td>
+              <?php if ($guardian['verified_at'] !== null && auth()->user()?->can('family.links.verify')): ?>
+                <form method="post" action="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/responsables/revocar'), 'attr') ?>">
+                  <?= csrf_field() ?>
+                  <input type="hidden" name="relation_id" value="<?= (int) $guardian['id'] ?>">
+                  <button type="submit" class="registry-danger">Revocar acceso</button>
+                </form>
+              <?php else: ?>
+                <span class="access-locked">Sin acciones disponibles</span>
+              <?php endif ?>
+            </td>
+          </tr>
+        <?php endforeach ?>
+        <?php if ($guardians === []): ?>
+          <tr><td colspan="4">No existen responsables asociados.</td></tr>
+        <?php endif ?>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="registry-subheading">Añadir otro responsable existente</h3>
+  <form class="registry-form" method="post" action="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/responsables'), 'attr') ?>">
+    <?= csrf_field() ?>
+    <div class="registry-fields">
+      <label>Adulto registrado
+        <select name="person_id" required>
+          <option value="">Seleccionar adulto</option>
+          <?php foreach ($adults as $adult): ?>
+            <option value="<?= (int) $adult['id'] ?>"><?= esc($adult['first_name'] . ' ' . $adult['last_name']) ?> · #<?= (int) $adult['id'] ?></option>
+          <?php endforeach ?>
+        </select>
+      </label>
+      <label>Relación
+        <select name="relationship" required>
+          <option value="">Seleccionar relación</option>
+          <option value="mother">Madre</option>
+          <option value="father">Padre</option>
+          <option value="legal_guardian">Representante legal</option>
+          <option value="other_authorized">Otro adulto autorizado</option>
+        </select>
+      </label>
+    </div>
+    <div class="registry-actions">
+      <button type="submit" class="portal-action-link registry-submit">Añadir responsable</button>
+      <?php if (auth()->user()?->can('family.links.verify')): ?>
+        <a href="<?= esc(site_url('app/familias/verificar'), 'attr') ?>" class="registry-cancel">Revisar vínculos pendientes</a>
+      <?php endif ?>
+    </div>
+  </form>
+  <p class="portal-muted">Si el adulto todavía no está registrado, utiliza el formulario de alta de otro atleta solo cuando corresponda; la creación independiente de adultos será una mejora adicional del INC-003.</p>
+</div>
+
 <?= $this->endSection() ?>
