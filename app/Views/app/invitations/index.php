@@ -67,7 +67,7 @@
                                 <button class="invitation-cancel-button" type="submit">Cancelar</button>
                             </form>
                         <?php else: ?>
-                            <span class="access-locked">Sin acciones</span>
+                            <span class="access-locked"><?= $invitation['status'] === 'accepted' ? 'Invitación finalizada' : 'Sin operaciones disponibles' ?></span>
                         <?php endif ?>
                     </td>
                 </tr>
