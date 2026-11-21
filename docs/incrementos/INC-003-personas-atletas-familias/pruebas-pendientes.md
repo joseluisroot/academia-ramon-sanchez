@@ -65,3 +65,31 @@ Todas estas pruebas están **pendientes de ejecución en WAMP**. Registrar fecha
 - [ ] **HIS-08** Simular fallo al insertar historial y comprobar rollback del cambio de categoría.
 - [ ] **HIS-09** Confirmar que la modificación no altera vínculos familiares, fecha de nacimiento ni fecha de ingreso.
 - [ ] **HIS-10** Verificar consistencia móvil/escritorio en el formulario y el historial.
+
+## Tercer corte — dorsales y familiares múltiples (pendiente)
+
+- [ ] **DOR-01** Ejecutar migración 000007 sin errores y sin borrar atletas existentes.
+- [ ] **DOR-02** Asignar dorsal 7 a un atleta U7: queda vigente y se registra historial con actor.
+- [ ] **DOR-03** Rechazar asignar dorsal 7 a otro atleta U7.
+- [ ] **DOR-04** Permitir dorsal 7 a un atleta de U9 (categoría distinta).
+- [ ] **DOR-05** Reemplazar dorsal actual y registrar liberación + nueva asignación en historial.
+- [ ] **DOR-06** Liberar dorsal; queda disponible para otro atleta de la misma categoría.
+- [ ] **DOR-07** Rechazar dorsales fuera del rango provisional 1–99, duplicados y solicitudes inválidas.
+- [ ] **DOR-08** Cambiar categoría con dorsal vigente: bloquear; tras liberarlo: permitir cambio con historial.
+- [ ] **DOR-09** Comprobar transacción y rollback si falla escritura de historial.
+- [ ] **DOR-10** Usuario guardian o Junta sin `athletes.manage`: no puede asignar ni liberar por POST directo.
+- [ ] **DOR-11** Dos operadores asignando mismo dorsal simultáneamente: solo una asignación prevalece.
+
+- [ ] **RES-01** Añadir segundo adulto existente a atleta ficticio sin duplicarlo en `persons`.
+- [ ] **RES-02** Añadir un adulto nuevo desde el expediente y comprobar relación sin verificar.
+- [ ] **RES-03** Rechazar el mismo adulto dos veces para un atleta.
+- [ ] **RES-04** Comprobar que un segundo adulto sin vínculo verificado **no** ve el expediente.
+- [ ] **RES-05** Administrador autorizado verifica el vínculo de segundo responsable y la cuenta solo ve los atletas correspondientes.
+- [ ] **RES-06** Revocar una relación verificada y comprobar desaparición inmediata de ese atleta en `/app/mis-atletas` para esa cuenta.
+- [ ] **RES-07** Revocar vínculo de un hijo no elimina el acceso a otros hijos verificados de ese adulto.
+- [ ] **RES-08** Utilero/guardian no puede revocar vínculo, ni mediante petición POST manual.
+- [ ] **RES-09** La relación permanece registrada como pendiente tras revocar y puede verificarse nuevamente solo mediante proceso autorizado.
+- [ ] **RES-10** Auditar actor y tipo de cambio, sin nombres ni datos personales de niños.
+- [ ] **RES-11** Probar móvil y escritorio con varios responsables y muchos registros.
+
+**Decisiones de negocio sin aprobar:** rango de dorsales 1–99, política de reserva/liberación, conservación al cambiar categoría, número de responsables reconocidos, procedimiento ante desacuerdo/custodia y requisitos documentales para autorizar/revocar.
