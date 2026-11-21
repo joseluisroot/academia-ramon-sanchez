@@ -123,6 +123,14 @@
                   <input type="hidden" name="relation_id" value="<?= (int) $guardian['id'] ?>">
                   <button type="submit" class="registry-danger">Revocar acceso</button>
                 </form>
+              <?php elseif ($guardian['verified_at'] === null && ! (bool) $guardian['is_primary'] && auth()->user()?->can('family.links.verify')): ?>
+                <form method="post"
+                      action="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/responsables/quitar-pendiente'), 'attr') ?>"
+                      onsubmit="return confirm('¿Quitar esta relación pendiente? El adulto seguirá registrado y podrás asociarlo nuevamente.');">
+                  <?= csrf_field() ?>
+                  <input type="hidden" name="relation_id" value="<?= (int) $guardian['id'] ?>">
+                  <button type="submit" class="registry-danger">Quitar pendiente</button>
+                </form>
               <?php else: ?>
                 <span class="access-locked">Sin acciones disponibles</span>
               <?php endif ?>
