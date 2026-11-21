@@ -93,3 +93,23 @@ Todas estas pruebas están **pendientes de ejecución en WAMP**. Registrar fecha
 - [ ] **RES-11** Probar móvil y escritorio con varios responsables y muchos registros.
 
 **Decisiones de negocio sin aprobar:** rango de dorsales 1–99, política de reserva/liberación, conservación al cambiar categoría, número de responsables reconocidos, procedimiento ante desacuerdo/custodia y requisitos documentales para autorizar/revocar.
+
+
+## Incidencia INC-003-CSRF-001 — formularios múltiples en ficha del atleta
+
+**Reportada:** 21/11/2026. **Ruta de operación:** `POST /app/atletas/1/responsables`. **Síntoma:** `CodeIgniter\\Security\\Exceptions\\SecurityException: The action you requested is not allowed` (`Security.php:256`).
+
+**Diagnóstico sobre el código:** `app/Config/Filters.php` aplica `csrf` globalmente; `app/Views/app/athletes/edit.php` incluye `csrf_field()` en cada formulario y `app/Config/Security.php` tenía `csrfProtection = 'session'` y `regenerate = true`. Al renovar el token tras otro POST, los formularios ya abiertos o múltiples pestañas pueden quedar con tokens obsoletos. Es una **causa probable**, todavía no confirmada por ejecución local.
+
+**Corrección aplicada en rama:** cambiar únicamente `regenerate` a `false`. La validación CSRF global, el token secreto por sesión y la verificación de autorización de cada POST **siguen activados**. No se añaden excepciones CSRF para rutas de responsables.
+
+- [ ] **CSRF-01** Actualizar código, cerrar las páginas viejas y recargar `/app/atletas/1/editar` para obtener token vigente.
+- [ ] **CSRF-02** Seleccionar adulto existente, completar relación y enviar: crear solo una relación pendiente, sin excepción CSRF.
+- [ ] **CSRF-03** Sin recargar la página, enviar un segundo formulario distinto (p. ej. dorsal o nuevo adulto): debe validar CSRF normalmente.
+- [ ] **CSRF-04** Repetir flujo con dos pestañas abiertas en la **misma sesión** y con operaciones distintas.
+- [ ] **CSRF-05** Un POST sin token y con token arbitrario se rechaza: la protección CSRF permanece habilitada.
+- [ ] **CSRF-06** Usuario `guardian` no puede enviar `POST /app/atletas/1/responsables`, incluso con CSRF válido.
+- [ ] **CSRF-07** Formulario sobre página abierta antes del cambio: recargar y repetir; no utilizar HTML cacheado ni sesiones anteriores.
+- [ ] **CSRF-08** Comprobar si el error reaparece; si ocurre, revisar cookies de sesión, dominio/puerto, token enviado y logs de CodeIgniter, sin divulgar valores secretos.
+
+**Importante:** no considerar confirmada la corrección hasta que el usuario la pruebe en WAMP. Revaluar regeneración y manejo AJAX de CSRF durante la modernización transversal (UX-PL-005).
