@@ -79,3 +79,10 @@ Si la rama ya existe localmente, usar `git switch feature/inc-003-personas-atlet
 ## Alcance futuro
 
 INC-004: sesiones y asistencia. INC-005/006: torneos y resultados. INC-008/009: mensualidades y uniformes. Ninguno de esos módulos se mezcla con las autorizaciones familiares iniciales.
+
+
+## Retroalimentación de interfaz recibida el 21 de noviembre de 2026
+
+Se registró el primer atleta en WAMP (validación comunicada por el usuario). Las mejoras UX de SweetAlert2, DataTables, toast, notificaciones personales y AJAX se trasladaron a [parking lot transversal](../../parking-lot-ux-plataforma.md) para ejecutarse después del flujo completo. El registro del atleta **no equivale a verificación del vínculo familiar ni a prueba de permisos**.
+
+**Próximo recorrido prioritario:** revisar la relación pendiente desde `/app/familias/verificar`, asociar un adulto registrado con su cuenta Shield `guardian` tras comprobación institucional, y confirmar mediante pruebas con dos usuarios familiares separados que `/app/mis-atletas` nunca permite consultar los hijos de otra familia. Usar datos ficticios.
