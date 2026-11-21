@@ -85,3 +85,12 @@ El recurso conserva el arte original mediante una imagen WebP embebida en un con
 - [ ] No hay errores 404 de imágenes ni problemas de caché.
 
 La especificación de identidad y futuras variantes se encuentra en [sistema de diseño](../../sistema-diseno.md).
+
+
+## Contenido institucional del sitio (actualización)
+
+La academia proporcionó `Academia de Futbol.docx` con quiénes somos, misión, visión, objetivos y fundamentación. Se actualizaron los textos públicos para reflejar esos contenidos y se añadieron secciones de misión, visión y fundamento, con estilos responsive. Véase [trazabilidad editorial](../../contenido-institucional.md).
+
+- [ ] Verificar en WAMP las nuevas secciones y navegación.
+- [ ] Validar la redacción adaptada con los fundadores.
+- [ ] Confirmar uso público de la dirección institucional consignada en la fuente.
