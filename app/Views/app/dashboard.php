@@ -1,0 +1,22 @@
+<?= $this->extend('layouts/private') ?>
+<?= $this->section('content') ?>
+
+<div class="portal-intro">
+  <span class="section-kicker">PLATAFORMA INTEGRAL</span>
+  <h1>Bienvenido al portal, <?= esc($username) ?>.</h1>
+  <p>Estás accediendo a un espacio privado de la Academia Ramón Sánchez. Los módulos se habilitarán conforme a tus permisos.</p>
+</div>
+
+<div class="portal-panel">
+  <h2>Tu cuenta</h2>
+  <p><strong>Grupos asignados:</strong> <?= esc(implode(', ', $groups ?: ['Sin grupo'])) ?></p>
+  <p class="portal-muted">Por seguridad, esta vista no muestra información financiera ni expedientes de atletas. Los módulos de gestión se incorporarán en los siguientes incrementos.</p>
+</div>
+
+<div class="portal-cards">
+  <article class="portal-card"><span aria-hidden="true">01</span><h3>Gestión deportiva</h3><p>Entrenamientos, convocatorias y resultados.</p><small>Próximamente</small></article>
+  <article class="portal-card"><span aria-hidden="true">02</span><h3>Administración</h3><p>Inscripciones, comprobantes y uniformes.</p><small>Próximamente</small></article>
+  <article class="portal-card"><span aria-hidden="true">03</span><h3>Comunicaciones</h3><p>Avisos y atención a familias.</p><small>Próximamente</small></article>
+</div>
+
+<?= $this->endSection() ?>
