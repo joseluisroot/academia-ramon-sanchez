@@ -9,6 +9,7 @@ use App\Models\AthleteModel;
 use App\Models\PersonModel;
 use App\Models\SportsCategoryModel;
 use App\Services\AthleteRegistrationService;
+use App\Services\AthleteRecordService;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use DomainException;
@@ -51,6 +52,65 @@ final class Athletes extends BaseController
             'categories' => (new SportsCategoryModel())->where('active', 1)->orderBy('code')->findAll(),
             'adults' => (new PersonModel())->where('status', 'active')->orderBy('last_name')->orderBy('first_name')->findAll(),
         ]);
+    }
+
+
+    public function edit(int $id): string|ResponseInterface
+    {
+        if (! auth()->user()?->can('athletes.manage')) {
+            return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
+        }
+
+        $athlete = (new AthleteModel())->find($id);
+
+        if ($athlete === null) {
+            return (new \App\Controllers\ErrorPages())->notFound();
+        }
+
+        $history = db_connect()->table('athlete_category_history h')
+            ->select('h.effective_on, h.reason, h.created_at, c.code AS category_code')
+            ->join('sports_categories c', 'c.id = h.sports_category_id')
+            ->where('h.athlete_id', $id)
+            ->orderBy('h.effective_on', 'DESC')
+            ->orderBy('h.id', 'DESC')
+            ->get()->getResultArray();
+
+        return view('app/athletes/edit', [
+            'title' => 'Editar atleta · Academia Ramón Sánchez',
+            'athlete' => $athlete,
+            'categories' => (new SportsCategoryModel())->where('active', 1)->orderBy('code')->findAll(),
+            'history' => $history,
+        ]);
+    }
+
+    public function update(int $id): RedirectResponse|ResponseInterface
+    {
+        $actor = auth()->user();
+
+        if ($actor === null || ! $actor->can('athletes.manage')) {
+            return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
+        }
+
+        $categoryId = filter_var($this->request->getPost('sports_category_id'), FILTER_VALIDATE_INT);
+
+        try {
+            (new AthleteRecordService())->update(
+                $actor,
+                $id,
+                (string) $this->request->getPost('first_name'),
+                (string) $this->request->getPost('last_name'),
+                $categoryId === false ? 0 : $categoryId,
+            );
+        } catch (DomainException $exception) {
+            return redirect()->to('app/atletas/' . $id . '/editar')->with('error', $exception->getMessage());
+        } catch (Throwable $exception) {
+            log_message('error', 'No se pudo actualizar el expediente de atleta.');
+
+            return redirect()->to('app/atletas/' . $id . '/editar')->with('error', 'No se pudo actualizar el expediente.');
+        }
+
+        return redirect()->to('app/atletas/' . $id . '/editar')
+            ->with('message', 'Expediente actualizado. El historial conserva las categorías anteriores.');
     }
 
     public function store(): RedirectResponse|ResponseInterface
