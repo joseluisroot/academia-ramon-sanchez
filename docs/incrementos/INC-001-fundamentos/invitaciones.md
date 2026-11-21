@@ -45,6 +45,7 @@ flowchart TD
 - Contraseña: mínimo 12 caracteres, mayúscula, minúscula, número y símbolo; no contiene el nombre de usuario.
 - El servidor exige sesión y permiso para crear invitaciones; solo el formulario público de activación acepta el token.
 - El formulario público debe llevar CSRF y políticas de caché/referrer restrictivas.
+- Las solicitudes de invitación se limitan inicialmente a cinco por responsable y hora.
 - No se enlaza automáticamente el padre con un expediente deportivo. Eso se realizará mediante verificación administrativa en INC-003.
 
 ## Configuración necesaria para correo
