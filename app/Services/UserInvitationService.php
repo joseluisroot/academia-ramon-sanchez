@@ -200,7 +200,7 @@ final class UserInvitationService
             $created->activate();
 
             (new AuditLogger())->record(
-                (int) $record['invited_by'],
+                (int) $created->id,
                 'user.invitation.accepted',
                 'user',
                 (string) $created->id,
