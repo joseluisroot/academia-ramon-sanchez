@@ -108,3 +108,9 @@
 .activation-brand{display:flex;gap:14px;align-items:center;color:var(--navy);font-size:13px;font-weight:800;letter-spacing:.05em;margin-bottom:34px}
 .activation-brand img{border-radius:12px}
 @media(max-width:600px){.activation-shell{padding:15px}.invitation-form button{max-width:none}}
+
+/* Historial de invitaciones: mantener las acciones legibles en móvil. */
+.invitation-history{margin-top:24px}
+.invitation-cancel-button{padding:9px 13px;border:1px solid #b42318;border-radius:9px;background:#fff;color:#9f1f17;font-size:13px;font-weight:700;cursor:pointer}
+.invitation-cancel-button:hover,.invitation-cancel-button:focus-visible{background:#fff1ef}
+.invitation-history .access-table{min-width:750px}
