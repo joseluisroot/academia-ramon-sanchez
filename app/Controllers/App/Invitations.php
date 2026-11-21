@@ -34,6 +34,11 @@ final class Invitations extends BaseController
             return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
         }
 
+        // Límite inicial por responsable: hasta 5 solicitudes por hora.
+        if (! service('throttler')->check('invite-user-' . (int) $actor->id, 5, 3600)) {
+            return redirect()->back()->with('error', 'Has alcanzado el límite temporal de invitaciones.');
+        }
+
         try {
             (new UserInvitationService())->invite(
                 $actor,
