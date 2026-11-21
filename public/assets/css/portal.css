@@ -76,3 +76,20 @@
 /* Emblema institucional: el fondo claro respeta la legibilidad del escudo. */
 .auth-brand .brand-logo-light{width:64px;height:64px;padding:3px;background:white;border:1px solid rgba(255,255,255,.25);border-radius:14px}
 .portal-brand .brand-logo{width:48px;height:48px}
+
+/* Gestión controlada de roles y accesos */
+.portal-action-link{display:inline-block;background:var(--navy);color:#fff;padding:12px 17px;border-radius:10px;font-size:14px;font-weight:750}
+.portal-action-link:hover{background:var(--action)}
+.table-scroll{overflow-x:auto;width:100%}
+.access-table{width:100%;border-collapse:collapse;text-align:left;font-size:14px;min-width:700px}
+.access-table th,.access-table td{padding:16px 12px;border-bottom:1px solid var(--portal-border);vertical-align:top}
+.access-table th{background:var(--portal-bg);color:var(--navy);font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.access-table td small{display:block;color:var(--muted)}
+.access-form{display:grid;grid-template-columns:1fr 1fr;gap:10px;min-width:350px}
+.access-form label{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:650;color:var(--navy)}
+.access-form label:nth-child(3){grid-column:1/-1}
+.access-form input,.access-form select{width:100%;min-height:40px;padding:9px 10px;border:1px solid #cbd5e5;border-radius:8px;background:#fff;color:var(--ink);font:inherit}
+.access-form button{grid-column:1/-1;background:var(--navy);color:white;border:0;border-radius:9px;min-height:39px;font-size:13px;cursor:pointer;font-weight:750}
+.access-form button:hover{background:var(--action)}
+.access-locked{font-size:12px;color:var(--muted);font-weight:600}
+@media(max-width:720px){.access-table{min-width:650px}.portal-panel{padding:17px}}
