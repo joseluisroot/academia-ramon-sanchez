@@ -1,7 +1,7 @@
 # INC-001 — Fundamentos de la plataforma
 
 **Rama:** `feature/inc-001-fundamentos`  
-**Estado:** en implementación. Base CI4 y portada pública agregadas; autenticación, esquema de identidad y pruebas pendientes.
+**Estado:** en implementación. Base CI4, portada, configuración Shield, login institucional, primer dashboard protegido y migraciones propias agregados; ejecución WAMP y pruebas pendientes.
 
 ## Objetivo
 
@@ -62,7 +62,7 @@ flowchart TD
 
 ## Entregables técnicos pendientes
 
-Se incorporaron la base oficial CodeIgniter 4, controller público, layout, página institucional y CSS responsivo. Pendientes en **esta misma rama**: migraciones, seeders de catálogos, models, services, controladores de identidad, filtros, rutas privadas, pruebas y validación de entorno local. Véase [instalación local](instalacion-local.md).
+Se incorporaron: base oficial de CodeIgniter 4, controller público, layout, página institucional y CSS responsive; dependencia y configuración Shield, catálogo de permisos, login con identidad visual, dashboard inicial protegido, migraciones `persons`/`audit_logs`, modelos y servicio básico de auditoría. Pendientes en **esta misma rama**: validar Composer/Shield, migraciones y rutas en WAMP, diseñar e implementar el proceso seguro de invitaciones y asignación de permisos, pruebas automatizadas, componentes definitivos Tailwind. Véase [instalación local](instalacion-local.md) y [autenticación y permisos](autenticacion-y-permisos.md).
 
 ## Criterio de cierre
 
