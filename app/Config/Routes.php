@@ -49,6 +49,12 @@ $routes->group('app', ['filter' => ['session', 'permission:portal.access']], sta
     $routes->get('atletas/(:num)/editar', 'App\\Athletes::edit/$1', ['as' => 'app.athletes.edit', 'filter' => 'permission:athletes.manage']);
     $routes->post('atletas/(:num)', 'App\\Athletes::update/$1', ['as' => 'app.athletes.update', 'filter' => 'permission:athletes.manage']);
 
+    // Dorsales por categoría y nuevos responsables, siempre con permisos del servidor.
+    $routes->post('atletas/(:num)/dorsal', 'App\\AthleteJerseys::assign/$1', ['as' => 'app.athletes.jersey.assign', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)/dorsal/liberar', 'App\\AthleteJerseys::release/$1', ['as' => 'app.athletes.jersey.release', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)/responsables', 'App\\AthleteGuardians::add/$1', ['as' => 'app.athletes.guardians.add', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)/responsables/revocar', 'App\\AthleteGuardians::revoke/$1', ['as' => 'app.athletes.guardians.revoke', 'filter' => 'permission:family.links.verify']);
+
     // Verificación de parentesco exclusiva de administradores institucionales.
     $routes->get('familias/verificar', 'App\\FamilyLinks::index', ['as' => 'app.family.verify.index', 'filter' => 'permission:family.links.verify']);
     $routes->post('familias/verificar', 'App\\FamilyLinks::verify', ['as' => 'app.family.verify.store', 'filter' => 'permission:family.links.verify']);
