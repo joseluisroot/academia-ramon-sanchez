@@ -137,3 +137,12 @@ Ingresar a `http://localhost:8080/app/atletas` y abrir **Editar expediente** de 
 Se registró el incidente `INC-003-CSRF-001` al enviar `/app/atletas/1/responsables`. El expediente muestra varios formularios HTML válidos con `csrf_field()`, pero el CSRF de sesión se regeneraba tras cada envío. La configuración se ajustó a **`csrfProtection = 'session'` con `regenerate = false`**, manteniendo el filtro CSRF global y la autorización de endpoints. La solución permite reutilizar el token de una sesión activa entre múltiples formularios y pestañas. Las pruebas funcionales y negativas están en [control de pruebas](pruebas-pendientes.md).
 
 **Pendiente:** verificar en WAMP antes de declarar resuelto el error. Para ello, recargar la ficha de atleta, enviar el formulario de adulto existente y confirmar que no se genera `SecurityException` ni se elimina la protección CSRF.
+
+
+## Corrección de operación — quitar asociación pendiente sin eliminar adulto
+
+Ante el caso de un padre ya verificado y una madre pendiente de verificación sin correo, se incorporó el botón **Quitar pendiente** en `/app/atletas/{id}/editar` para relaciones adicionales **no verificadas y no principales**. La operación exige permiso `family.links.verify`, CSRF y confirmación del operador, comprueba nuevamente en servidor que la relación pertenece al atleta y está pendiente, no permite dejar al atleta sin responsables y crea evento de auditoría sin nombres. Elimina exclusivamente la asociación en `athlete_guardians`, **no elimina a la persona** ni altera el padre verificado. Si se necesita corregir la relación, el adulto puede seleccionarse otra vez en «Añadir otro responsable existente». 
+
+El registro pendiente no impide continuar con otros incrementos. No equivale a «verificar sin correo»: esa separación conceptual sigue en el parking lot UX-PL-006 y deberá resolverse antes de producción.
+
+**Estado:** código subido; prueba WAMP pendiente.
