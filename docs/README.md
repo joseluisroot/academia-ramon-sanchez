@@ -9,6 +9,7 @@ Este directorio es la fuente de referencia versionada para el **sitio institucio
 - [Visión, alcance y procesos](vision-alcance.md)
 - [Arquitectura](arquitectura.md)
 - [Sistema de diseño UI/UX](sistema-diseno.md)
+- [Contenido institucional y fuente oficial](contenido-institucional.md)
 - [Modelo conceptual de datos](modelo-datos.md)
 - [Seguridad, roles y permisos](roles-permisos.md)
 - [Plan maestro de incrementos](roadmap.md)
