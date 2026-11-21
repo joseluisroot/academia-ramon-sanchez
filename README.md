@@ -9,7 +9,8 @@ Proyecto integral de **sitio web público** y **portal privado** de gestión de 
 - Primera portada institucional responsive en español: `app/Views/public/home.php`.
 - Estilos y tokens iniciales: `public/assets/css/academia.css` (CSS base provisional; integración Tailwind pendiente).
 - Arquitectura, reglas y roadmap documentados en `docs/`.
-- **Aún no implementados:** login, roles, permisos, migraciones de identidad, portal privado y pruebas integrales. No desplegar en producción.
+- **En la rama, sin validar en WAMP:** configuración CodeIgniter Shield, login institucional, catálogo de roles/permisos, rutas protegidas `/app`, migraciones `persons` y `audit_logs`, modelos y primer panel privado.
+- **Pendiente:** instalación/verificación de Shield y migraciones, invitaciones por correo, administración de permisos, pruebas y controles por atleta/categoría. No desplegar en producción.
 
 ## Instalación y pruebas locales
 
@@ -19,6 +20,7 @@ Leer [Instrucciones WAMP](docs/incrementos/INC-001-fundamentos/instalacion-local
 composer install
 Copy-Item env .env
 # Configurar .env y MySQL según docs
+php spark migrate --all
 php spark serve --host localhost --port 8080
 ```
 
