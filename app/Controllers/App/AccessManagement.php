@@ -6,6 +6,7 @@ namespace App\Controllers\App;
 
 use App\Controllers\BaseController;
 use App\Services\RoleAssignmentService;
+use App\Services\RoleAssignmentPolicy;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Shield\Models\UserModel;
@@ -29,7 +30,7 @@ class AccessManagement extends BaseController
             'title' => 'Administrar accesos · Academia Ramón Sánchez',
             'users' => $users->orderBy('id', 'DESC')->paginate(20),
             'pager' => $users->pager,
-            'assignableGroups' => RoleAssignmentService::ASSIGNABLE_GROUPS,
+            'assignableGroups' => RoleAssignmentPolicy::ORDINARY_ROLES,
         ]);
     }
 
