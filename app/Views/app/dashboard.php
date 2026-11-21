@@ -13,6 +13,14 @@
   <p class="portal-muted">Por seguridad, esta vista no muestra información financiera ni expedientes de atletas. Los módulos de gestión se incorporarán en los siguientes incrementos.</p>
 </div>
 
+<?php if (auth()->user()?->can('users.assign')): ?>
+  <div class="portal-panel">
+    <h2>Administración de accesos</h2>
+    <p class="portal-muted">Como responsable designado, puedes asignar roles ordinarios con registro de auditoría.</p>
+    <a class="portal-action-link" href="<?= esc(site_url('app/accesos'), 'attr') ?>">Administrar accesos</a>
+  </div>
+<?php endif ?>
+
 <div class="portal-cards">
   <article class="portal-card"><span aria-hidden="true">01</span><h3>Gestión deportiva</h3><p>Entrenamientos, convocatorias y resultados.</p><small>Próximamente</small></article>
   <article class="portal-card"><span aria-hidden="true">02</span><h3>Administración</h3><p>Inscripciones, comprobantes y uniformes.</p><small>Próximamente</small></article>
