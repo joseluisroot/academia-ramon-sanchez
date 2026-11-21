@@ -47,6 +47,10 @@ $routes->group('app', ['filter' => ['session', 'permission:portal.access']], sta
     $routes->get('atletas/nuevo', 'App\\Athletes::create', ['as' => 'app.athletes.create', 'filter' => 'permission:athletes.manage']);
     $routes->post('atletas', 'App\\Athletes::store', ['as' => 'app.athletes.store', 'filter' => 'permission:athletes.manage']);
 
+    // Verificación de parentesco exclusiva de administradores institucionales.
+    $routes->get('familias/verificar', 'App\\FamilyLinks::index', ['as' => 'app.family.verify.index', 'filter' => 'permission:family.links.verify']);
+    $routes->post('familias/verificar', 'App\\FamilyLinks::verify', ['as' => 'app.family.verify.store', 'filter' => 'permission:family.links.verify']);
+
     // La consulta familiar filtra por usuario activo y vínculo verificado.
     $routes->get('mis-atletas', 'App\\MyAthletes::index', ['as' => 'app.family.athletes', 'filter' => 'permission:family.athletes.view']);
 
