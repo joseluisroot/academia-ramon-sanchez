@@ -94,3 +94,57 @@ email.fromName = 'Academia Ramón Sánchez'
 - Relación administrativa previa entre padres y atletas.
 - Verificación adicional para cuentas institucionales.
 - Pruebas de carga y limitación de intentos.
+
+
+## Prueba local segura con Mailpit (sin correo real)
+
+La rama incluye `docker-compose.mailpit.yml`, que publica el servidor SMTP de pruebas **solo en 127.0.0.1:1025** y su buzón web en **http://127.0.0.1:8025**. No envía correos a destinatarios externos.
+
+Desde PowerShell, en la raíz del repositorio:
+
+```powershell
+docker compose -f docker-compose.mailpit.yml up -d
+docker compose -f docker-compose.mailpit.yml ps
+```
+
+En tu archivo local `.env` (no subir a Git) añade:
+
+```ini
+email.protocol = smtp
+email.SMTPHost = 127.0.0.1
+email.SMTPPort = 1025
+email.SMTPUser =
+email.SMTPPass =
+email.SMTPCrypto = ''
+email.fromEmail = 'pruebas@academia.test'
+email.fromName = 'Academia Ramón Sánchez'
+```
+
+Mantener `app.baseURL = 'http://localhost:8080/'`. Con el portal y el correo de pruebas en la **misma computadora**, el enlace a localhost puede abrirse correctamente desde Mailpit.
+
+Secuencia sugerida:
+
+1. Ejecutar `php spark migrate --all` y verificar la tabla `user_invitations`.
+2. Ingresar con `joseluisroot` a `http://localhost:8080/app/invitaciones`.
+3. Usar una dirección sintética `prueba.padre@example.test`, con rol `guardian`.
+4. Revisar el mensaje en `http://127.0.0.1:8025`.
+5. Abrir el enlace desde el **mismo equipo**. Crear un usuario de prueba distinto a `joseluisroot` y una contraseña robusta.
+6. Comprobar que puede iniciar sesión; volver a usar el enlace debe mostrar invitación inválida.
+7. Crear otra invitación sintética, **cancelarla** en el listado y comprobar que su enlace deja de funcionar.
+8. Reenviar de manera controlada: luego de cancelar, usar nuevamente el formulario para crear otra invitación al mismo correo.
+9. Verificar que la auditoría guarda únicamente metadatos permitidos, nunca el token de invitación ni contraseñas.
+10. Detener Mailpit cuando no se use: `docker compose -f docker-compose.mailpit.yml down`.
+
+**No utilices correos de familias reales para esta fase.** El servicio no es un SMTP de producción, y las invitaciones enviadas desde localhost no serán accesibles fuera de tu computadora.
+
+## Cancelación y nuevo envío
+
+`POST /app/invitaciones/cancelar` permite a usuarios con permiso `users.invite` cancelar invitaciones en estado `pending`. La cancelación modifica su estado de forma condicionada y registra auditoría en la misma transacción. Una invitación cancelada no puede activar una cuenta.
+
+Para **volver a enviar**, el responsable cancela la anterior si continúa vigente y después genera una invitación nueva desde el formulario: se crea **otro token**, con su propio plazo de 48 horas. No se reutiliza el token original.
+
+El módulo muestra un máximo de 25 invitaciones recientes al responsable autorizado. Esta vista está restringida porque contiene correos personales.
+
+### Advertencia de fiabilidad SMTP
+
+El envío SMTP es un efecto externo y no participa en las transacciones MySQL. La implementación inicial realiza el envío antes de confirmar la invitación y puede tener inconsistencias en un caso excepcional de fallo del commit; antes de producción habrá que sustituirla por una **cola de salida transaccional (outbox)** con reintentos y estados de entrega.
