@@ -30,7 +30,7 @@ final class MyAthletes extends BaseController
             ->where('p.status', 'active')
             ->where('ag.verified_at IS NOT NULL', null, false)
             ->where('a.status', 'active')
-            ->groupBy('a.id')
+            ->distinct()
             ->orderBy('a.first_name')
             ->get()
             ->getResultArray();
