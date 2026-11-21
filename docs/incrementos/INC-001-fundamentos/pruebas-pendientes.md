@@ -78,3 +78,17 @@
 | UI-02 | Pendiente | — | WAMP local | — |
 
 **Criterio de cierre INC-001:** no mover el PR a «listo» sin revisar casos de seguridad críticos y resolver incidencias de severidad alta. Los cambios no son producción hasta validar ambiente, SMTP y autorización.
+
+
+## Incidencia INC-001B-404 — reportada por usuario
+
+**Fecha:** 21 de noviembre de 2026.  
+**Síntoma:** al abrir una ruta inexistente, la página mostró `The error view file was not specified. Cannot display error view.` en vez del 404 institucional.
+
+**Corrección propuesta en código:** cambiar el override 404 de una referencia a controlador por una closure que renderiza `errors/institutional`; agregar vistas de respaldo `errors/html/error_404.php`, `errors/html/production.php` y `errors/html/error_exception.php`, más vista CLI 404.  
+**Estado:** corregido en repositorio, **pendiente de confirmar en WAMP**.
+
+- [ ] **INC-001B-404A:** `/pagina-que-no-existe` renderiza ilustración y texto institucional.
+- [ ] **INC-001B-404B:** la respuesta HTTP conserva el estado **404**.
+- [ ] **INC-001B-404C:** se verifica la pantalla institucional `/sin-acceso` con rol guardian y estado 403.
+- [ ] **INC-001B-404D:** una excepción de desarrollo real se registra adecuadamente y no acaba en el mensaje de vista no especificada.
