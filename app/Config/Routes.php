@@ -24,6 +24,9 @@ $routes->get('sin-acceso', 'ErrorPages::forbidden', ['as' => 'error.forbidden'])
 // Rutas públicas. No se permite el registro autónomo de usuarios.
 $routes->get('/', 'Home::index');
 
+// Contacto público de responsables adultos, sin registro de menores.
+$routes->post('solicitar-informacion', 'EnrollmentInquiries::submit', ['as' => 'public.inquiry.submit']);
+
 // Shield proporciona login, logout, enlace mágico y acciones de autenticación.
 // La ruta /register (GET y POST) queda explícitamente excluida.
 service('auth')->routes($routes, ['except' => ['register']]);
@@ -35,6 +38,10 @@ $routes->post('activar-cuenta/(:segment)', 'AccountActivation::accept/$1', ['as'
 // El portal privado exige sesión y permiso: no basta con tener una cuenta.
 $routes->group('app', ['filter' => ['session', 'permission:portal.access']], static function (RouteCollection $routes): void {
     $routes->get('/', 'App\\Dashboard::index', ['as' => 'app.dashboard']);
+
+    // Consultas de primera clase: acceso limitado a administración y utilero autorizado.
+    $routes->get('consultas', 'App\\EnrollmentInquiries::index', ['as' => 'app.inquiries.index', 'filter' => 'permission:inquiries.view']);
+    $routes->post('consultas/contactada', 'App\\EnrollmentInquiries::contacted', ['as' => 'app.inquiries.contacted', 'filter' => 'permission:inquiries.manage']);
 
     // Invitaciones individuales controladas por el responsable designado.
     $routes->get('invitaciones', 'App\\Invitations::index', ['as' => 'app.invitations.index', 'filter' => 'permission:users.invite']);
