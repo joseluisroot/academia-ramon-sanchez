@@ -130,3 +130,10 @@ php spark routes
 Ingresar a `http://localhost:8080/app/atletas` y abrir **Editar expediente** de un atleta ficticio. Se mostrarán las secciones **Dorsal deportivo** y **Responsables del atleta**. Evitar pruebas de revocación o asignación de dorsal sobre expedientes reales hasta aprobar la política deportiva.
 
 **Estado:** código incorporado en GitHub; pruebas WAMP y revisión institucional pendientes. La interfaz sigue utilizando POST y mensajes de sesión; AJAX, SweetAlert2, DataTables y notificaciones toast se conservan en el [parking lot transversal](../../parking-lot-ux-plataforma.md).
+
+
+## Corrección de CSRF en formularios con múltiples acciones
+
+Se registró el incidente `INC-003-CSRF-001` al enviar `/app/atletas/1/responsables`. El expediente muestra varios formularios HTML válidos con `csrf_field()`, pero el CSRF de sesión se regeneraba tras cada envío. La configuración se ajustó a **`csrfProtection = 'session'` con `regenerate = false`**, manteniendo el filtro CSRF global y la autorización de endpoints. La solución permite reutilizar el token de una sesión activa entre múltiples formularios y pestañas. Las pruebas funcionales y negativas están en [control de pruebas](pruebas-pendientes.md).
+
+**Pendiente:** verificar en WAMP antes de declarar resuelto el error. Para ello, recargar la ficha de atleta, enviar el formulario de adulto existente y confirmar que no se genera `SecurityException` ni se elimina la protección CSRF.
