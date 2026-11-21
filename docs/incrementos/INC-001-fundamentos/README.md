@@ -67,3 +67,21 @@ Se incorporaron: base oficial de CodeIgniter 4, controller público, layout, pá
 ## Criterio de cierre
 
 El incremento no se considera desarrollado hasta disponer de código operativo, pruebas y revisión en PR. La documentación sola constituye planificación.
+
+
+## Identidad visual — INC-001A (implementado en código)
+
+Se incorporó una copia optimizada del escudo oficial proporcionado por la academia, ubicada en `public/assets/img/brand/escudo-oficial.svg`. La utilizan los layouts público y privado, login, pie de página y favicon.
+
+El recurso conserva el arte original mediante una imagen WebP embebida en un contenedor SVG. Su tamaño es apropiado para cabeceras e íconos, **no para impresión o portada grande**.
+
+### Criterios de validación en WAMP
+
+- [ ] El logo se ve correctamente en `/`.
+- [ ] El logo se ve sobre fondo azul en `/login`.
+- [ ] El logo aparece en `/app` tras autenticación.
+- [ ] El favicon carga en el navegador.
+- [ ] Header y footer mantienen proporciones en móvil y escritorio.
+- [ ] No hay errores 404 de imágenes ni problemas de caché.
+
+La especificación de identidad y futuras variantes se encuentra en [sistema de diseño](../../sistema-diseno.md).
