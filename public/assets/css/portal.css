@@ -137,3 +137,23 @@
 /* INC-002: bandeja privada de solicitudes */
 .inquiry-contact-button{background:var(--navy);color:#fff;padding:9px 12px;border:0;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px}
 .inquiry-contact-button:hover{background:var(--action)}
+
+/* INC-003: registro administrativo y área familiar */
+.registry-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.registry-toolbar h2{margin:0}
+.registry-panel{max-width:960px}
+.registry-form fieldset{border:0;padding:0;margin:0 0 32px}
+.registry-form legend{font-size:21px;font-weight:800;color:var(--navy);padding:0;margin-bottom:12px}
+.registry-form fieldset>p{font-size:13px;margin-bottom:15px}
+.registry-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.registry-fields label{display:flex;flex-direction:column;gap:6px;color:var(--navy);font-weight:700;font-size:13px}
+.registry-fields input,.registry-fields select{min-height:45px;border:1px solid #cbd5e5;border-radius:10px;background:#fff;color:var(--ink);padding:10px 12px;font:inherit}
+.registry-fields :is(input,select):focus-visible{outline:3px solid #95caff;outline-offset:2px}
+.registry-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.registry-submit{border:0;cursor:pointer}
+.registry-cancel{color:var(--action);font-weight:700;font-size:14px}
+.family-athlete-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.family-athlete-card h2{font-size:23px;color:var(--navy);margin:12px 0}
+.family-athlete-card small{color:var(--muted)}
+.family-empty{max-width:760px;padding:32px}
+@media(max-width:650px){.registry-fields{grid-template-columns:1fr}.registry-form legend{font-size:19px}}
