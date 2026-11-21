@@ -111,3 +111,10 @@ Como la plataforma todavía no tiene cuentas activas, se documentó un procedimi
 - [ ] Crear primera cuenta únicamente con autorización institucional.
 - [ ] Verificar entrada por `/login` y protección de `/app`.
 - [ ] Validar acceso a `/app/accesos` únicamente con el grupo delegado.
+
+
+## Invitación de cuentas — nuevo avance
+
+Se incorporó un primer flujo de invitación administrativa por correo: `/app/invitaciones` (requiere `users.invite`) y `/activar-cuenta/{token}`. El enlace lleva un token aleatorio de 32 bytes, almacenado únicamente como hash, con 48 horas de vigencia y consumo único. La activación solicita nombre de usuario y contraseña y genera la cuenta Shield con un rol ordinario autorizado. Se agregaron migración, modelo, servicio, política y pruebas unitarias.
+
+**Estado:** código subido, no probado aún en WAMP ni con SMTP. **No desplegar a producción** sin verificar mailer, flujo de activación, CSRF, auditoría y doble uso. Ver [invitaciones](invitaciones.md).
