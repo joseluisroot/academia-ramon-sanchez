@@ -34,4 +34,50 @@
     </form>
 </div>
 
+
+<div class="portal-panel invitation-history">
+    <h2>Invitaciones recientes</h2>
+    <p class="portal-muted">Puedes cancelar una invitación pendiente para invalidar su enlace. Para volver a invitar al mismo correo, cancela primero la invitación anterior y envía una nueva desde el formulario.</p>
+    <div class="table-scroll">
+        <table class="access-table">
+            <thead>
+                <tr><th scope="col">Correo</th><th scope="col">Perfil</th><th scope="col">Estado</th><th scope="col">Vence</th><th scope="col">Acción</th></tr>
+            </thead>
+            <tbody>
+            <?php foreach ($invitations as $invitation): ?>
+                <?php
+                    $expired = $invitation['status'] === 'pending' && strtotime((string) $invitation['expires_at']) <= time();
+                    $statusLabel = $expired ? 'Vencida' : match ($invitation['status']) {
+                        'pending' => 'Pendiente',
+                        'accepted' => 'Aceptada',
+                        'cancelled' => 'Cancelada',
+                        default => 'No disponible',
+                    };
+                ?>
+                <tr>
+                    <td><?= esc((string) $invitation['email']) ?></td>
+                    <td><?= esc((string) ($roles[$invitation['role']] ?? $invitation['role'])) ?></td>
+                    <td><?= esc($statusLabel) ?></td>
+                    <td><?= esc((string) $invitation['expires_at']) ?></td>
+                    <td>
+                        <?php if ($invitation['status'] === 'pending' && ! $expired): ?>
+                            <form method="post" action="<?= esc(site_url('app/invitaciones/cancelar'), 'attr') ?>">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="invitation_id" value="<?= (int) $invitation['id'] ?>">
+                                <button class="invitation-cancel-button" type="submit">Cancelar</button>
+                            </form>
+                        <?php else: ?>
+                            <span class="access-locked">Sin acciones</span>
+                        <?php endif ?>
+                    </td>
+                </tr>
+            <?php endforeach ?>
+            <?php if ($invitations === []): ?>
+                <tr><td colspan="5">Todavía no se han enviado invitaciones.</td></tr>
+            <?php endif ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 <?= $this->endSection() ?>
