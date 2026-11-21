@@ -113,3 +113,15 @@ Todas estas pruebas están **pendientes de ejecución en WAMP**. Registrar fecha
 - [ ] **CSRF-08** Comprobar si el error reaparece; si ocurre, revisar cookies de sesión, dominio/puerto, token enviado y logs de CodeIgniter, sin divulgar valores secretos.
 
 **Importante:** no considerar confirmada la corrección hasta que el usuario la pruebe en WAMP. Revaluar regeneración y manejo AJAX de CSRF durante la modernización transversal (UX-PL-005).
+
+
+## Operación administrativa de retiro de responsables pendientes
+
+- [ ] **RES-12** Administrador con `family.links.verify` ve **Quitar pendiente** solo en adultos adicionales no verificados.
+- [ ] **RES-13** Al quitar pendiente, el atleta conserva a su responsable principal y la persona adulta sigue en `persons`.
+- [ ] **RES-14** El adulto retirado puede seleccionarse de nuevo y su nueva relación queda pendiente.
+- [ ] **RES-15** No se puede quitar mediante la ruta de retiro una relación ya verificada ni una relación principal.
+- [ ] **RES-16** Usuario sin `family.links.verify` obtiene 403 en POST directo; token CSRF inválido se rechaza.
+- [ ] **RES-17** POST con relación de otro atleta no modifica datos ni relaciones.
+- [ ] **RES-18** Se registra ID, autor y acción en auditoría sin nombres; no se borra la persona.
+- [ ] **RES-19** Tras retirar una relación pendiente desaparece de la pantalla de verificación, conservando los vínculos verificados del atleta.
