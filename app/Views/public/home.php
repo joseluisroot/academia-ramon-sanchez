@@ -1,0 +1,123 @@
+<?= $this->extend('layouts/public') ?>
+<?= $this->section('content') ?>
+
+<section class="hero">
+    <div class="container hero-grid">
+        <div class="hero-content">
+            <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> ACADEMIA INTEGRAL DE FÚTBOL PROFESOR RAMÓN SÁNCHEZ</span>
+            <h1>Formamos futbolistas.<br><em>Impulsamos valores.</em></h1>
+            <p>Un proyecto pedagógico de la comunidad Sitio del Niño, comprometido con la formación personal, social y deportiva de niños y jóvenes.</p>
+            <div class="hero-actions">
+                <a class="btn btn-primary" href="#contacto">Conoce la primera clase <span aria-hidden="true">↗</span></a>
+                <a class="btn btn-outline" href="#academia">Conoce nuestra academia</a>
+            </div>
+            <div class="hero-tags" aria-label="Valores formativos">
+                <span>Compañerismo</span><span>Respeto</span><span>Juego limpio</span>
+            </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+            <div class="hero-orbit orbit-one"></div>
+            <div class="hero-orbit orbit-two"></div>
+            <div class="sport-symbol">⚽</div>
+            <div class="floating-note"><strong>5 categorías</strong><small>U7 · U9 · U11 · U13 · U17</small></div>
+        </div>
+    </div>
+</section>
+
+<section id="academia" class="section section-light">
+    <div class="container section-grid">
+        <div>
+            <span class="section-kicker">¿QUIÉNES SOMOS?</span>
+            <h2>Una academia nacida en nuestra comunidad.</h2>
+        </div>
+        <div class="body-copy">
+            <p>La Academia Integral de Fútbol Profesor Ramón Sánchez es un proyecto pedagógico orientado a la formación integral de niños y jóvenes de la comunidad Sitio del Niño, en sus dimensiones personal, social y deportiva.</p>
+            <p>La iniciativa nació con el propósito de contar con una academia de fútbol con sede en la propia comunidad, donde el deporte también sea un medio para fortalecer el compañerismo, el respeto por los demás y el juego limpio.</p>
+        </div>
+    </div>
+</section>
+
+<section id="mision-vision" class="section section-purpose">
+    <div class="container">
+        <div class="section-head">
+            <div><span class="section-kicker">NUESTRO COMPROMISO</span><h2>Misión y visión</h2></div>
+            <p>El propósito institucional definido por los fundadores.</p>
+        </div>
+        <div class="purpose-grid">
+            <article class="purpose-card">
+                <span class="purpose-label">01 / MISIÓN</span>
+                <h3>Formación integral a través del fútbol</h3>
+                <p>Contribuir a la formación integral de los niños y jóvenes de nuestro país, utilizando la práctica del fútbol como un valioso medio para su desarrollo formativo.</p>
+            </article>
+            <article class="purpose-card">
+                <span class="purpose-label">02 / VISIÓN</span>
+                <h3>Compromiso social y talento deportivo</h3>
+                <p>Constituirnos como una institución deportiva reconocida por su compromiso social con la formación integral del talento de nuestros niños y jóvenes.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section id="categorias" class="section section-light">
+    <div class="container">
+        <div class="section-head">
+            <div><span class="section-kicker">FORMACIÓN POR ETAPAS</span><h2>Nuestras categorías</h2></div>
+            <p>Un acompañamiento deportivo de acuerdo con la etapa de desarrollo.</p>
+        </div>
+        <div class="categories-grid">
+            <?php foreach (['U7', 'U9', 'U11', 'U13', 'U17'] as $category): ?>
+                <article class="category-card">
+                    <span class="category-symbol" aria-hidden="true">↗</span>
+                    <h3><?= esc($category) ?></h3>
+                    <p>Aprendizaje, juego y desarrollo deportivo.</p>
+                </article>
+            <?php endforeach ?>
+        </div>
+    </div>
+</section>
+
+<section id="beneficios" class="section section-navy">
+    <div class="container">
+        <span class="section-kicker">NUESTROS OBJETIVOS</span>
+        <h2>Más que aprender a jugar fútbol.</h2>
+        <p class="section-navy-intro">Buscamos brindar formación básica futbolística y humana con el acompañamiento de entrenadores y especialistas responsables.</p>
+        <div class="values-grid">
+            <article><span class="value-icon" aria-hidden="true">01</span><h3>Integración y valores</h3><p>Fomentar el fútbol como espacio de convivencia, formación social y compañerismo.</p></article>
+            <article><span class="value-icon" aria-hidden="true">02</span><h3>Creatividad y habilidades</h3><p>Estimular el juego, la creatividad, la motricidad y el desarrollo físico y técnico.</p></article>
+            <article><span class="value-icon" aria-hidden="true">03</span><h3>Vida saludable</h3><p>Promover el aprovechamiento del tiempo libre, la actividad física y hábitos saludables.</p></article>
+        </div>
+    </div>
+</section>
+
+<section id="fundamentacion" class="section">
+    <div class="container section-grid">
+        <div>
+            <span class="section-kicker">NUESTRA FUNDAMENTACIÓN</span>
+            <h2>El fútbol como herramienta para crecer.</h2>
+        </div>
+        <div class="body-copy">
+            <p>Creemos que el deporte ofrece a niños y jóvenes una oportunidad de aprovechar positivamente su tiempo libre y fortalecer su bienestar físico, mental y social.</p>
+            <p>Por eso, impulsamos el primer acercamiento al fútbol mediante experiencias lúdicas y formativas, en un ambiente que promueva la amistad, la unidad, la solidaridad, el respeto, la superación y la disciplina.</p>
+            <p class="muted">Nuestra labor deportiva busca desarrollar estrategias de enseñanza apropiadas para cada etapa, mejorar las habilidades motrices y facilitar el aprendizaje del juego.</p>
+        </div>
+    </div>
+</section>
+
+<section id="contacto" class="section section-light">
+    <div class="container contact-panel">
+        <div>
+            <span class="section-kicker">CONOCE NUESTRA ACADEMIA</span>
+            <h2>Ven a vivir tu primera experiencia.</h2>
+            <p>La primera clase de prueba es gratuita. Dennis Sánchez recibe a las familias interesadas y explica la dinámica de los entrenamientos y el proceso de ingreso.</p>
+        </div>
+        <div class="contact-details">
+            <strong>Entrenamientos habituales</strong>
+            <p>Miércoles y jueves · 4:30 a 6:00 p. m.</p>
+            <strong class="contact-label">Ubicación institucional</strong>
+            <p>Colonia Sitio del Niño, 1.ª calle y avenida Central, n.º 20-B, San Juan Opico, La Libertad, El Salvador.</p>
+            <p class="muted">El canal de solicitudes de información y clase gratuita se habilitará próximamente.</p>
+        </div>
+    </div>
+</section>
+
+<?= $this->endSection() ?>
