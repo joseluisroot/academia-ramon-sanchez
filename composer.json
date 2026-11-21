@@ -1,6 +1,6 @@
 {
-    "name": "codeigniter4/appstarter",
-    "description": "CodeIgniter4 starter app",
+    "name": "academia-ramon-sanchez/plataforma",
+    "description": "Sitio institucional y plataforma integral de la Academia de Fútbol Ramón Sánchez",
     "license": "MIT",
     "type": "project",
     "homepage": "https://codeigniter.com",
@@ -11,7 +11,8 @@
     },
     "require": {
         "php": "^8.2",
-        "codeigniter4/framework": "^4.7"
+        "codeigniter4/framework": "^4.7",
+        "codeigniter4/shield": "^1.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9",
