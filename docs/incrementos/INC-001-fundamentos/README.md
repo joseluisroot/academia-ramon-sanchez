@@ -94,3 +94,10 @@ La academia proporcionó `Academia de Futbol.docx` con quiénes somos, misión, 
 - [ ] Verificar en WAMP las nuevas secciones y navegación.
 - [ ] Validar la redacción adaptada con los fundadores.
 - [ ] Confirmar uso público de la dirección institucional consignada en la fuente.
+
+
+## Gestión de accesos inicial — corte siguiente
+
+Se incorporaron `RoleAssignmentService`, `RoleAssignmentPolicy`, `AccessManagement`, vista `/app/accesos`, estilos y pruebas unitarias de la política. Los cambios de grupos ordinarios quedan limitados al responsable con `users.assign` y su motivo se registra en `audit_logs`. **Aún no se han ejecutado las pruebas en WAMP**, ni se ha diseñado el procedimiento para conceder roles financieros o institucionales sensibles.
+
+Ver [alcance, diagrama y pruebas](gestion-de-accesos.md).
