@@ -135,3 +135,11 @@ h1 em{color:#91c8ff;font-style:normal}
 .inquiry-success{color:#115a37;background:#e6f7ee}
 .inquiry-error{color:#982c23;background:#fff0eb}
 .inquiry-honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+/* INC-002: aviso de privacidad */
+.legal-page{max-width:840px}
+.legal-page h1{color:var(--navy);font-size:clamp(32px,4vw,47px);margin:12px 0 26px}
+.legal-page h2{color:var(--navy);font-size:22px;margin:30px 0 10px}
+.legal-page p{line-height:1.8;color:var(--muted)}
+.legal-back{background:var(--navy);color:white}
+.inquiry-consent a{color:var(--action);text-decoration:underline;text-underline-offset:2px}
