@@ -97,3 +97,36 @@ Las altas posteriores incluyen la categoría inicial en una transacción junto a
 **Después de actualizar la rama:** ejecutar `php spark migrate --all`; revisar `/app/atletas` y seleccionar **Editar expediente**. No cambiar la categoría de un atleta real hasta validar el procedimiento institucional de categorías.
 
 Esta funcionalidad aún **no ha sido probada en WAMP**.
+
+## Tercer corte — dorsales y varios adultos responsables
+
+Se incorporó la migración `2026-11-21-000007_CreateJerseyAssignments.php` y el servicio `JerseyAssignmentService`.
+
+- `jersey_assignments` guarda **solo el dorsal vigente** por atleta y categoría. Restricciones únicas impiden dos atletas con el mismo dorsal en una categoría y un atleta con más de un dorsal vigente.
+- `jersey_assignment_history` conserva eventos `assigned` y `released` con categoría, número, fecha y actor.
+- La asignación y liberación se realizan en transacciones; las nuevas asignaciones bloquean la fila de categoría y comprueban disponibilidad.
+- El expediente en `/app/atletas/{id}/editar` permite asignar dorsal del **1 al 99 (rango provisional)**, reemplazarlo o liberarlo, y consultar su historial.
+- Al cambiar de categoría, `AthleteRecordService` **bloquea la operación si existe dorsal vigente**. Debe liberarse antes. El nuevo dorsal en la categoría de destino se asigna manualmente; no se ha decidido si debe conservarse el número.
+- Los cambios están protegidos por `athletes.manage` y auditados; la interfaz no habilita estos permisos a familias.
+
+También se incorporó `AthleteGuardianService`:
+
+- Un atleta admite más de un adulto responsable, seleccionando una persona ya registrada o registrando un adulto nuevo desde el expediente.
+- Cada nueva relación se crea **sin verificación** y no da acceso al portal familiar. La verificación institucional existente sigue siendo obligatoria.
+- Se puede revocar el vínculo verificado de una relación específica desde el expediente **solo con `family.links.verify`**; la revocación no elimina al adulto, ni sus otras relaciones válidas.
+- Cada incorporación/revocación queda auditada con IDs y acción; no se registran nombres ni teléfono en la bitácora.
+- El proceso documental de verificación de parentesco, conflictos de custodia, revocación por solicitud de familia y retención de documentos **debe aprobarse antes de usar datos reales**.
+
+**Siguiente prueba local:**
+
+```powershell
+cd C:\wamp64\www\acedemia-ramon-sanchez
+git pull --ff-only origin feature/inc-003-personas-atletas-familias
+php spark migrate --all
+php spark migrate:status
+php spark routes
+```
+
+Ingresar a `http://localhost:8080/app/atletas` y abrir **Editar expediente** de un atleta ficticio. Se mostrarán las secciones **Dorsal deportivo** y **Responsables del atleta**. Evitar pruebas de revocación o asignación de dorsal sobre expedientes reales hasta aprobar la política deportiva.
+
+**Estado:** código incorporado en GitHub; pruebas WAMP y revisión institucional pendientes. La interfaz sigue utilizando POST y mensajes de sesión; AJAX, SweetAlert2, DataTables y notificaciones toast se conservan en el [parking lot transversal](../../parking-lot-ux-plataforma.md).
