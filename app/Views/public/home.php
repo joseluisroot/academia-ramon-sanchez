@@ -115,7 +115,40 @@
             <p>Miércoles y jueves · 4:30 a 6:00 p. m.</p>
             <strong class="contact-label">Ubicación institucional</strong>
             <p>Colonia Sitio del Niño, 1.ª calle y avenida Central, n.º 20-B, San Juan Opico, La Libertad, El Salvador.</p>
-            <p class="muted">El canal de solicitudes de información y clase gratuita se habilitará próximamente.</p>
+            <div class="inquiry-panel">
+                <h3>Solicita información</h3>
+                <p class="muted">Un integrante autorizado de la academia revisará tu solicitud. Completa solo los datos del adulto responsable.</p>
+                <?php if (session('inquiry_success')): ?>
+                    <p class="inquiry-feedback inquiry-success" role="status">Recibimos tu consulta. La academia podrá contactarte mediante los datos proporcionados.</p>
+                <?php endif ?>
+                <?php if (session('inquiry_error')): ?>
+                    <p class="inquiry-feedback inquiry-error" role="alert"><?= esc(session('inquiry_error')) ?></p>
+                <?php endif ?>
+                <form class="inquiry-form" method="post" action="<?= esc(site_url('solicitar-informacion'), 'attr') ?>">
+                    <?= csrf_field() ?>
+                    <div class="inquiry-honeypot" aria-hidden="true">
+                        <label for="inquiry-website">No completar este campo</label>
+                        <input id="inquiry-website" name="website" type="text" tabindex="-1" autocomplete="off">
+                    </div>
+                    <label for="inquiry-name">Nombre del adulto responsable</label>
+                    <input id="inquiry-name" name="contact_name" type="text" minlength="3" maxlength="120" autocomplete="name" required>
+                    <label for="inquiry-email">Correo electrónico</label>
+                    <input id="inquiry-email" name="email" type="email" maxlength="254" autocomplete="email" required>
+                    <label for="inquiry-phone">Teléfono (opcional)</label>
+                    <input id="inquiry-phone" name="phone" type="tel" maxlength="30" autocomplete="tel">
+                    <label for="inquiry-category">Categoría de interés</label>
+                    <select id="inquiry-category" name="category" required>
+                        <option value="not_sure">Por definir</option>
+                        <?php foreach (['U7', 'U9', 'U11', 'U13', 'U17'] as $category): ?>
+                            <option value="<?= esc($category, 'attr') ?>"><?= esc($category) ?></option>
+                        <?php endforeach ?>
+                    </select>
+                    <label for="inquiry-message">Mensaje (opcional)</label>
+                    <textarea id="inquiry-message" name="message" maxlength="500" rows="3" placeholder="Cuéntanos qué información necesitas. No incluyas nombres ni datos médicos de menores."></textarea>
+                    <label class="inquiry-consent"><input type="checkbox" name="privacy_consent" value="1" required><span>Confirmo que soy mayor de edad y autorizo que la academia utilice estos datos únicamente para responder a mi solicitud. <a href="<?= esc(site_url('privacidad'), 'attr') ?>" target="_blank" rel="noopener">Leer aviso de privacidad</a>.</span></label>
+                    <button type="submit">Enviar consulta</button>
+                </form>
+            </div>
         </div>
     </div>
 </section>

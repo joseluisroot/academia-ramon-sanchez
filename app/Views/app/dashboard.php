@@ -22,6 +22,14 @@
   </div>
 <?php endif ?>
 
+<?php if (auth()->user()?->can('inquiries.view')): ?>
+  <div class="portal-panel">
+    <h2>Atención a familias</h2>
+    <p class="portal-muted">Consulta las solicitudes de información recibidas desde el sitio web y registra las que ya fueron contactadas.</p>
+    <a class="portal-action-link" href="<?= esc(site_url('app/consultas'), 'attr') ?>">Ver consultas recibidas</a>
+  </div>
+<?php endif ?>
+
 <div class="portal-cards">
   <article class="portal-card"><span aria-hidden="true">01</span><h3>Gestión deportiva</h3><p>Entrenamientos, convocatorias y resultados.</p><small>Próximamente</small></article>
   <article class="portal-card"><span aria-hidden="true">02</span><h3>Administración</h3><p>Inscripciones, comprobantes y uniformes.</p><small>Próximamente</small></article>
