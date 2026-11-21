@@ -70,3 +70,14 @@ Conservar una plataforma institucional **elegante, moderna, profesional, consist
 ## Regla del parking lot
 
 Cualquier propuesta de modernización añadida aquí **no interrumpe por sí sola** el orden de incrementos ni crea deuda técnica invisible. Las correcciones críticas de funcionamiento y seguridad se resuelven en el incremento vigente. Cuando se termine el flujo principal, priorizar este inventario como un proyecto formal de mejora de experiencia.
+
+
+## UX-PL-006 — Mejora pendiente del proceso de vinculación familiar
+
+**Origen:** observación del usuario tras validar el registro del primer atleta y el flujo de verificación del responsable (21/11/2026).
+
+**Observación:** se identificó una oportunidad de mejora en este punto del recorrido, **sin especificación funcional detallada todavía**. Se conserva expresamente como pendiente de levantar y evaluar, en vez de inventar requisitos o interrumpir la implementación de los incrementos originales.
+
+**Alcance por aclarar posteriormente:** comportamiento esperado, pasos que generan fricción, mensajes de confirmación, experiencia del responsable y controles necesarios antes de conceder acceso a los datos de menores.
+
+**Estado:** parking lot — pendiente de definición con el usuario; respetar siempre la verificación humana y controles de autorización existentes.
