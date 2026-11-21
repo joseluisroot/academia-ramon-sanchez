@@ -20,20 +20,6 @@ use Throwable;
  */
 final class RoleAssignmentService
 {
-    /** @var list<string> */
-    public const ASSIGNABLE_GROUPS = [
-        'guardian',
-        'coach',
-        'media_contributor',
-    ];
-
-    /** @var list<string> */
-    private const PROTECTED_GROUPS = [
-        'institutional_admin',
-        'access_manager',
-        'technical_support',
-    ];
-
     public function __construct(
         private ?UserModel $users = null,
         private ?AuditLogger $audit = null,
@@ -59,7 +45,7 @@ final class RoleAssignmentService
             throw new DomainException('No puedes modificar tu propia cuenta.');
         }
 
-        if (! in_array($group, self::ASSIGNABLE_GROUPS, true)) {
+        if (! RoleAssignmentPolicy::canAssign($group)) {
             throw new DomainException('Este grupo requiere un procedimiento institucional especial.');
         }
 
@@ -81,7 +67,7 @@ final class RoleAssignmentService
 
         $groups = $target->getGroups() ?? [];
 
-        if (array_intersect(self::PROTECTED_GROUPS, $groups) !== []) {
+        if (RoleAssignmentPolicy::isProtectedAccount($groups)) {
             throw new DomainException('No se pueden modificar cuentas privilegiadas desde este módulo.');
         }
 
