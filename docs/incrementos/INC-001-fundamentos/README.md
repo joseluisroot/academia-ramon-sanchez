@@ -1,7 +1,7 @@
 # INC-001 — Fundamentos de la plataforma
 
 **Rama:** `feature/inc-001-fundamentos`  
-**Estado:** documentación inicial; implementación pendiente.
+**Estado:** en implementación. Base CI4 y portada pública agregadas; autenticación, esquema de identidad y pruebas pendientes.
 
 ## Objetivo
 
@@ -62,7 +62,7 @@ flowchart TD
 
 ## Entregables técnicos pendientes
 
-Migraciones, seeders iniciales no sensibles, models, controllers, services, views, filtros, rutas, pruebas y scripts de despliegue serán agregados a **esta misma rama** después de revisar estado de entorno local.
+Se incorporaron la base oficial CodeIgniter 4, controller público, layout, página institucional y CSS responsivo. Pendientes en **esta misma rama**: migraciones, seeders de catálogos, models, services, controladores de identidad, filtros, rutas privadas, pruebas y validación de entorno local. Véase [instalación local](instalacion-local.md).
 
 ## Criterio de cierre
 
