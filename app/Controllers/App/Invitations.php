@@ -23,7 +23,31 @@ final class Invitations extends BaseController
         return view('app/invitations/index', [
             'title' => 'Invitar personas · Academia Ramón Sánchez',
             'roles' => ['guardian' => 'Padre o responsable', 'coach' => 'Entrenador', 'media_contributor' => 'Colaborador multimedia'],
+            'invitations' => (new UserInvitationService())->recent(auth()->user()),
         ]);
+    }
+
+    public function cancel(): RedirectResponse|ResponseInterface
+    {
+        $actor = auth()->user();
+
+        if ($actor === null || ! $actor->can('users.invite')) {
+            return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
+        }
+
+        $invitationId = filter_var($this->request->getPost('invitation_id'), FILTER_VALIDATE_INT);
+
+        if ($invitationId === false || $invitationId <= 0) {
+            return redirect()->to('/app/invitaciones')->with('error', 'Selecciona una invitación válida.');
+        }
+
+        try {
+            (new UserInvitationService())->cancel($actor, $invitationId);
+        } catch (DomainException|RuntimeException $exception) {
+            return redirect()->to('/app/invitaciones')->with('error', $exception->getMessage());
+        }
+
+        return redirect()->to('/app/invitaciones')->with('message', 'Invitación cancelada. El enlace ya no permite crear una cuenta.');
     }
 
     public function send(): RedirectResponse|ResponseInterface
