@@ -98,3 +98,20 @@ Se espera encontrar la ruta pública `/`. Todavía **no hay inicio de sesión, t
 3. Verificar migraciones propias de personas y bitácora; construir invitaciones seguras y su auditoría.
 4. Validar layout privado, pruebas y sistema visual; incorporar Tailwind sin duplicación de estilos.
 5. Validar Composer, framework, MySQL y responsive en entorno real.
+
+## URLs limpias: sin `index.php`
+
+Desde INC-001, `app/Config/App.php` define `$indexPage = ''` para generar enlaces como:
+
+- `http://localhost:8080/login`
+- `http://localhost:8080/app`
+
+El servidor embebido iniciado mediante `php spark serve` resuelve las rutas de CodeIgniter.
+
+Para usar WAMP/Apache, el VirtualHost debe apuntar a la carpeta `public/`, con `mod_rewrite` habilitado y las reglas `public/.htaccess` activas. Si una página falla con 404 al eliminar `index.php`, revisar `AllowOverride All`, `mod_rewrite` y el DocumentRoot antes de cambiar rutas.
+
+Si el archivo local `.env` establece `app.indexPage = 'index.php'`, eliminar ese valor o establecer `app.indexPage = ''` para que no sobreescriba la configuración versionada.
+
+Tras ejecutar `git pull --ff-only`, reiniciar `php spark serve` y comprobar `/login`, `/app` y que el formulario de inicio de sesión genere una acción sin `index.php`.
+
+Nota: esta configuración no habilita registros públicos ni modifica los filtros de seguridad.
