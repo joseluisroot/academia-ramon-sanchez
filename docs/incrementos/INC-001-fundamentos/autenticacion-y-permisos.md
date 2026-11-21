@@ -34,7 +34,7 @@ php spark shield:user addgroup -n usuario_institucional -g access_manager
 
 ## Funcionalidad deliberadamente pendiente
 
-- La invitación por correo con enlace de activación **de un solo uso** y caducidad es un proceso de negocio **distinto** de los enlaces mágicos de recuperación. No se ha implementado aún.
+- Se incorporó el flujo inicial de invitación administrativa por correo con enlace temporal y de un solo uso, **pendiente de validación local/SMTP**. Es distinto de los enlaces mágicos de recuperación. Véase [invitaciones](invitaciones.md).
 - Se añadió una interfaz inicial en `/app/accesos` para gestionar únicamente roles ordinarios sobre cuentas ya existentes; la invitación, edición completa de usuarios y otorgamiento de roles institucionales/financieros sensibles **siguen pendientes**. Véase [gestión de accesos](gestion-de-accesos.md).
 - No hay todavía relaciones de responsables legales y atletas; los permisos a expedientes se modelarán en INC-003.
 - El administrador técnico tendrá capacidades operativas controladas; no debe disponer de autorización funcional ordinaria a datos sensibles.
