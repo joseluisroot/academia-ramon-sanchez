@@ -4,6 +4,12 @@ use CodeIgniter\Router\RouteCollection;
 
 /** @var RouteCollection $routes */
 
+// Manejador de rutas inexistentes con respuesta HTTP 404.
+$routes->set404Override([\App\Controllers\ErrorPages::class, 'notFound']);
+
+// Ruta pública sin filtro para evitar bucles de redirección por falta de permisos.
+$routes->get('sin-acceso', 'ErrorPages::forbidden', ['as' => 'error.forbidden']);
+
 // Rutas públicas. No se permite el registro autónomo de usuarios.
 $routes->get('/', 'Home::index');
 
