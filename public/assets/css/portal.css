@@ -93,3 +93,18 @@
 .access-form button:hover{background:var(--action)}
 .access-locked{font-size:12px;color:var(--muted);font-weight:600}
 @media(max-width:720px){.access-table{min-width:650px}.portal-panel{padding:17px}}
+
+/* Invitaciones y activación institucional */
+.invitation-panel{max-width:720px}
+.invitation-form{display:flex;flex-direction:column;gap:11px}
+.invitation-form label{font-size:13px;font-weight:700;color:var(--navy);margin-top:9px}
+.invitation-form input,.invitation-form select{min-height:48px;padding:11px 13px;border:1px solid #cbd5e5;border-radius:10px;background:white;color:var(--ink);font:inherit}
+.invitation-form input:focus,.invitation-form select:focus{border-color:var(--action);outline:3px solid rgba(17,101,181,.14)}
+.invitation-form button{max-width:350px}
+.activation-shell{min-height:100vh;display:grid;place-items:center;background:var(--portal-bg);padding:28px}
+.activation-card{width:min(540px,100%);padding:clamp(26px,4vw,48px);background:#fff;border:1px solid var(--portal-border);border-radius:24px;box-shadow:var(--portal-shadow)}
+.activation-card h1{font-size:clamp(27px,3vw,37px);color:var(--navy);letter-spacing:-.04em;line-height:1.2;margin:18px 0}
+.activation-card p{color:var(--muted)}
+.activation-brand{display:flex;gap:14px;align-items:center;color:var(--navy);font-size:13px;font-weight:800;letter-spacing:.05em;margin-bottom:34px}
+.activation-brand img{border-radius:12px}
+@media(max-width:600px){.activation-shell{padding:15px}.invitation-form button{max-width:none}}
