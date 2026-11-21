@@ -157,3 +157,16 @@
 .family-athlete-card small{color:var(--muted)}
 .family-empty{max-width:760px;padding:32px}
 @media(max-width:650px){.registry-fields{grid-template-columns:1fr}.registry-form legend{font-size:19px}}
+
+/* INC-003: verificación separada del vínculo familiar */
+.registry-existing-label{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;font-size:13px;color:var(--navy);font-weight:700}
+.registry-existing-label select{width:100%;max-width:600px;min-height:45px;border:1px solid #cbd5e5;border-radius:10px;background:#fff;padding:10px 12px}
+.family-verification-item{padding:23px 0;border-top:1px solid var(--portal-border);display:grid;grid-template-columns:1fr 1.4fr;gap:30px}
+.family-verification-item strong{color:var(--navy)}
+.family-verification-item small{color:var(--muted)}
+.family-verify-form{display:grid;gap:14px}
+.family-verify-form label:not(.family-check){display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:var(--navy)}
+.family-verify-form input[type=email]{min-height:44px;padding:10px 12px;border:1px solid #cbd5e5;border-radius:9px;background:#fff;color:var(--ink)}
+.family-check{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--muted);line-height:1.5}
+.family-check input{flex-shrink:0;margin-top:5px}
+@media(max-width:750px){.family-verification-item{grid-template-columns:1fr;gap:12px}}
