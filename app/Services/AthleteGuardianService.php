@@ -72,6 +72,71 @@ final class AthleteGuardianService
         }
     }
 
+    public function addNew(User $actor, int $athleteId, string $firstName, string $lastName, string $phone, string $relationship): void
+    {
+        if (! $actor->can('athletes.manage')) {
+            throw new DomainException('No tienes permiso para gestionar responsables.');
+        }
+
+        $firstName = trim($firstName);
+        $lastName = trim($lastName);
+        $phone = trim($phone);
+
+        if ($athleteId <= 0
+            || ! AthleteRegistrationPolicy::validName($firstName)
+            || ! AthleteRegistrationPolicy::validName($lastName)
+            || ! AthleteRegistrationPolicy::validPhone($phone)
+            || ! AthleteRegistrationPolicy::validRelationship($relationship)
+        ) {
+            throw new DomainException('Revisa los datos y el parentesco del nuevo adulto responsable.');
+        }
+
+        $db = db_connect();
+        $db->transBegin();
+
+        try {
+            if ($db->table('athletes')->where('id', $athleteId)->countAllResults() !== 1) {
+                throw new DomainException('El atleta solicitado no existe.');
+            }
+
+            $personId = (new PersonModel())->insert([
+                'first_name' => $firstName,
+                'last_name' => $lastName,
+                'phone' => $phone === '' ? null : $phone,
+                'status' => 'active',
+            ], true);
+
+            if (! is_numeric($personId)) {
+                throw new RuntimeException('No se pudo registrar a la persona adulta.');
+            }
+
+            $linked = $db->table('athlete_guardians')->insert([
+                'athlete_id' => $athleteId,
+                'person_id' => (int) $personId,
+                'relationship' => $relationship,
+                'is_primary' => false,
+                'verified_by' => null,
+                'verified_at' => null,
+                'created_at' => date('Y-m-d H:i:s'),
+            ]);
+
+            if (! $linked) {
+                throw new RuntimeException('No se pudo relacionar al nuevo adulto.');
+            }
+
+            (new AuditLogger())->record((int) $actor->id, 'family.relation.added', 'athlete', (string) $athleteId, 'Adulto nuevo pendiente de verificación', ['source' => 'portal', 'result' => 'pending']);
+
+            if ($db->transStatus() === false) {
+                throw new RuntimeException('No fue posible completar el registro.');
+            }
+
+            $db->transCommit();
+        } catch (Throwable $exception) {
+            $db->transRollback();
+            throw $exception;
+        }
+    }
+
     public function revoke(User $actor, int $relationshipId): void
     {
         if (! $actor->can('family.links.verify')) {
