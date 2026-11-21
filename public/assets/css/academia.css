@@ -99,3 +99,9 @@ h1 em{color:#91c8ff;font-style:normal}
   .footer-content{flex-direction:column;align-items:flex-start}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+
+/* Identidad gráfica oficial — INC-001A */
+.brand-logo{display:block;width:54px;height:54px;object-fit:contain;flex-shrink:0;border-radius:12px;background:#fff}
+.footer-brand{display:flex;align-items:center;gap:14px}
+.footer-logo{display:block;width:52px;height:52px;object-fit:contain;border-radius:9px;background:white}
+@media(max-width:580px){.brand-logo{width:46px;height:46px}.footer-logo{width:44px;height:44px}}
