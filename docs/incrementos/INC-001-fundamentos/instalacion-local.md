@@ -115,3 +115,16 @@ Si el archivo local `.env` establece `app.indexPage = 'index.php'`, eliminar ese
 Tras ejecutar `git pull --ff-only`, reiniciar `php spark serve` y comprobar `/login`, `/app` y que el formulario de inicio de sesión genere una acción sin `index.php`.
 
 Nota: esta configuración no habilita registros públicos ni modifica los filtros de seguridad.
+
+
+## Gestión inicial de roles (después de validar Shield)
+
+El responsable autorizado con grupo `access_manager` podrá acceder a `/app/accesos` para asignar/retirar **solo** los grupos `guardian`, `coach` y `media_contributor` a cuentas existentes. No utilizar esta pantalla para otorgar tesorería, privilegios institucionales ni soporte.
+
+Prueba unitaria de política:
+
+```powershell
+vendor\\bin\\phpunit --bootstrap vendor/autoload.php tests/unit/RoleAssignmentPolicyTest.php
+```
+
+Pendientes las pruebas de rutas, CSRF, persistencia y auditoría en la base local.
