@@ -103,14 +103,27 @@ final class JerseyAssignmentService
         $db->transBegin();
 
         try {
+            // La categoría del atleta es el candado de todas las acciones
+            // de dorsales; tomarlo antes de consultar el dorsal activo.
+            $athlete = $db->table('athletes')->where('id', $athleteId)->get()->getRowArray();
+
+            if ($athlete === null) {
+                throw new DomainException('El atleta no existe.');
+            }
+
+            $categoryId = (int) $athlete['sports_category_id'];
+            $db->query('SELECT id FROM sports_categories WHERE id = ? FOR UPDATE', [$categoryId]);
+
             $old = $db->table('jersey_assignments')->where('athlete_id', $athleteId)->get()->getRowArray();
 
             if ($old === null) {
                 throw new DomainException('El atleta no tiene dorsal asignado.');
             }
 
-            $categoryId = (int) $old['sports_category_id'];
-            $db->query('SELECT id FROM sports_categories WHERE id = ? FOR UPDATE', [$categoryId]);
+            if ((int) $old['sports_category_id'] !== $categoryId) {
+                throw new DomainException('El dorsal está vinculado a otra categoría. Solicita revisión administrativa.');
+            }
+
             $db->table('jersey_assignments')->where('id', (int) $old['id'])->delete();
 
             $this->history($db, $athleteId, $categoryId, (int) $old['jersey_number'], 'released', $actor, date('Y-m-d H:i:s'));
