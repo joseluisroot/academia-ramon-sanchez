@@ -116,6 +116,71 @@ final class UserInvitationService
         }
     }
 
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    public function recent(User $actor, int $limit = 25): array
+    {
+        if (! $actor->can('users.invite')) {
+            throw new DomainException('No tienes permiso para consultar invitaciones.');
+        }
+
+        /** @var UserInvitationModel $invitations */
+        $invitations = model(UserInvitationModel::class);
+
+        return $invitations->orderBy('id', 'DESC')->findAll(min(max($limit, 1), 50));
+    }
+
+    public function cancel(User $actor, int $invitationId): void
+    {
+        if (! $actor->can('users.invite')) {
+            throw new DomainException('No tienes permiso para cancelar invitaciones.');
+        }
+
+        if ($invitationId <= 0) {
+            throw new DomainException('La invitación indicada no es válida.');
+        }
+
+        /** @var UserInvitationModel $invitations */
+        $invitations = model(UserInvitationModel::class);
+        $db = db_connect();
+        $db->transBegin();
+
+        try {
+            // La condición en SQL previene cancelar invitaciones ya aceptadas
+            // o modificadas por otro responsable mientras se procesa la petición.
+            $db->table('user_invitations')
+                ->where('id', $invitationId)
+                ->where('status', 'pending')
+                ->update(['status' => 'cancelled']);
+
+            if ($db->affectedRows() !== 1) {
+                throw new DomainException('La invitación ya no se puede cancelar.');
+            }
+
+            $record = $invitations->find($invitationId);
+
+            (new AuditLogger())->record(
+                (int) $actor->id,
+                'user.invitation.cancelled',
+                'user_invitation',
+                (string) $invitationId,
+                'Cancelación solicitada por responsable de accesos',
+                ['role' => (string) ($record['role'] ?? ''), 'source' => 'portal'],
+            );
+
+            if ($db->transStatus() === false) {
+                throw new RuntimeException('No se pudo guardar la cancelación.');
+            }
+
+            $db->transCommit();
+        } catch (Throwable $exception) {
+            $db->transRollback();
+            throw $exception;
+        }
+    }
+
     /**
      * @return array<string, mixed>|null
      */
