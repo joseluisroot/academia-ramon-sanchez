@@ -35,6 +35,9 @@
     <h2>Expedientes deportivos</h2>
     <p class="portal-muted">Registro administrativo de atletas, categorías y responsables. El acceso familiar se habilita únicamente tras verificar vínculos.</p>
     <a class="portal-action-link" href="<?= esc(site_url('app/atletas'), 'attr') ?>">Gestionar atletas</a>
+    <?php if (auth()->user()?->can('family.links.verify')): ?>
+      <a class="portal-action-link" href="<?= esc(site_url('app/familias/verificar'), 'attr') ?>">Verificar familias</a>
+    <?php endif ?>
   </div>
 <?php endif ?>
 
