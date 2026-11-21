@@ -11,7 +11,7 @@ Todas estas pruebas están **pendientes de ejecución en WAMP**. Registrar fecha
 
 ## Registro administrativo
 
-- [ ] **ATL-01** Administrador institucional puede registrar atleta con adulto nuevo.
+- [x] **ATL-01 (parcial)** El usuario confirmó la creación de su primer atleta en WAMP el 21/11/2026; no se confirmó aún la asociación efectiva del adulto ni la auditoría.
 - [ ] **ATL-02** Utilero con `athletes.manage` puede registrar atleta.
 - [ ] **ATL-03** Padre `guardian` no puede consultar listado administrativo ni crear atleta.
 - [ ] **ATL-04** Fecha inválida/futura, fecha ingreso anterior a nacimiento, nombres vacíos y categoría no válida: rechazadas.
@@ -22,7 +22,7 @@ Todas estas pruebas están **pendientes de ejecución en WAMP**. Registrar fecha
 
 ## Verificación de relaciones
 
-- [ ] **REL-01** La nueva relación está sin verificar y no da acceso al padre.
+- [ ] **REL-01** La relación recién creada permanece sin verificar y no da acceso al padre (siguiente prueba).
 - [ ] **REL-02** Administrador verifica identidad fuera del sistema, acepta y enlaza cuenta familiar.
 - [ ] **REL-03** Checkbox sin marcar se rechaza.
 - [ ] **REL-04** Correo incorrecto/inexistente/cuenta inactiva: rechazo.
