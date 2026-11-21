@@ -65,3 +65,17 @@ erDiagram
 ```
 
 La cardinalidad exacta y las restricciones se revisarán en las migraciones de cada incremento.
+
+
+## Implementación inicial — INC-003
+
+El primer corte de INC-003 materializa las tablas `sports_categories`, `athletes` y `athlete_guardians`, utilizando `persons` de INC-001 como identidad del adulto. Las cuentas siguen gestionadas por Shield. Se aplican vínculos `athlete_guardians.verified_at` y `persons.user_id` para restringir acceso familiar.
+
+- `sports_categories` inicia con U7, U9, U11, U13 y U17 mediante seeder.
+- `athletes` contiene solo los datos mínimos administrativos y referencia a su categoría.
+- `athlete_guardians` permite más de un responsable por atleta y más de un atleta por adulto.
+- `persons.user_id` es opcional y se asigna únicamente por verificación institucional expresa.
+- La ausencia de vínculo verificado debe impedir acceso al expediente incluso si el adulto inició sesión en Shield.
+- Las reglas de edad, historial de categorías, consentimiento de imagen y dorsales **no se han implementado todavía**.
+
+Referencia: [alcance del INC-003](incrementos/INC-003-personas-atletas-familias/README.md).
