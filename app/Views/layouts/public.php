@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Academia de Fútbol Ramón Sánchez: formación deportiva, disciplina y valores.">
     <meta name="theme-color" content="#071B49">
+    <link rel="icon" type="image/svg+xml" href="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>">
     <title><?= esc($title ?? 'Academia Ramón Sánchez') ?></title>
     <link rel="stylesheet" href="<?= esc(base_url('assets/css/academia.css'), 'attr') ?>">
 </head>
@@ -13,7 +14,7 @@
 <header class="site-header">
     <div class="container nav-wrap">
         <a class="brand" href="<?= esc(site_url('/'), 'attr') ?>" aria-label="Academia Ramón Sánchez, inicio">
-            <span class="brand-mark" aria-hidden="true">RS</span>
+            <img class="brand-logo" src="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>" alt="Escudo oficial de la Academia Ramón Sánchez" width="54" height="54">
             <span class="brand-copy"><strong>RAMÓN SÁNCHEZ</strong><small>ACADEMIA DE FÚTBOL</small></span>
         </a>
         <nav class="main-nav" aria-label="Navegación principal">
@@ -30,7 +31,7 @@
 </main>
 <footer class="site-footer">
     <div class="container footer-content">
-        <p><strong>Academia de Fútbol Ramón Sánchez</strong><br><span>Formación deportiva y valores.</span></p>
+        <div class="footer-brand"><img class="footer-logo" src="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>" alt="Escudo oficial" width="52" height="52"><p><strong>Academia de Fútbol Ramón Sánchez</strong><br><span>Formación deportiva y valores.</span></p></div>
         <p>© <?= date('Y') ?> Academia Ramón Sánchez. Sitio institucional en construcción.</p>
     </div>
 </footer>
