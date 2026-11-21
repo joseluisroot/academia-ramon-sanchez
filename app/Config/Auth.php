@@ -19,8 +19,8 @@ class Auth extends ShieldAuth
         'login'             => '/app',
         'logout'            => 'login',
         'force_reset'       => '/app',
-        'permission_denied' => '/',
-        'group_denied'      => '/',
+        'permission_denied' => '/sin-acceso',
+        'group_denied'      => '/sin-acceso',
     ];
 
     // Solo personaliza la vista de inicio de sesión; el resto queda en Shield.
