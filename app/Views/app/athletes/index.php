@@ -11,8 +11,14 @@
 <div class="portal-panel">
   <div class="registry-toolbar">
     <h2>Atletas registrados</h2>
-    <a class="portal-action-link" href="<?= esc(site_url('app/atletas/nuevo'), 'attr') ?>">Registrar atleta</a>
+    <div class="registry-actions">
+      <a class="portal-action-link" href="<?= esc(site_url('app/atletas/nuevo'), 'attr') ?>">Registrar atleta</a>
+      <?php if (auth()->user()?->can('family.links.verify')): ?>
+        <a class="registry-cancel" href="<?= esc(site_url('app/familias/verificar'), 'attr') ?>">Verificar responsables pendientes</a>
+      <?php endif ?>
+    </div>
   </div>
+  <p class="portal-muted">El alta administrativa no habilita automáticamente acceso al expediente. Verifica los vínculos familiares antes de autorizar la consulta desde una cuenta de padre o responsable.</p>
   <div class="table-scroll">
     <table class="access-table">
       <thead><tr><th scope="col">Atleta</th><th scope="col">Categoría</th><th scope="col">Fecha de ingreso</th><th scope="col">Estado</th></tr></thead>
