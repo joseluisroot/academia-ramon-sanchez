@@ -1,6 +1,6 @@
 # Instalación local — INC-001
 
-**Estado:** primera estructura CI4 incorporada; dependencias y ejecución **pendientes de validar en WAMP**.
+**Estado:** primera estructura CI4 y Shield incorporadas; instalación de dependencias, migraciones y ejecución **pendientes de validar en WAMP**.
 
 ## Requisitos mínimos
 
@@ -29,6 +29,7 @@ No eliminar ni descartar modificaciones locales si `git status` indica cambios.
 php -v
 composer --version
 composer install
+# Si Composer informa ausencia de lock, resolverá versiones compatibles
 ```
 
 **Nota:** el repositorio todavía no incluye `composer.lock`, por lo que Composer resolverá dependencias compatibles. Guardar el archivo `composer.lock` generado en la rama para fijar versiones de instalación.
@@ -69,7 +70,13 @@ También se puede configurar un VirtualHost de Apache que apunte a `C:\wamp64\ww
 
 ```powershell
 php spark routes
+php spark migrate --all
 php spark migrate:status
+
+# Para el primer administrador institucional en entorno local:
+php spark shield:user create -n usuario_institucional -e persona@example.invalid -g institutional_admin
+# Designar únicamente al responsable autorizado de permisos:
+php spark shield:user addgroup -n usuario_institucional -g access_manager
 ```
 
 Se espera encontrar la ruta pública `/`. Todavía **no hay inicio de sesión, tablas de usuarios ni dashboard privado funcional**: se implementarán y probarán en los próximos cambios de este mismo incremento.
@@ -83,8 +90,8 @@ Se espera encontrar la ruta pública `/`. Todavía **no hay inicio de sesión, t
 
 ## Próximas actividades del incremento
 
-1. Seleccionar e instalar integración oficial de autenticación (se propone CodeIgniter Shield).
-2. Implementar permisos institucionales y asignación centralizada.
-3. Crear migraciones propias de personas, roles de dominio, invitaciones y bitácora según diseño aprobado.
-4. Incorporar layout privado protegido, pruebas y un sistema de componentes visuales compartidos.
+1. Instalar y verificar CodeIgniter Shield y dependencias en WAMP.
+2. Validar permisos institucionales en sesión/rutas y desarrollar interfaz controlada de asignación.
+3. Verificar migraciones propias de personas y bitácora; construir invitaciones seguras y su auditoría.
+4. Validar layout privado, pruebas y sistema visual; incorporar Tailwind sin duplicación de estilos.
 5. Validar Composer, framework, MySQL y responsive en entorno real.
