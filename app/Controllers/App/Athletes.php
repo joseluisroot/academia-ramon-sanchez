@@ -75,11 +75,35 @@ final class Athletes extends BaseController
             ->orderBy('h.id', 'DESC')
             ->get()->getResultArray();
 
+        $db = db_connect();
+
+        $currentJersey = $db->table('jersey_assignments')
+            ->where('athlete_id', $id)->get()->getRowArray();
+
+        $jerseyHistory = $db->table('jersey_assignment_history h')
+            ->select('h.jersey_number, h.event, h.occurred_at, c.code AS category_code')
+            ->join('sports_categories c', 'c.id = h.sports_category_id')
+            ->where('h.athlete_id', $id)
+            ->orderBy('h.id', 'DESC')
+            ->limit(25)->get()->getResultArray();
+
+        $guardians = $db->table('athlete_guardians ag')
+            ->select('ag.id, ag.relationship, ag.is_primary, ag.verified_at, p.first_name, p.last_name')
+            ->join('persons p', 'p.id = ag.person_id')
+            ->where('ag.athlete_id', $id)
+            ->orderBy('ag.is_primary', 'DESC')
+            ->orderBy('ag.id', 'ASC')
+            ->get()->getResultArray();
+
         return view('app/athletes/edit', [
             'title' => 'Editar atleta · Academia Ramón Sánchez',
             'athlete' => $athlete,
             'categories' => (new SportsCategoryModel())->where('active', 1)->orderBy('code')->findAll(),
             'history' => $history,
+            'currentJersey' => $currentJersey,
+            'jerseyHistory' => $jerseyHistory,
+            'guardians' => $guardians,
+            'adults' => (new PersonModel())->where('status', 'active')->orderBy('last_name')->orderBy('first_name')->findAll(),
         ]);
     }
 
