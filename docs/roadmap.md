@@ -37,3 +37,8 @@ Numeración y secuencia revisables si las dependencias lo aconsejan.
 5. Pruebas de aceptación y regresión satisfactorias.
 6. Documentación y bitácora del incremento actualizadas.
 7. Revisión en pull request completada.
+
+
+## Parking lot de modernización UI/UX
+
+Las propuestas transversales sugeridas durante el INC-003 se registran en [parking lot de plataforma](parking-lot-ux-plataforma.md): SweetAlert2, DataTables, mensajes toast en esquina superior derecha, notificaciones persistentes por usuario y formularios sin recarga mediante AJAX/Fetch. **La ejecución se planifica después del flujo funcional completo de los incrementos**, salvo fallos funcionales o de seguridad que requieran solución inmediata.
