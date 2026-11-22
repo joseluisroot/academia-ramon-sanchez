@@ -6,6 +6,7 @@ namespace App\Controllers\App;
 
 use App\Controllers\BaseController;
 use App\Services\TrainingSessionService;
+use App\Services\CoachCategoryScopeService;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use DomainException;
@@ -15,20 +16,37 @@ final class TrainingSessions extends BaseController
 {
     public function index(): string|ResponseInterface
     {
-        if (! TrainingSessionService::canManage(auth()->user())) {
+        $actor = auth()->user();
+        $supervisor = CoachCategoryScopeService::isSupervisor($actor);
+        $coach = CoachCategoryScopeService::isCoach($actor);
+
+        if (! $supervisor && ! $coach) {
             return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
         }
 
         $db = db_connect();
+        $query = $db->table('training_sessions s')
+            ->select('s.id, s.training_date, s.starts_at, s.ends_at, s.location_name, s.status');
+
+        if (! $supervisor) {
+            $allowed = CoachCategoryScopeService::allowedCategoryIds($actor);
+            if ($allowed === []) {
+                $query->where('s.id', 0);
+            } else {
+                $query->join('training_session_categories sc', 'sc.session_id = s.id')
+                    ->whereIn('sc.sports_category_id', $allowed)
+                    ->groupBy('s.id, s.training_date, s.starts_at, s.ends_at, s.location_name, s.status');
+            }
+        }
 
         return view('app/training/index', [
             'title' => 'Entrenamientos · Academia Ramón Sánchez',
-            'sessions' => $db->table('training_sessions s')
-                ->select('s.id, s.training_date, s.starts_at, s.ends_at, s.location_name, s.status')
+            'canSchedule' => $supervisor,
+            'sessions' => $query
                 ->orderBy('s.training_date', 'DESC')->orderBy('s.id', 'DESC')->limit(40)
                 ->get()->getResultArray(),
-            'categories' => $db->table('sports_categories')
-                ->where('active', 1)->orderBy('code')->get()->getResultArray(),
+            'categories' => $supervisor ? $db->table('sports_categories')
+                ->where('active', 1)->orderBy('code')->get()->getResultArray() : [],
         ]);
     }
 
@@ -61,7 +79,9 @@ final class TrainingSessions extends BaseController
 
     public function show(int $id): string|ResponseInterface
     {
-        if (! TrainingSessionService::canManage(auth()->user())) {
+        $actor = auth()->user();
+        $supervisor = CoachCategoryScopeService::isSupervisor($actor);
+        if (! $supervisor && ! CoachCategoryScopeService::canViewSession($actor, $id)) {
             return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
         }
 
@@ -72,10 +92,16 @@ final class TrainingSessions extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        $categories = $db->table('training_session_categories sc')
+        $categoryQuery = $db->table('training_session_categories sc')
             ->select('sc.sports_category_id, c.code AS category_code')
             ->join('sports_categories c', 'c.id = sc.sports_category_id')
-            ->where('sc.session_id', $id)->get()->getResultArray();
+            ->where('sc.session_id', $id);
+
+        if (! $supervisor) {
+            $categoryQuery->whereIn('sc.sports_category_id', CoachCategoryScopeService::allowedCategoryIds($actor));
+        }
+
+        $categories = $categoryQuery->get()->getResultArray();
 
         $ids = array_map(static fn (array $row): int => (int) $row['sports_category_id'], $categories);
 
@@ -100,7 +126,7 @@ final class TrainingSessions extends BaseController
     public function attendance(int $sessionId): RedirectResponse|ResponseInterface
     {
         $actor = auth()->user();
-        if (! TrainingSessionService::canManage($actor)) {
+        if (! CoachCategoryScopeService::isSupervisor($actor) && ! CoachCategoryScopeService::canViewSession($actor, $sessionId)) {
             return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
         }
 
