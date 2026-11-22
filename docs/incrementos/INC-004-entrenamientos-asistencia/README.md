@@ -62,3 +62,29 @@ Abrir `http://localhost:8080/app/entrenamientos` con cuenta administradora. Crea
 **Prueba local:** `git pull --ff-only origin feature/inc-004-entrenamientos-asistencia`; luego `php spark migrate --all`. Acceder con administrador institucional a `/app/entrenamientos/entrenadores`; asignar una categoría a una cuenta de entrenador activa y comprobar la consulta con esa cuenta.
 
 **Advertencia:** no usar atletas reales para comprobar vulneraciones de acceso. Las pruebas negativas y la revisión de concurrencia de revocaciones siguen pendientes.
+
+
+## Tercer bloque — cierre de sesiones y reporte conservador de asistencia
+
+**Migración `2026-11-22-000012_AddTrainingClosureAndCategorySnapshot.php`:**
+- Crea `training_session_status_history` para guardar transiciones con usuario y fecha.
+- Añade `training_attendance.sports_category_id` nullable, que registra **la categoría al momento de crear una marca nueva**.
+- Las marcas existentes quedan `NULL`, porque inferir su categoría a partir del expediente actual podría falsear el histórico después de un cambio de categoría. No se aplica backfill ficticio.
+
+**Ciclo de la sesión:** `scheduled → completed` (finalizada) o `scheduled → cancelled` (cancelada). Son transiciones definitivas en esta versión; no hay reapertura ni eliminación de registros. Solo administración o dirección deportiva pueden cambiar el estado.
+
+**Reglas:**
+- Finalizar requiere fecha actual o pasada y al menos una marca de asistencia. No marca automáticamente como ausentes a quienes siguen sin registrar; en sesiones con marcas parciales, se muestra una advertencia y las faltantes quedarán sin marca.
+- Cancelar solo procede si todavía no hay ninguna asistencia registrada. Finalizar o cancelar bloquea correcciones posteriores y conserva historial y auditoría.
+- El entrenador continúa pudiendo marcar su categoría mientras la sesión esté programada, pero no puede finalizar/cancelar.
+- El listado de sesiones distingue Programado, Finalizado y Cancelado.
+
+**Reporte:** `GET /app/entrenamientos/reporte` muestra para atletas con marcas en sesiones finalizadas el número de presentes, ausentes, justificados y total marcado, separados por categoría histórica. El entrenador solo ve las categorías que tiene asignadas en el momento de consultar. La dirección deportiva y los administradores ven las marcas categorizadas de todas las categorías.
+
+**Limitaciones explícitas:**
+- No se presentan porcentajes ni clasificación anual, porque la ausencia de marca no demuestra ausencia real.
+- Las marcas creadas antes de la migración 000012 siguen conservadas en las sesiones, pero no aparecen en el reporte por categoría hasta contar con una reconstrucción auditada del histórico.
+- La categoría queda fijada al registrar por primera vez la asistencia. La lista disponible en una sesión todavía depende de la categoría actual del atleta; se requiere diseñar una plantilla histórica por sesión para cambios de categoría, inactividad y reingresos.
+- No se permite corregir una sesión cerrada ni existe cierre automático; la reapertura formal y aprobación de correcciones requieren procedimiento específico.
+
+**Para probar en WAMP:** actualizar rama, `php spark migrate --all`, crear una sesión ficticia del día, marcar presente/ausente/justificado, finalizar como administrador o director y acceder al reporte. Para cancelación, crear otra sesión sin asistencias. No finalizar sesiones reales de prueba: el cierre no se puede revertir aún.
