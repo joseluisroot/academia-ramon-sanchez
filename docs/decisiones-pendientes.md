@@ -43,3 +43,12 @@ Las siguientes definiciones **no deben convertirse en reglas automáticas** sin 
 - **Visibilidad:** un atleta inactivo/retirado no aparece actualmente en el panel familiar; evaluar si los responsables deben poder consultar un historial mínimo o expediente cerrado.
 - **Consentimientos:** aprobar texto específico, versiones, alcance (imagen, redes, comunicaciones, tratamiento de datos), identificación y validación del firmante, conservación, revocación y evidencias firmadas antes de cualquier capacidad de «autorizado».
 - **Prueba controlada:** el estado «retirado» no se debe probar en un expediente real porque el primer corte no permite reactivarlo.
+
+
+## INC-003 — Aceptación documentada de consentimientos
+
+- Aprobar **versiones oficiales** de los documentos de uso de imagen, aviso/tratamiento de datos y su alcance.
+- Determinar **quién está legalmente habilitado para firmar** según representación y situación familiar.
+- Establecer archivo privado, responsable de custodia, acceso, expiración, revocación, trazabilidad y eliminación de evidencia.
+- Definir si un consentimiento registrado como «aceptado» necesita segunda revisión institucional antes de habilitar usos concretos (por ejemplo, publicación de fotografía en redes).
+- El nuevo registro administrativo **no habilita publicación por sí mismo** y aún no verifica automáticamente firmas ni textos aprobados.
