@@ -43,6 +43,13 @@
 </div>
 <?php endif ?>
 <div class="portal-panel">
+  <div class="registry-toolbar">
+    <h2>Resumen de asistencia</h2>
+    <a class="portal-action-link" href="<?= esc(site_url('app/entrenamientos/reporte'), 'attr') ?>">Consultar reporte</a>
+  </div>
+  <p class="portal-muted">Conteos de presentes, ausentes y justificados registrados en entrenamientos finalizados. Cada entrenador solo consulta sus categorías autorizadas.</p>
+</div>
+<div class="portal-panel">
   <h2>Últimas sesiones</h2>
   <div class="table-scroll">
     <table class="access-table">
@@ -53,8 +60,8 @@
             <td><?= esc($session['training_date']) ?></td>
             <td><?= esc(substr($session['starts_at'],0,5) . '–' . substr($session['ends_at'],0,5)) ?></td>
             <td><?= esc($session['location_name']) ?></td>
-            <td><?= esc($session['status'] === 'scheduled' ? 'Programado' : $session['status']) ?></td>
-            <td><a class="registry-cancel" href="<?= esc(site_url('/app/entrenamientos/' . (int) $session['id']), 'attr') ?>">Ver y tomar asistencia</a></td>
+            <td><?= esc(match ($session['status']) {'scheduled' => 'Programado', 'completed' => 'Finalizado', 'cancelled' => 'Cancelado', default => 'En revisión'}) ?></td>
+            <td><a class="registry-cancel" href="<?= esc(site_url('/app/entrenamientos/' . (int) $session['id']), 'attr') ?>">Ver detalle</a></td>
           </tr>
         <?php endforeach ?>
         <?php if ($sessions === []): ?><tr><td colspan="5">Todavía no hay entrenamientos programados.</td></tr><?php endif ?>
