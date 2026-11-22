@@ -55,3 +55,12 @@ La validación reportada acredita el flujo de creación de una sesión, pero no 
 - [ ] **ENT-SCOPE-13** Dirección deportiva sigue pudiendo programar sesiones y gestionar asistencia global, sin poder editar las asignaciones.
 - [ ] **ENT-SCOPE-14** La lista administrativa de atletas y los registros familiares no se abren con solo rol `coach`.
 - [ ] **ENT-SCOPE-15** Revisar sesiones compartidas, cambios de categoría, revocación concurrente y pantalla móvil en WAMP.
+
+
+## Validación manual reportada — asignaciones (21/11/2026)
+
+- [x] **ENT-SCOPE-MAN-01 (parcial)** El usuario confirmó que creó una cuenta de entrenador y pudo asignarle **dos categorías** mediante la interfaz de administración en WAMP.
+- [ ] **ENT-SCOPE-MAN-02** Iniciar sesión como ese entrenador y comprobar que solo ve sesiones y atletas de sus dos categorías, incluso en sesiones multicategoría.
+- [ ] **ENT-SCOPE-MAN-03** Verificar que puede marcar asistencia de sus categorías, que no puede marcar la de otras y que la revocación tiene efecto inmediato.
+
+Esta confirmación acredita la operación de alta y asignación en pantalla. No acredita todavía el aislamiento por rol/categoría ni las pruebas negativas ENT-SCOPE-03–15.
