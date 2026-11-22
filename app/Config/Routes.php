@@ -44,6 +44,8 @@ $routes->group('app', ['filter' => ['session', 'permission:portal.access']], sta
 
     // INC-004: primer corte de entrenamiento; autorización adicional por grupo
     // institucional dentro del servicio/controlador (no acceso global de entrenadores).
+    $routes->get('entrenamientos/entrenadores', 'App\\CoachAssignments::index', ['as' => 'app.training.coach_assignments', 'filter' => 'permission:training.assign']);
+    $routes->post('entrenamientos/entrenadores', 'App\\CoachAssignments::change', ['as' => 'app.training.coach_assignments.change', 'filter' => 'permission:training.assign']);
     $routes->get('entrenamientos', 'App\\TrainingSessions::index', ['as' => 'app.training.index', 'filter' => 'permission:training.manage']);
     $routes->post('entrenamientos', 'App\\TrainingSessions::create', ['as' => 'app.training.create', 'filter' => 'permission:training.manage']);
     $routes->get('entrenamientos/(:num)', 'App\\TrainingSessions::show/$1', ['as' => 'app.training.show', 'filter' => 'permission:training.manage']);
