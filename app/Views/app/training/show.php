@@ -15,8 +15,48 @@
   <p class="portal-muted">
     <?php foreach ($categories as $category): ?><?= esc($category['category_code']) ?> &nbsp; <?php endforeach ?>
   </p>
+  <p class="portal-muted">Estado de sesión: <strong><?= esc(match ($session['status']) {'scheduled' => 'Programada', 'completed' => 'Finalizada', 'cancelled' => 'Cancelada', default => 'En revisión'}) ?></strong></p>
+  <?php if ($canClose): ?>
+    <div class="registry-actions">
+      <form method="post" action="<?= esc(site_url('app/entrenamientos/' . (int) $session['id'] . '/estado'), 'attr') ?>" onsubmit="return confirm('¿Finalizar este entrenamiento? Las asistencias quedarán bloqueadas. No se podrán añadir nuevas marcas.');">
+        <?= csrf_field() ?>
+        <input type="hidden" name="status" value="completed">
+        <button class="portal-action-link registry-submit" type="submit">Finalizar sesión</button>
+      </form>
+      <form method="post" action="<?= esc(site_url('app/entrenamientos/' . (int) $session['id'] . '/estado'), 'attr') ?>" onsubmit="return confirm('¿Cancelar entrenamiento? Solo procede si no se registró ninguna asistencia.');">
+        <?= csrf_field() ?>
+        <input type="hidden" name="status" value="cancelled">
+        <button class="registry-danger" type="submit">Cancelar sesión sin asistencia</button>
+      </form>
+    </div>
+    <p class="portal-muted">Para finalizar se requiere al menos una asistencia y que la fecha del entrenamiento haya llegado. Los atletas sin marca permanecerán como «Sin marcar», no se convertirán en ausentes. El cierre no puede revertirse desde este formulario.</p>
+  <?php endif ?>
+  <?php if ($attendanceTotals !== []): ?>
+    <p class="portal-muted">Marcas registradas:
+      <?php foreach ($attendanceTotals as $total): ?>
+        <?= esc(match ($total['attendance_status']) {'present' => 'Presentes', 'absent' => 'Ausentes', 'excused' => 'Justificados', default => 'Otro'}) ?>: <?= (int) $total['quantity'] ?> &nbsp;
+      <?php endforeach ?>
+    </p>
+  <?php endif ?>
+  <?php if ($statusHistory !== []): ?>
+    <h3 class="registry-subheading">Movimientos de estado</h3>
+    <div class="table-scroll">
+      <table class="access-table">
+        <thead><tr><th scope="col">Anterior</th><th scope="col">Nuevo</th><th scope="col">Fecha</th></tr></thead>
+        <tbody>
+          <?php foreach ($statusHistory as $entry): ?>
+            <tr>
+              <td><?= esc($entry['from_status']) ?></td>
+              <td><?= esc($entry['to_status']) ?></td>
+              <td><?= esc($entry['changed_at']) ?></td>
+            </tr>
+          <?php endforeach ?>
+        </tbody>
+      </table>
+    </div>
+  <?php endif ?>
   <?php if (! $canRecord): ?>
-    <p class="portal-muted">La asistencia se habilita desde la fecha del entrenamiento, mientras la sesión esté programada.</p>
+    <p class="portal-muted">La asistencia está bloqueada si la fecha aún no ha llegado o si la sesión fue finalizada o cancelada.</p>
   <?php endif ?>
   <div class="table-scroll">
     <table class="access-table">
