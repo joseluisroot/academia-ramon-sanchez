@@ -7,8 +7,13 @@
 </div>
 <?php if (session('error')): ?><div class="auth-alert auth-alert-error" role="alert"><?= esc(session('error')) ?></div><?php endif ?>
 <?php if (session('message')): ?><div class="auth-alert auth-alert-success" role="status"><?= esc(session('message')) ?></div><?php endif ?>
+<?php if ($canSchedule): ?>
 <div class="portal-panel registry-panel">
-  <h2>Programar entrenamiento</h2>
+  <div class="registry-toolbar"><h2>Programar entrenamiento</h2>
+    <?php if (auth()->user()?->can('training.assign') && auth()->user()?->inGroup('institutional_admin')): ?>
+      <a class="registry-cancel" href="<?= esc(site_url('app/entrenamientos/entrenadores'), 'attr') ?>">Asignar categorías a entrenadores</a>
+    <?php endif ?>
+  </div>
   <p class="portal-muted">La programación no es una convocatoria de partido. No se genera asistencia anticipada ni se programan repeticiones automáticamente.</p>
   <form class="registry-form" method="post" action="<?= esc(site_url('/app/entrenamientos'), 'attr') ?>">
     <?= csrf_field() ?>
@@ -32,6 +37,11 @@
     </div>
   </form>
 </div>
+<?php else: ?>
+<div class="portal-panel">
+  <p class="portal-muted">Solo se muestran las sesiones de las categorías asignadas a tu cuenta. La programación de nuevas sesiones corresponde a administración o dirección deportiva.</p>
+</div>
+<?php endif ?>
 <div class="portal-panel">
   <h2>Últimas sesiones</h2>
   <div class="table-scroll">
