@@ -44,3 +44,21 @@ Si la rama ya existe localmente, sustituir el `switch --track` por `git switch f
 Abrir `http://localhost:8080/app/entrenamientos` con cuenta administradora. Crear una sesión de hoy con atletas **ficticios** activos en categorías seleccionadas; luego registrar presentes y ausentes desde el detalle.
 
 **No fusionar a main ni habilitar producción hasta resolver permisos por categorías, históricos, documentos de seguridad y QA.**
+
+
+## Segundo corte — asignación de categorías a entrenadores
+
+**Código incorporado; pendiente de validación local.**
+
+- Migración `2026-11-21-000011_CreateCoachCategoryAssignments.php`: asignaciones por `user_id` y `sports_category_id`, únicas y revocables, con usuario/fecha de asignación y revocación.
+- Pantalla institucional `/app/entrenamientos/entrenadores` para administrar asignaciones. Solo el grupo `institutional_admin` con permiso explícito `training.assign` puede crear y revocar asignaciones; el rol de dirección deportiva conserva gestión de sesiones pero no asigna permisos por sí mismo.
+- El usuario destino debe tener cuenta activa y rol `coach`; el catálogo solo acepta categorías activas.
+- El entrenador con `training.manage` solo ve sesiones que incluyan al menos una categoría asignada. En una sesión multicategría solo aparecen las categorías y los atletas activos que tiene autorizados.
+- No puede programar sesiones; sí marcar/corregir asistencia **únicamente en su categoría asignada y desde la fecha del entrenamiento**. El servicio vuelve a validar el alcance en el POST, de modo que ocultar el HTML no es el mecanismo de seguridad.
+- La revocación retira la visibilidad en consultas posteriores; se conservan asignación y auditoría. Reasignar reactiva el vínculo, sin crear duplicados.
+- `/app/atletas` continúa reservado a `athletes.manage` y no queda expuesto por el permiso de entrenamientos.
+- No existe aún cobertura temporal, suplencias, asignación individual por atleta ni acceso al historial de un entrenador anterior. En sesiones compartidas, un entrenador ve horario y ubicación de la sesión completa, pero no la plantilla de categorías ajenas.
+
+**Prueba local:** `git pull --ff-only origin feature/inc-004-entrenamientos-asistencia`; luego `php spark migrate --all`. Acceder con administrador institucional a `/app/entrenamientos/entrenadores`; asignar una categoría a una cuenta de entrenador activa y comprobar la consulta con esa cuenta.
+
+**Advertencia:** no usar atletas reales para comprobar vulneraciones de acceso. Las pruebas negativas y la revisión de concurrencia de revocaciones siguen pendientes.
