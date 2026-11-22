@@ -104,6 +104,61 @@ final class TrainingSessionService
         }
     }
 
+    public function changeStatus(User $actor, int $sessionId, string $newStatus): void
+    {
+        if (! CoachCategoryScopeService::isSupervisor($actor)) {
+            throw new DomainException('Solo administración y dirección deportiva pueden cerrar o cancelar sesiones.');
+        }
+        if ($sessionId <= 0 || ! in_array($newStatus, ['completed', 'cancelled'], true)) {
+            throw new DomainException('Selecciona una sesión y un estado válidos.');
+        }
+
+        $db = db_connect();
+        $db->transBegin();
+        try {
+            $session = $db->query('SELECT id, status, training_date FROM training_sessions WHERE id = ? FOR UPDATE', [$sessionId])->getRowArray();
+            if ($session === null || $session['status'] !== 'scheduled') {
+                throw new DomainException('Solo pueden finalizarse o cancelarse sesiones programadas.');
+            }
+
+            $marks = $db->table('training_attendance')->where('session_id', $sessionId)->countAllResults();
+
+            if ($newStatus === 'completed' && ((string) $session['training_date'] > date('Y-m-d') || $marks === 0)) {
+                throw new DomainException('Para finalizar, la sesión debe haber llegado a su fecha y tener al menos una asistencia registrada.');
+            }
+            if ($newStatus === 'cancelled' && $marks > 0) {
+                throw new DomainException('No se puede cancelar una sesión con asistencias registradas.');
+            }
+
+            $db->table('training_sessions')->where('id', $sessionId)->where('status', 'scheduled')
+                ->update(['status' => $newStatus, 'updated_at' => date('Y-m-d H:i:s')]);
+            if ($db->affectedRows() !== 1) {
+                throw new RuntimeException('La sesión cambió durante esta operación.');
+            }
+
+            if (! $db->table('training_session_status_history')->insert([
+                'session_id' => $sessionId,
+                'from_status' => 'scheduled',
+                'to_status' => $newStatus,
+                'changed_by' => (int) $actor->id,
+                'changed_at' => date('Y-m-d H:i:s'),
+            ])) {
+                throw new RuntimeException('No se pudo guardar el historial de la sesión.');
+            }
+
+            (new AuditLogger())->record((int) $actor->id, 'training.session.status_changed',
+                'training_session', (string) $sessionId, 'Cambio administrativo de estado',
+                ['source' => 'portal', 'result' => $newStatus]);
+            if ($db->transStatus() === false) {
+                throw new RuntimeException('No pudo completarse la operación.');
+            }
+            $db->transCommit();
+        } catch (Throwable $exception) {
+            $db->transRollback();
+            throw $exception;
+        }
+    }
+
     public function recordAttendance(User $actor, int $sessionId, int $athleteId, string $status): void
     {
         if (! self::canManage($actor) && ! CoachCategoryScopeService::isCoach($actor)) {
@@ -154,6 +209,7 @@ final class TrainingSessionService
                 $ok = $db->table('training_attendance')->insert([
                     'session_id' => $sessionId,
                     'athlete_id' => $athleteId,
+                    'sports_category_id' => (int) $athlete['sports_category_id'],
                     'attendance_status' => $status,
                     'recorded_by' => (int) $actor->id,
                     'recorded_at' => $now,
@@ -163,7 +219,7 @@ final class TrainingSessionService
                     throw new DomainException('La asistencia ya tiene ese estado.');
                 }
                 $ok = $db->table('training_attendance')->where('id', (int) $existing['id'])
-                    ->update(['attendance_status' => $status, 'recorded_by' => (int) $actor->id, 'updated_at' => $now]);
+                    ->update(['attendance_status' => $status, 'sports_category_id' => $existing['sports_category_id'] ?? (int) $athlete['sports_category_id'], 'recorded_by' => (int) $actor->id, 'updated_at' => $now]);
             }
 
             if (! $ok) {
