@@ -102,7 +102,9 @@ final class Athletes extends BaseController
             ->limit(30)->get()->getResultArray();
 
         $consentHistory = $db->table('athlete_consent_register acr')
-            ->select('acr.consent_type, acr.record_state, acr.document_version, acr.signed_on, acr.expires_on, acr.recorded_at, acr.guardian_relation_id, acr.evidence_reference')
+            ->select('acr.consent_type, acr.record_state, acr.document_version, acr.signed_on, acr.expires_on, acr.recorded_at, acr.guardian_relation_id, acr.evidence_reference, p.first_name AS signer_first_name, p.last_name AS signer_last_name')
+            ->join('athlete_guardians ag', 'ag.id = acr.guardian_relation_id', 'left')
+            ->join('persons p', 'p.id = ag.person_id', 'left')
             ->where('acr.athlete_id', $id)
             ->orderBy('acr.id', 'DESC')
             ->limit(30)->get()->getResultArray();
