@@ -120,6 +120,74 @@ final class TrainingSessions extends BaseController
             'categories' => $categories,
             'athletes' => $athletes,
             'canRecord' => $session['status'] === 'scheduled' && (string) $session['training_date'] <= date('Y-m-d'),
+            'canClose' => $supervisor && $session['status'] === 'scheduled',
+            'statusHistory' => $db->table('training_session_status_history')
+                ->select('from_status, to_status, changed_at')
+                ->where('session_id', $id)->orderBy('id', 'DESC')->get()->getResultArray(),
+            'attendanceTotals' => $db->table('training_attendance')
+                ->select('attendance_status, COUNT(id) AS quantity')
+                ->where('session_id', $id)->groupBy('attendance_status')->get()->getResultArray(),
+        ]);
+    }
+
+    public function changeStatus(int $sessionId): RedirectResponse|ResponseInterface
+    {
+        $actor = auth()->user();
+        if (! CoachCategoryScopeService::isSupervisor($actor)) {
+            return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
+        }
+
+        try {
+            (new TrainingSessionService())->changeStatus(
+                $actor, $sessionId, (string) $this->request->getPost('status'),
+            );
+        } catch (DomainException $exception) {
+            return redirect()->to('/app/entrenamientos/' . $sessionId)->with('error', $exception->getMessage());
+        } catch (Throwable $exception) {
+            log_message('error', 'No se pudo cambiar el estado del entrenamiento.');
+            return redirect()->to('/app/entrenamientos/' . $sessionId)->with('error', 'No fue posible completar el cambio.');
+        }
+
+        return redirect()->to('/app/entrenamientos/' . $sessionId)->with('message', 'Estado de la sesión guardado con historial.');
+    }
+
+    public function report(): string|ResponseInterface
+    {
+        $actor = auth()->user();
+        $supervisor = CoachCategoryScopeService::isSupervisor($actor);
+        if (! $supervisor && ! CoachCategoryScopeService::isCoach($actor)) {
+            return $this->response->setStatusCode(403)->setBody('Acceso no autorizado.');
+        }
+
+        $db = db_connect();
+        $query = $db->table('training_attendance ta')
+            ->select('ta.athlete_id, a.first_name, a.last_name, c.code AS category_code, COUNT(ta.id) AS marked, '
+                . "SUM(CASE WHEN ta.attendance_status = 'present' THEN 1 ELSE 0 END) AS present_count, "
+                . "SUM(CASE WHEN ta.attendance_status = 'absent' THEN 1 ELSE 0 END) AS absent_count, "
+                . "SUM(CASE WHEN ta.attendance_status = 'excused' THEN 1 ELSE 0 END) AS excused_count", false)
+            ->join('training_sessions s', 's.id = ta.session_id')
+            ->join('athletes a', 'a.id = ta.athlete_id')
+            ->join('sports_categories c', 'c.id = ta.sports_category_id')
+            ->where('s.status', 'completed')
+            ->where('ta.sports_category_id IS NOT NULL', null, false);
+
+        if (! $supervisor) {
+            $allowed = CoachCategoryScopeService::allowedCategoryIds($actor);
+            if ($allowed === []) {
+                $query->where('ta.id', 0);
+            } else {
+                $query->whereIn('ta.sports_category_id', $allowed);
+            }
+        }
+
+        $results = $query->groupBy('ta.athlete_id, a.first_name, a.last_name, c.code')
+            ->orderBy('c.code', 'ASC')->orderBy('a.last_name', 'ASC')->orderBy('a.first_name', 'ASC')
+            ->get()->getResultArray();
+
+        return view('app/training/report', [
+            'title' => 'Reporte de asistencia · Academia Ramón Sánchez',
+            'results' => $results,
+            'supervisor' => $supervisor,
         ]);
     }
 
