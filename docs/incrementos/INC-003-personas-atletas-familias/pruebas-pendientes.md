@@ -125,3 +125,12 @@ Todas estas pruebas están **pendientes de ejecución en WAMP**. Registrar fecha
 - [ ] **RES-17** POST con relación de otro atleta no modifica datos ni relaciones.
 - [ ] **RES-18** Se registra ID, autor y acción en auditoría sin nombres; no se borra la persona.
 - [ ] **RES-19** Tras retirar una relación pendiente desaparece de la pantalla de verificación, conservando los vínculos verificados del atleta.
+
+
+### Validación manual confirmada — 21/11/2026
+
+- [x] **RES-MAN-01** El usuario confirmó en WAMP que desde el expediente del atleta puede **agregar** un adulto responsable y **quitar** una relación de adulto pendiente.
+- [ ] **RES-MAN-02** Confirmar en datos que quitar la relación no elimina a la persona de `persons` (no verificado todavía con inspección de BD).
+- [ ] **RES-MAN-03** Confirmar que el adulto retirado puede vincularse otra vez al mismo atleta sin duplicar la persona; no inferirlo de la validación anterior.
+
+Esta validación comprueba la operación visible, pero **no cierra** aún RES-12–19: siguen pendientes las pruebas negativas de autorización, CSRF, protección del responsable principal, auditoría y aislamiento entre familias.
