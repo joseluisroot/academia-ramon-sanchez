@@ -134,3 +134,24 @@ Todas estas pruebas están **pendientes de ejecución en WAMP**. Registrar fecha
 - [ ] **RES-MAN-03** Confirmar que el adulto retirado puede vincularse otra vez al mismo atleta sin duplicar la persona; no inferirlo de la validación anterior.
 
 Esta validación comprueba la operación visible, pero **no cierra** aún RES-12–19: siguen pendientes las pruebas negativas de autorización, CSRF, protección del responsable principal, auditoría y aislamiento entre familias.
+
+
+## Cuarto corte — estados y documentación (pendiente WAMP)
+
+- [ ] **EST-01** Ejecutar migración 000008 y conservar todos los atletas y responsables existentes.
+- [ ] **EST-02** Cambiar atleta ficticio activo → inactivo: crear historial y auditoría.
+- [ ] **EST-03** En cuenta de padre con vínculo verificado, atleta inactivo no aparece en `/app/mis-atletas`.
+- [ ] **EST-04** Cambiar inactivo → activo: atleta reaparece únicamente al padre vinculado.
+- [ ] **EST-05** Cambiar activo/inactivo → retirado: historial intacto y no se destruye registro.
+- [ ] **EST-06** Retirado no puede reactivarse desde interfaz ni mediante POST.
+- [ ] **EST-07** Rechazar transición al mismo estado, estado arbitrario y motivo inválido.
+- [ ] **EST-08** Sin permiso `athletes.manage`, POST de estado se rechaza; CSRF sigue activo.
+- [ ] **EST-09** Fallo de inserción en historial revierte el cambio de estado.
+- [ ] **DOC-01** Registrar «Pendiente» para uso de imagen sobre expediente ficticio; no genera autorización.
+- [ ] **DOC-02** Registrar «Denegado» y «Revocado»; aparecen en historial con fecha.
+- [ ] **DOC-03** Un POST `state=approved` o `granted` se rechaza de forma explícita.
+- [ ] **DOC-04** Sin permiso `athletes.manage`, no puede consultarse ni modificarse información documental desde el expediente.
+- [ ] **DOC-05** No existe endpoint de publicación de fotos que use el registro como permiso.
+- [ ] **DOC-06** Auditoría no incluye imágenes, firmas, datos personales ni contenido sensible.
+- [ ] **DOC-07** Verificar consistencia de interfaz responsive y mensajes en español.
+- [ ] **DOC-08** Antes de producción, aprobar formularios/versiones/plazo de conservación/procedimiento de revocación y autoridad firmante.
