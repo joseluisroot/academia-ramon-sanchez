@@ -74,17 +74,14 @@ final class AthleteConsentRegisterService
                 throw new DomainException('El firmante no está registrado como responsable activo de este atleta.');
             }
 
-            $last = $db->table('athlete_consent_register')
-                ->select('record_state, evidence_reference, document_version')
+            // An evidence reference identifies one signed declaration for this
+            // athlete and document type; never accept the same proof twice.
+            if ($db->table('athlete_consent_register')
                 ->where('athlete_id', $athleteId)
                 ->where('consent_type', $type)
-                ->orderBy('id', 'DESC')
-                ->limit(1)->get()->getRowArray();
-
-            if ($last !== null && $last['record_state'] === 'accepted'
-                && $last['evidence_reference'] === $evidenceReference
-                && $last['document_version'] === $documentVersion) {
-                throw new DomainException('La aceptación de esta evidencia ya quedó registrada.');
+                ->where('evidence_reference', $evidenceReference)
+                ->countAllResults() > 0) {
+                throw new DomainException('La evidencia de esta aceptación ya se registró anteriormente.');
             }
 
             $now = date('Y-m-d H:i:s');
@@ -147,8 +144,9 @@ final class AthleteConsentRegisterService
                 throw new DomainException('El atleta no existe.');
             }
 
-            // Denial and revocation must be durable and immediately respected by
-            // future publishing logic. No approval state is available in this cut.
+            // Denial/revocation are durable records. An acceptance is registered
+            // separately with signed evidence and institution-only permission.
+            // No register entry by itself authorizes public disclosure.
             if (! $db->table('athlete_consent_register')->insert([
                 'athlete_id' => $athleteId,
                 'guardian_relation_id' => null,
