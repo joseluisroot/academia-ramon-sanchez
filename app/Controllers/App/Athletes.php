@@ -101,10 +101,10 @@ final class Athletes extends BaseController
             ->orderBy('id', 'DESC')
             ->limit(30)->get()->getResultArray();
 
-        $consentHistory = $db->table('athlete_consent_register')
-            ->select('consent_type, record_state, recorded_at')
-            ->where('athlete_id', $id)
-            ->orderBy('id', 'DESC')
+        $consentHistory = $db->table('athlete_consent_register acr')
+            ->select('acr.consent_type, acr.record_state, acr.document_version, acr.signed_on, acr.expires_on, acr.recorded_at, acr.guardian_relation_id, acr.evidence_reference')
+            ->where('acr.athlete_id', $id)
+            ->orderBy('acr.id', 'DESC')
             ->limit(30)->get()->getResultArray();
 
         return view('app/athletes/edit', [
@@ -116,6 +116,13 @@ final class Athletes extends BaseController
             'jerseyHistory' => $jerseyHistory,
             'statusHistory' => $statusHistory,
             'consentHistory' => $consentHistory,
+            'consentSigners' => $db->table('athlete_guardians ag')
+                ->select('ag.id, ag.relationship, p.first_name, p.last_name')
+                ->join('persons p', 'p.id = ag.person_id')
+                ->where('ag.athlete_id', $id)
+                ->where('p.status', 'active')
+                ->orderBy('ag.id', 'ASC')
+                ->get()->getResultArray(),
             'guardians' => $guardians,
             'adults' => (new PersonModel())->where('status', 'active')->orderBy('last_name')->orderBy('first_name')->findAll(),
         ]);
