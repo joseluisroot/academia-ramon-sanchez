@@ -35,3 +35,11 @@ Las siguientes definiciones **no deben convertirse en reglas automáticas** sin 
 - **Cambio de categoría:** la aplicación exige liberación previa del dorsal para evitar asignaciones inconsistentes. Dirección deportiva debe decidir conservación, reasignación, reserva y comunicación del cambio.
 - **Representación familiar:** definir criterios comprobables para autorizar segundo responsable, cambios de tutela, casos de desacuerdo y revocaciones. Hasta entonces, no verificar relaciones con datos reales sin proceso institucional aprobado.
 - **Historial:** no eliminar registros de auditoría para simular revocaciones o cambios deportivos; usar transiciones trazables.
+
+
+## INC-003 — Ciclo de vida y consentimientos
+
+- **Estado del atleta:** confirmar formalmente motivos de inactividad, retiro y reincorporación, especialmente la restauración de un retiro.
+- **Visibilidad:** un atleta inactivo/retirado no aparece actualmente en el panel familiar; evaluar si los responsables deben poder consultar un historial mínimo o expediente cerrado.
+- **Consentimientos:** aprobar texto específico, versiones, alcance (imagen, redes, comunicaciones, tratamiento de datos), identificación y validación del firmante, conservación, revocación y evidencias firmadas antes de cualquier capacidad de «autorizado».
+- **Prueba controlada:** el estado «retirado» no se debe probar en un expediente real porque el primer corte no permite reactivarlo.
