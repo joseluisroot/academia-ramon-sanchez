@@ -74,3 +74,27 @@ Esta confirmación acredita la operación de alta y asignación en pantalla. No 
 - [ ] **ENT-SCOPE-MAN-07** Confirmar alta/corrección de asistencias, restricción por categoría en POST y efecto de revocar una asignación.
 
 Esta confirmación no demuestra aún aislamiento completo entre categorías ni seguridad de rutas directas.
+
+
+## Tercer bloque — cierre y reportes (pendiente de ejecución WAMP)
+
+- [ ] **ENT-CLOSE-01** Migración 000012 agrega categoría nullable y tabla de historial sin perder asistencias previas.
+- [ ] **ENT-CLOSE-02** Una sesión futura no se puede finalizar, aunque intente POST directo.
+- [ ] **ENT-CLOSE-03** No se permite finalizar sesión sin ninguna marca.
+- [ ] **ENT-CLOSE-04** Una sesión del día con al menos una marca se finaliza; se registra historial y auditoría.
+- [ ] **ENT-CLOSE-05** Tras finalizar, supervisor y entrenador reciben rechazo al tratar de cambiar una marca por POST.
+- [ ] **ENT-CLOSE-06** Solo sesión sin marcas puede cancelarse; una sesión con asistencia no.
+- [ ] **ENT-CLOSE-07** Entrenador no puede cerrar ni cancelar mediante POST directo; tampoco otros roles sin permiso.
+- [ ] **ENT-CLOSE-08** Sesión finalizada/cancelada no puede finalizarse o cancelarse de nuevo.
+- [ ] **ENT-CLOSE-09** Un atleta sin marca queda sin marcar, nunca convertido automáticamente en ausente.
+- [ ] **ENT-CLOSE-10** El reporte presenta conteos solamente de sesiones finalizadas y categoría histórica de las nuevas marcas.
+- [ ] **ENT-CLOSE-11** Entrenador con U7 no ve marcas históricas U9, aun cuando la sesión original fuera U7+U9.
+- [ ] **ENT-CLOSE-12** Entrenador U7 con categoría revocada deja de acceder a su reporte U7.
+- [ ] **ENT-CLOSE-13** Marcas anteriores a 000012 con categoría nula no se atribuyen falsamente a una categoría; no se pierden de DB.
+- [ ] **ENT-CLOSE-14** Un cambio de categoría del atleta no altera el campo histórico de marcas ya insertadas.
+- [ ] **ENT-CLOSE-15** POST sin CSRF válido queda rechazado; consultar y acceder por URL directa a reporte también requiere permiso.
+- [ ] **ENT-CLOSE-16** Pruebas con dos operadores cerrando simultáneamente: solo una transición debe prevalecer.
+- [ ] **ENT-CLOSE-17** Comprobar responsive móvil y textos de advertencia.
+- [ ] **ENT-CLOSE-18** Antes de premiación anual, definir denominador para porcentaje de asistencia, criterios de sesiones válidas y tratamiento de excusas.
+
+**Cierre INC-004 pendiente:** pruebas de permisos por categoría y POST manipulados, plantilla/roster histórico por entrenamiento, política de reapertura y QA en WAMP. No hacer merge ni considerar estadísticas aptas para premios anuales hasta resolverlo.
