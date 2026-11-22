@@ -95,6 +95,18 @@ final class Athletes extends BaseController
             ->orderBy('ag.id', 'ASC')
             ->get()->getResultArray();
 
+        $statusHistory = $db->table('athlete_status_history')
+            ->select('from_status, to_status, reason_code, changed_at')
+            ->where('athlete_id', $id)
+            ->orderBy('id', 'DESC')
+            ->limit(30)->get()->getResultArray();
+
+        $consentHistory = $db->table('athlete_consent_register')
+            ->select('consent_type, record_state, recorded_at')
+            ->where('athlete_id', $id)
+            ->orderBy('id', 'DESC')
+            ->limit(30)->get()->getResultArray();
+
         return view('app/athletes/edit', [
             'title' => 'Editar atleta · Academia Ramón Sánchez',
             'athlete' => $athlete,
@@ -102,6 +114,8 @@ final class Athletes extends BaseController
             'history' => $history,
             'currentJersey' => $currentJersey,
             'jerseyHistory' => $jerseyHistory,
+            'statusHistory' => $statusHistory,
+            'consentHistory' => $consentHistory,
             'guardians' => $guardians,
             'adults' => (new PersonModel())->where('status', 'active')->orderBy('last_name')->orderBy('first_name')->findAll(),
         ]);
