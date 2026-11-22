@@ -92,7 +92,7 @@
 
 <div class="portal-panel">
   <h2>Seguimiento de consentimientos</h2>
-  <p class="portal-muted"><strong>Atención:</strong> esta pantalla solo permite registrar documentación pendiente, denegada o revocada. No acredita una autorización legal ni habilita publicar imágenes o datos de menores. Los documentos, versiones y firmas deberán definirse institucionalmente antes de la producción.</p>
+  <p class="portal-muted"><strong>Registro interno:</strong> el historial documenta el estado del expediente y la evidencia revisada. Una aceptación registrada no implica permiso automático para publicar fotografías o datos personales del atleta.</p>
   <form class="registry-form" method="post" action="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/documentacion'), 'attr') ?>">
     <?= csrf_field() ?>
     <div class="registry-fields">
@@ -114,22 +114,66 @@
     </div>
     <div class="registry-actions"><button class="portal-action-link registry-submit" type="submit">Registrar estado documental</button></div>
   </form>
+  <?php if (auth()->user()?->can('consents.verify')): ?>
+    <h3 class="registry-subheading">Registrar aceptación con evidencia</h3>
+    <p class="portal-muted">Usa esta sección solo cuando exista un documento firmado cuyo contenido y versión hayan sido identificados y revisados. El firmante puede estar registrado como adulto responsable aunque aún no tenga cuenta digital. La referencia debe identificar un documento guardado en un archivo privado, nunca una dirección pública ni datos personales.</p>
+    <form class="registry-form" method="post" action="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/documentacion/aceptacion'), 'attr') ?>">
+      <?= csrf_field() ?>
+      <div class="registry-fields">
+        <label>Tipo de consentimiento
+          <select name="type" required>
+            <option value="">Seleccionar</option>
+            <option value="image_use">Uso de imagen</option>
+            <option value="data_notice">Aviso de tratamiento de datos</option>
+          </select>
+        </label>
+        <label>Adulto responsable que firmó
+          <select name="guardian_relation_id" required>
+            <option value="">Seleccionar responsable</option>
+            <?php foreach ($consentSigners as $signer): ?>
+              <option value="<?= (int) $signer['id'] ?>"><?= esc($signer['first_name'] . ' ' . $signer['last_name']) ?> (<?= esc(match ($signer['relationship']) {'mother' => 'Madre', 'father' => 'Padre', 'legal_guardian' => 'Representante legal', default => 'Adulto autorizado'}) ?>)</option>
+            <?php endforeach ?>
+          </select>
+        </label>
+        <label>Versión exacta del documento firmado
+          <input name="document_version" type="text" maxlength="40" pattern="[A-Za-z0-9][A-Za-z0-9._-]*" placeholder="Ej.: V1-2026" autocomplete="off" required>
+        </label>
+        <label>Referencia de archivo privado (no URL)
+          <input name="evidence_reference" type="text" minlength="6" maxlength="120" pattern="[A-Za-z0-9][A-Za-z0-9._-]*" placeholder="Ej.: CONS-2026-0001" autocomplete="off" required>
+        </label>
+        <label>Fecha de firma
+          <input name="signed_on" type="date" max="<?= esc(date('Y-m-d'), 'attr') ?>" required>
+        </label>
+        <label>Vence el (si aplica)
+          <input name="expires_on" type="date">
+        </label>
+      </div>
+      <label class="family-check" style="margin-top:18px">
+        <input type="checkbox" name="evidence_checked" value="1" required>
+        <span>Confirmo que examiné la evidencia firmada, identifiqué al adulto responsable y comprobé la versión del documento. Comprendo que este registro no habilita automáticamente publicaciones.</span>
+      </label>
+      <div class="registry-actions"><button class="portal-action-link registry-submit" type="submit">Registrar aceptación documentada</button></div>
+    </form>
+  <?php endif ?>
   <h3 class="registry-subheading">Historial documental</h3>
   <div class="table-scroll">
     <table class="access-table">
-      <thead><tr><th scope="col">Tipo</th><th scope="col">Estado</th><th scope="col">Fecha</th></tr></thead>
+      <thead><tr><th scope="col">Tipo</th><th scope="col">Estado</th><th scope="col">Versión</th><th scope="col">Firmado / vence</th><th scope="col">Registro</th></tr></thead>
       <tbody>
         <?php foreach ($consentHistory as $entry): ?>
           <tr>
             <td><?= esc($entry['consent_type'] === 'image_use' ? 'Uso de imagen' : 'Aviso de datos') ?></td>
-            <td><?= esc(match ($entry['record_state']) {'pending' => 'Pendiente', 'declined' => 'Denegado', 'revoked' => 'Revocado', default => 'Sin validar'}) ?></td>
+            <td><?= esc(match ($entry['record_state']) {'pending' => 'Pendiente', 'declined' => 'Denegado', 'revoked' => 'Revocado', 'accepted' => 'Aceptación documentada', default => 'Sin validar'}) ?></td>
+            <td><?= esc((string) ($entry['document_version'] ?? '—')) ?></td>
+            <td><?= esc((string) ($entry['signed_on'] ?? '—')) ?> / <?= esc((string) ($entry['expires_on'] ?? 'Sin vencimiento registrado')) ?></td>
             <td><?= esc($entry['recorded_at']) ?></td>
           </tr>
         <?php endforeach ?>
-        <?php if ($consentHistory === []): ?><tr><td colspan="3">Sin registros documentales. No existe autorización de imagen.</td></tr><?php endif ?>
+        <?php if ($consentHistory === []): ?><tr><td colspan="5">No hay registros documentales. No existe autorización de imagen registrada.</td></tr><?php endif ?>
       </tbody>
     </table>
   </div>
+  <p class="portal-muted">El documento firmado no se guarda en el servidor público. Las referencias internas se conservan solo para consulta administrativa autorizada; la política documental definitiva está pendiente de aprobación.</p>
 </div>
 
 <div class="portal-panel">
