@@ -52,3 +52,12 @@ Las siguientes definiciones **no deben convertirse en reglas automáticas** sin 
 - Establecer archivo privado, responsable de custodia, acceso, expiración, revocación, trazabilidad y eliminación de evidencia.
 - Definir si un consentimiento registrado como «aceptado» necesita segunda revisión institucional antes de habilitar usos concretos (por ejemplo, publicación de fotografía en redes).
 - El nuevo registro administrativo **no habilita publicación por sí mismo** y aún no verifica automáticamente firmas ni textos aprobados.
+
+
+## INC-004 — Cierre, asistencia histórica y reportes
+
+- Determinar si una sesión puede cerrarse con atletas sin marcar y quién puede autorizar una reapertura excepcional.
+- Definir criterio de asistencia anual: sesiones programadas vs. finalizadas, denominador por atleta, incorporación durante el año, inactividad, ausencias justificadas y asistencia a sesiones multicategoría.
+- Definir qué plantilla de atletas integra cada entrenamiento para preservar información histórica cuando cambian de categoría o estado.
+- Definir criterios de cancelación tardía y correcciones excepcionales con trazabilidad.
+- No usar los conteos actuales como clasificación definitiva ni generar premios automáticos.
