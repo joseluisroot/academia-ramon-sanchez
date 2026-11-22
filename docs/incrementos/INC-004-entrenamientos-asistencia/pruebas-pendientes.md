@@ -36,3 +36,22 @@ La creación de código en GitHub **no equivale a prueba en WAMP**.
 - [ ] **ENT-MAN-03** Confirmar registro/corrección de asistencia y permisos por rol (todavía no probados).
 
 La validación reportada acredita el flujo de creación de una sesión, pero no cierra por sí sola todas las pruebas ENT-01–18.
+
+
+## Segundo corte — categorías autorizadas por entrenador
+
+- [ ] **ENT-SCOPE-01** Migración 000011 crea tabla sin modificar las sesiones y atletas existentes.
+- [ ] **ENT-SCOPE-02** Administrador institucional puede asignar U7 a un usuario entrenador activo y la relación aparece una sola vez.
+- [ ] **ENT-SCOPE-03** No asignar categoría a cuenta sin rol coach, desactivada, categoría inválida o inactiva.
+- [ ] **ENT-SCOPE-04** Director deportivo, entrenador, utilero, Junta y padre no pueden acceder a la administración de asignaciones (GET y POST directos).
+- [ ] **ENT-SCOPE-05** Entrenador U7 ve sesiones que incluyen U7, no sesiones solo de U9; no ve botón para programar.
+- [ ] **ENT-SCOPE-06** Sesión U7+U9: entrenador U7 solo ve U7 y sus atletas, sin enumerar los U9 mediante URL directa.
+- [ ] **ENT-SCOPE-07** Entrenador U7 no puede marcar atleta U9 aunque falsifique POST y un ID válido; recibirá error sin cambios de DB.
+- [ ] **ENT-SCOPE-08** Entrenador U7 puede marcar y corregir la asistencia de U7 desde la fecha de sesión, sin duplicarla.
+- [ ] **ENT-SCOPE-09** Entrenador sin categorías asignadas obtiene lista vacía y 403 al intentar abrir sesiones directamente.
+- [ ] **ENT-SCOPE-10** Revocar U7 quita inmediatamente visibilidad de entrenador, acceso GET y autorización para nuevos POST U7.
+- [ ] **ENT-SCOPE-11** Reasignar U7 restituye permiso sin duplicación; asignaciones y auditoría conservan autor/fecha.
+- [ ] **ENT-SCOPE-12** Sin CSRF, POST de asignación y asistencia se rechazan.
+- [ ] **ENT-SCOPE-13** Dirección deportiva sigue pudiendo programar sesiones y gestionar asistencia global, sin poder editar las asignaciones.
+- [ ] **ENT-SCOPE-14** La lista administrativa de atletas y los registros familiares no se abren con solo rol `coach`.
+- [ ] **ENT-SCOPE-15** Revisar sesiones compartidas, cambios de categoría, revocación concurrente y pantalla móvil en WAMP.
