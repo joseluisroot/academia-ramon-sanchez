@@ -64,3 +64,13 @@ La validación reportada acredita el flujo de creación de una sesión, pero no 
 - [ ] **ENT-SCOPE-MAN-03** Verificar que puede marcar asistencia de sus categorías, que no puede marcar la de otras y que la revocación tiene efecto inmediato.
 
 Esta confirmación acredita la operación de alta y asignación en pantalla. No acredita todavía el aislamiento por rol/categoría ni las pruebas negativas ENT-SCOPE-03–15.
+
+
+## Validación manual reportada — visibilidad del entrenador (21/11/2026)
+
+- [x] **ENT-SCOPE-MAN-04 (parcial)** El usuario confirma que, al acceder como entrenador, puede visualizar el listado de atletas desde el flujo de entrenamientos.
+- [ ] **ENT-SCOPE-MAN-05** Confirmar visualmente que el listado contiene exclusivamente atletas de las **dos categorías** asignadas y que no aparecen otros atletas.
+- [ ] **ENT-SCOPE-MAN-06** Confirmar que la cuenta de entrenador NO tiene acceso al listado administrativo global `/app/atletas`.
+- [ ] **ENT-SCOPE-MAN-07** Confirmar alta/corrección de asistencias, restricción por categoría en POST y efecto de revocar una asignación.
+
+Esta confirmación no demuestra aún aislamiento completo entre categorías ni seguridad de rutas directas.
