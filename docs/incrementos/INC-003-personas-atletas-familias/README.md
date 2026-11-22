@@ -146,3 +146,19 @@ Ante el caso de un padre ya verificado y una madre pendiente de verificación si
 El registro pendiente no impide continuar con otros incrementos. No equivale a «verificar sin correo»: esa separación conceptual sigue en el parking lot UX-PL-006 y deberá resolverse antes de producción.
 
 **Estado:** código subido; prueba WAMP pendiente.
+
+
+## Cuarto corte — estados del atleta y documentación
+
+Se agregó la migración `2026-11-21-000008_CreateAthleteLifecycleAndConsentRegistry.php`, sin modificar los registros existentes.
+
+- `athlete_status_history` conserva los cambios `active`, `inactive`, `withdrawn`, el motivo codificado, usuario y fecha. Las transiciones permitidas son **activo → inactivo/retirado**, **inactivo → activo/retirado**. Un atleta retirado no puede reincorporarse desde el formulario hasta definir un procedimiento.
+- El panel familiar `/app/mis-atletas` continúa mostrando solo atletas **activos** con relación verificada. No se eliminan expedientes ni responsables por cambiar el estado.
+- `athlete_consent_register` es un registro privado de **seguimiento documental** (uso de imagen, aviso de datos). En esta fase solo admite **pendiente, denegado y revocado**. No puede registrar consentimiento aprobado, no guarda archivos ni declaraciones firmadas y **jamás autoriza publicaciones**.
+- Los tipos, vigencia, versión, firmantes, titular de responsabilidad legal, evidencias y proceso de revocación formal requieren aprobación institucional y se realizarán antes de publicar datos de menores.
+- Solo `athletes.manage` permite estas operaciones administrativas, con filtro CSRF y auditoría.
+- Ambas secciones están en `/app/atletas/{id}/editar`; la tabla de historial permite revisar cada transición.
+
+**Instalación WAMP:** actualizar rama, ejecutar `php spark migrate --all` y abrir un expediente ficticio. No cambiar a «retirado» un atleta real para experimentar: ese estado no puede revertirse en esta versión.
+
+**Estado de esta entrega:** código subido; sin pruebas locales ejecutadas por el asistente. La política de consentimientos aprobados y documentos reales sigue pendiente.
