@@ -162,3 +162,22 @@ Se agregó la migración `2026-11-21-000008_CreateAthleteLifecycleAndConsentRegi
 **Instalación WAMP:** actualizar rama, ejecutar `php spark migrate --all` y abrir un expediente ficticio. No cambiar a «retirado» un atleta real para experimentar: ese estado no puede revertirse en esta versión.
 
 **Estado de esta entrega:** código subido; sin pruebas locales ejecutadas por el asistente. La política de consentimientos aprobados y documentos reales sigue pendiente.
+
+
+## Quinto corte — constancia administrativa de aceptación con evidencia
+
+**Solicitud:** registrar cuándo un consentimiento fue aceptado y cuál es la evidencia de la aceptación. Se incorpora una constancia administrativa sin activar publicaciones de imágenes o datos de menores.
+
+- Migración `2026-11-21-000009_AddConsentEvidence.php`: referencia opaca al documento firmado guardado en archivo privado, fecha de firma, vencimiento opcional, fecha y usuario que comprobó la evidencia.
+- Se reutilizan `guardian_relation_id` y `document_version` del registro documental previo. La aceptación lleva `record_state = 'accepted'`.
+- El formulario solo se muestra a usuarios con **`consents.verify`**, asignado al grupo `institutional_admin` (no a utilero, entrenador, padre ni junta).
+- Para registrar la aceptación, seleccionar al adulto firmante ya vinculado como responsable del atleta, tipo documental, **versión exacta del documento firmado**, fecha de firma, código interno de archivo privado y confirmación explícita de revisión. No requiere que el adulto tenga correo electrónico o cuenta digital, pero la verificación documental sí requiere actuación humana responsable.
+- El archivo firmado no se carga a esta aplicación ni a `public/`. La referencia se valida como código alfanumérico opaco (letras, números, punto, guion, guion bajo; longitud 6 a 120). No usar URL, ruta de servidor, firma, número de identificación ni datos personales como referencia.
+- El historial muestra «**Aceptación documentada**», firmante, versión, fecha de firma y vencimiento; la referencia privada solo se visualiza con `consents.verify`. Se impide registrar la misma referencia dos veces para un mismo atleta y tipo.
+- La revocación ahora requiere `consents.verify` y solo puede registrarse si el estado documental más reciente del tipo es una aceptación. Se conserva historial sin sobreescribir el consentimiento original.
+- **No es una firma electrónica integrada, no valida jurídicamente el contenido de un documento y no habilita permisos de publicación.** La aceptación documentada debe comprobarse frente al archivo real, el firmante habilitado, la política de custodia y las versiones oficiales aprobadas. Por ahora no existe catálogo institucional de plantillas aprobadas ni almacenamiento seguro de documentos dentro del sistema.
+- Las reglas definitivas de firma, consentimientos de imagen, autoridad de cada firmante, resolución de conflictos entre responsables, retención y publicación deberán ser aprobadas por la academia antes de producción.
+
+**Validación WAMP:** actualizar código, ejecutar `php spark migrate --all`, abrir `/app/atletas/{id}/editar`. Con administrador institucional verás el formulario **Registrar aceptación con evidencia**. Usar **solo referencias y documentos ficticios en pruebas**. No introducir documentos reales de menores hasta contar con un archivo privado y controles de custodia aprobados.
+
+**Nota de UX:** se mantiene el POST tradicional; AJAX/SweetAlert2/avisos toast quedan en [parking lot](../../parking-lot-ux-plataforma.md).
