@@ -49,6 +49,10 @@ $routes->group('app', ['filter' => ['session', 'permission:portal.access']], sta
     $routes->get('atletas/(:num)/editar', 'App\\Athletes::edit/$1', ['as' => 'app.athletes.edit', 'filter' => 'permission:athletes.manage']);
     $routes->post('atletas/(:num)', 'App\\Athletes::update/$1', ['as' => 'app.athletes.update', 'filter' => 'permission:athletes.manage']);
 
+    // Estados del expediente y registro documental, con autorización administrativa.
+    $routes->post('atletas/(:num)/estado', 'App\\AthleteAdministration::status/$1', ['as' => 'app.athletes.status', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)/documentacion', 'App\\AthleteAdministration::consent/$1', ['as' => 'app.athletes.documentation', 'filter' => 'permission:athletes.manage']);
+
     // Dorsales por categoría y nuevos responsables, siempre con permisos del servidor.
     $routes->post('atletas/(:num)/dorsal', 'App\\AthleteJerseys::assign/$1', ['as' => 'app.athletes.jersey.assign', 'filter' => 'permission:athletes.manage']);
     $routes->post('atletas/(:num)/dorsal/liberar', 'App\\AthleteJerseys::release/$1', ['as' => 'app.athletes.jersey.release', 'filter' => 'permission:athletes.manage']);
