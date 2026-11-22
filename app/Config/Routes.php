@@ -42,6 +42,13 @@ $routes->post('activar-cuenta/(:segment)', 'AccountActivation::accept/$1', ['as'
 $routes->group('app', ['filter' => ['session', 'permission:portal.access']], static function (RouteCollection $routes): void {
     $routes->get('/', 'App\\Dashboard::index', ['as' => 'app.dashboard']);
 
+    // INC-004: primer corte de entrenamiento; autorización adicional por grupo
+    // institucional dentro del servicio/controlador (no acceso global de entrenadores).
+    $routes->get('entrenamientos', 'App\\TrainingSessions::index', ['as' => 'app.training.index', 'filter' => 'permission:training.manage']);
+    $routes->post('entrenamientos', 'App\\TrainingSessions::create', ['as' => 'app.training.create', 'filter' => 'permission:training.manage']);
+    $routes->get('entrenamientos/(:num)', 'App\\TrainingSessions::show/$1', ['as' => 'app.training.show', 'filter' => 'permission:training.manage']);
+    $routes->post('entrenamientos/(:num)/asistencia', 'App\\TrainingSessions::attendance/$1', ['as' => 'app.training.attendance', 'filter' => 'permission:training.manage']);
+
     // El expediente global requiere autorización administrativa expresa.
     $routes->get('atletas', 'App\\Athletes::index', ['as' => 'app.athletes.index', 'filter' => 'permission:athletes.manage']);
     $routes->get('atletas/nuevo', 'App\\Athletes::create', ['as' => 'app.athletes.create', 'filter' => 'permission:athletes.manage']);
