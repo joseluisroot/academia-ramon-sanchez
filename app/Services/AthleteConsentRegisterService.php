@@ -136,12 +136,29 @@ final class AthleteConsentRegisterService
             throw new DomainException('Revisa el documento y el estado seleccionado.');
         }
 
+        if ($state === 'revoked' && ! $actor->can('consents.verify')) {
+            throw new DomainException('Solo administración institucional puede registrar la revocación de una aceptación.');
+        }
+
         $db = db_connect();
         $db->transBegin();
 
         try {
-            if ($db->table('athletes')->where('id', $athleteId)->countAllResults() !== 1) {
+            $athlete = $db->query('SELECT id FROM athletes WHERE id = ? FOR UPDATE', [$athleteId])->getRowArray();
+            if ($athlete === null) {
                 throw new DomainException('El atleta no existe.');
+            }
+
+            if ($state === 'revoked') {
+                $last = $db->table('athlete_consent_register')
+                    ->select('record_state')
+                    ->where('athlete_id', $athleteId)
+                    ->where('consent_type', $type)
+                    ->orderBy('id', 'DESC')->limit(1)->get()->getRowArray();
+
+                if ($last === null || $last['record_state'] !== 'accepted') {
+                    throw new DomainException('Solo puede revocarse una aceptación documentada vigente.');
+                }
             }
 
             // Denial/revocation are durable records. An acceptance is registered
