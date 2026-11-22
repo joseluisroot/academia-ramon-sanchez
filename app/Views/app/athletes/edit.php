@@ -158,18 +158,20 @@
   <h3 class="registry-subheading">Historial documental</h3>
   <div class="table-scroll">
     <table class="access-table">
-      <thead><tr><th scope="col">Tipo</th><th scope="col">Estado</th><th scope="col">Versión</th><th scope="col">Firmado / vence</th><th scope="col">Registro</th></tr></thead>
+      <thead><tr><th scope="col">Tipo</th><th scope="col">Estado</th><th scope="col">Firmante</th><th scope="col">Versión</th><th scope="col">Firmado / vence</th><th scope="col">Evidencia interna</th><th scope="col">Registro</th></tr></thead>
       <tbody>
         <?php foreach ($consentHistory as $entry): ?>
           <tr>
             <td><?= esc($entry['consent_type'] === 'image_use' ? 'Uso de imagen' : 'Aviso de datos') ?></td>
             <td><?= esc(match ($entry['record_state']) {'pending' => 'Pendiente', 'declined' => 'Denegado', 'revoked' => 'Revocado', 'accepted' => 'Aceptación documentada', default => 'Sin validar'}) ?></td>
+            <td><?= $entry['signer_first_name'] === null ? '—' : esc($entry['signer_first_name'] . ' ' . $entry['signer_last_name']) ?></td>
             <td><?= esc((string) ($entry['document_version'] ?? '—')) ?></td>
             <td><?= esc((string) ($entry['signed_on'] ?? '—')) ?> / <?= esc((string) ($entry['expires_on'] ?? 'Sin vencimiento registrado')) ?></td>
+            <td><?= auth()->user()?->can('consents.verify') && $entry['evidence_reference'] !== null ? esc($entry['evidence_reference']) : 'Restringida' ?></td>
             <td><?= esc($entry['recorded_at']) ?></td>
           </tr>
         <?php endforeach ?>
-        <?php if ($consentHistory === []): ?><tr><td colspan="5">No hay registros documentales. No existe autorización de imagen registrada.</td></tr><?php endif ?>
+        <?php if ($consentHistory === []): ?><tr><td colspan="7">No hay registros documentales. No existe autorización de imagen registrada.</td></tr><?php endif ?>
       </tbody>
     </table>
   </div>
