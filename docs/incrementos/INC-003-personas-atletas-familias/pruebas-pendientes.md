@@ -155,3 +155,23 @@ Esta validación comprueba la operación visible, pero **no cierra** aún RES-12
 - [ ] **DOC-06** Auditoría no incluye imágenes, firmas, datos personales ni contenido sensible.
 - [ ] **DOC-07** Verificar consistencia de interfaz responsive y mensajes en español.
 - [ ] **DOC-08** Antes de producción, aprobar formularios/versiones/plazo de conservación/procedimiento de revocación y autoridad firmante.
+
+
+## Quinto corte — aceptación documentada y evidencia (pendiente WAMP)
+
+- [ ] **CON-01** Migración 000009 añade campos de evidencia sin borrar datos y conserva registros previos.
+- [ ] **CON-02** Administrador institucional registra aceptación documental con responsable, versión, fecha y código ficticio.
+- [ ] **CON-03** El historial muestra «Aceptación documentada», firmante y versión; el código interno solo es visible a `consents.verify`.
+- [ ] **CON-04** Usuario sin `consents.verify` no ve el formulario ni puede enviar el POST directo.
+- [ ] **CON-05** Rechazar firma sin adulto asociado, ID de relación de otro atleta o persona inactiva.
+- [ ] **CON-06** Rechazar versiones vacías, URLs, referencias inválidas, fechas futuras o vencimiento anterior a la firma.
+- [ ] **CON-07** Rechazar el registro de una referencia ya utilizada para ese atleta y tipo de consentimiento.
+- [ ] **CON-08** Rechazar aceptación sin marcar que la evidencia fue revisada.
+- [ ] **CON-09** Revocación requiere permiso `consents.verify` y aceptación documental inmediatamente anterior; historial preservado.
+- [ ] **CON-10** POST sin token CSRF o sesión válida se rechaza.
+- [ ] **CON-11** La aceptación no concede permisos `content.publish` ni habilita publicación automática.
+- [ ] **CON-12** Auditoría almacena acción, actor e identificador, sin adjuntos ni datos identificativos del menor.
+- [ ] **CON-13** Formulario y tabla funcionan en móvil y escritorio.
+- [ ] **CON-14** Antes de producción: aprobar plantillas/versiones, firma habilitada, políticas de custodia y reglas de autorización específicas de imágenes.
+
+**Criterio de cierre:** el registro de aceptación con evidencia es un mecanismo de trazabilidad, **no** un consentimiento digital firmado ni una aprobación jurídica automatizada.
