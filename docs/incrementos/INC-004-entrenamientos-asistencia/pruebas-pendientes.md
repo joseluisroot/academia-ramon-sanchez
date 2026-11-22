@@ -27,3 +27,12 @@ La creación de código en GitHub **no equivale a prueba en WAMP**.
 2. Finalización/cancelación controlada de sesiones.
 3. Informes privados de asistencia, con histórico por fecha.
 4. QA funcional y de autorización antes de pasar al INC-005.
+
+
+## Validación manual reportada — 21/11/2026
+
+- [x] **ENT-MAN-01 (parcial)** El usuario confirmó que pudo **registrar un entrenamiento** correctamente en su entorno WAMP.
+- [ ] **ENT-MAN-02** Confirmar categorías efectivamente asociadas, vista de detalle y persistencia en base de datos (no verificados explícitamente en esta validación).
+- [ ] **ENT-MAN-03** Confirmar registro/corrección de asistencia y permisos por rol (todavía no probados).
+
+La validación reportada acredita el flujo de creación de una sesión, pero no cierra por sí sola todas las pruebas ENT-01–18.
