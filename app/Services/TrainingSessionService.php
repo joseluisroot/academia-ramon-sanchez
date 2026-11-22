@@ -17,8 +17,7 @@ final class TrainingSessionService
 {
     public static function canManage(?User $actor): bool
     {
-        return $actor !== null && $actor->can('training.manage')
-            && ($actor->inGroup('institutional_admin') || $actor->inGroup('sports_director'));
+        return CoachCategoryScopeService::isSupervisor($actor);
     }
 
     public function schedule(User $actor, string $date, string $starts, string $ends, string $location, array $categoryIds): int
@@ -107,7 +106,7 @@ final class TrainingSessionService
 
     public function recordAttendance(User $actor, int $sessionId, int $athleteId, string $status): void
     {
-        if (! self::canManage($actor)) {
+        if (! self::canManage($actor) && ! CoachCategoryScopeService::isCoach($actor)) {
             throw new DomainException('No tienes autorización para controlar asistencia.');
         }
 
@@ -140,6 +139,11 @@ final class TrainingSessionService
 
             if ($inCategory !== 1) {
                 throw new DomainException('La categoría del atleta no participa en esta sesión.');
+            }
+
+            if (! CoachCategoryScopeService::isSupervisor($actor)
+                && ! in_array((int) $athlete['sports_category_id'], CoachCategoryScopeService::allowedCategoryIds($actor), true)) {
+                throw new DomainException('No puedes registrar asistencia de una categoría no asignada.');
             }
 
             $existing = $db->table('training_attendance')->where('session_id', $sessionId)
