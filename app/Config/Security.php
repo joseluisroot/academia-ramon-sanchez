@@ -71,7 +71,11 @@ class Security extends BaseConfig
      *
      * Regenerate CSRF Token on every submission.
      */
-    public bool $regenerate = true;
+    // INC-003: el expediente de atletas contiene varios formularios POST.
+    // Con regeneración por POST, otras pestañas y formularios que conservan
+    // la página abierta dejan de tener un token vigente. Conservar el token
+    // por sesión mantiene la validación CSRF sin invalidar formularios hermanos.
+    public bool $regenerate = false;
 
     /**
      * --------------------------------------------------------------------------

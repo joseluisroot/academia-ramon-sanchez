@@ -37,3 +37,24 @@ Numeración y secuencia revisables si las dependencias lo aconsejan.
 5. Pruebas de aceptación y regresión satisfactorias.
 6. Documentación y bitácora del incremento actualizadas.
 7. Revisión en pull request completada.
+
+
+## Parking lot de modernización UI/UX
+
+Las propuestas transversales sugeridas durante el INC-003 se registran en [parking lot de plataforma](parking-lot-ux-plataforma.md): SweetAlert2, DataTables, mensajes toast en esquina superior derecha, notificaciones persistentes por usuario y formularios sin recarga mediante AJAX/Fetch. **La ejecución se planifica después del flujo funcional completo de los incrementos**, salvo fallos funcionales o de seguridad que requieran solución inmediata.
+
+
+## Secuencia aprobada — consentimientos digitales familiares con firma y PDF
+
+**Acuerdo registrado el 21/11/2026:** implementar la interacción directa con el padre, madre o tutor para leer, decidir y firmar los consentimientos institucionales desde el portal; generar un PDF íntegro que incorpore el documento versionado, la decisión, firma manuscrita trazada en pantalla y constancia de auditoría.
+
+**Orden de trabajo, sin alterar los incrementos en curso:**
+
+1. **INC-003** conserva el expediente del atleta y el registro documental manual existente, con evidencia privada, estados, firmante y trazabilidad. El flujo autónomo de firma de familiares no se adelanta.
+2. **INC-004 a INC-010** continúan en el orden previsto.
+3. **INC-011 — Comunicaciones y documentos institucionales** incorpora solicitudes de consentimiento por adulto destinatario autenticado, lectura obligatoria del texto versionado, decisiones independientes por tipo, captura accesible de firma dibujada (por ejemplo Signature Pad), PDF con texto exacto, registro de decisión y versión, hash de integridad, descarga autorizada y notificación individual. Evaluar envío por correo y por portal; mantener una alternativa presencial para responsables sin cuenta/correo. Integrar con UX-PL-004.
+4. **INC-013 — Seguridad y salida a producción** contempla revisión jurídica de firmas electrónicas, protección de datos de menores, aprobaciones institucionales de las plantillas, custodia privada, revocación, control de versiones, auditoría y pruebas de no acceso entre familias. La firma dibujada, por sí sola, no se considera firma electrónica certificada ni una autorización automática de publicación.
+
+**Dependencias:** UX-PL-006 (verificación de parentesco independiente del acceso digital); versión y texto formal aprobado para cada consentimiento; autenticación fuerte del firmante; controles de representación y posibles conflictos entre responsables; autorización específica para publicar. No generar PDF final de consentimiento sin plantilla aprobada ni afirmar validez jurídica automática.
+
+**Estado:** requisito de secuencia registrado, implementación diferida a INC-011; no interrumpir INC-004.

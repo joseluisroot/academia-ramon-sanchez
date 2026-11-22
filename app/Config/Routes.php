@@ -42,6 +42,35 @@ $routes->post('activar-cuenta/(:segment)', 'AccountActivation::accept/$1', ['as'
 $routes->group('app', ['filter' => ['session', 'permission:portal.access']], static function (RouteCollection $routes): void {
     $routes->get('/', 'App\\Dashboard::index', ['as' => 'app.dashboard']);
 
+    // El expediente global requiere autorización administrativa expresa.
+    $routes->get('atletas', 'App\\Athletes::index', ['as' => 'app.athletes.index', 'filter' => 'permission:athletes.manage']);
+    $routes->get('atletas/nuevo', 'App\\Athletes::create', ['as' => 'app.athletes.create', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas', 'App\\Athletes::store', ['as' => 'app.athletes.store', 'filter' => 'permission:athletes.manage']);
+    $routes->get('atletas/(:num)/editar', 'App\\Athletes::edit/$1', ['as' => 'app.athletes.edit', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)', 'App\\Athletes::update/$1', ['as' => 'app.athletes.update', 'filter' => 'permission:athletes.manage']);
+
+    // Estados del expediente y registro documental, con autorización administrativa.
+    $routes->post('atletas/(:num)/estado', 'App\\AthleteAdministration::status/$1', ['as' => 'app.athletes.status', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)/documentacion', 'App\\AthleteAdministration::consent/$1', ['as' => 'app.athletes.documentation', 'filter' => 'permission:athletes.manage']);
+
+    // Aceptaciones documentadas: autorización institucional diferenciada.
+    $routes->post('atletas/(:num)/documentacion/aceptacion', 'App\\AthleteAdministration::acceptance/$1', ['as' => 'app.athletes.consent.acceptance', 'filter' => 'permission:consents.verify']);
+
+    // Dorsales por categoría y nuevos responsables, siempre con permisos del servidor.
+    $routes->post('atletas/(:num)/dorsal', 'App\\AthleteJerseys::assign/$1', ['as' => 'app.athletes.jersey.assign', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)/dorsal/liberar', 'App\\AthleteJerseys::release/$1', ['as' => 'app.athletes.jersey.release', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)/responsables', 'App\\AthleteGuardians::add/$1', ['as' => 'app.athletes.guardians.add', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)/responsables/nuevo', 'App\\AthleteGuardians::addNew/$1', ['as' => 'app.athletes.guardians.new', 'filter' => 'permission:athletes.manage']);
+    $routes->post('atletas/(:num)/responsables/quitar-pendiente', 'App\\AthleteGuardians::removePending/$1', ['as' => 'app.athletes.guardians.remove_pending', 'filter' => 'permission:family.links.verify']);
+    $routes->post('atletas/(:num)/responsables/revocar', 'App\\AthleteGuardians::revoke/$1', ['as' => 'app.athletes.guardians.revoke', 'filter' => 'permission:family.links.verify']);
+
+    // Verificación de parentesco exclusiva de administradores institucionales.
+    $routes->get('familias/verificar', 'App\\FamilyLinks::index', ['as' => 'app.family.verify.index', 'filter' => 'permission:family.links.verify']);
+    $routes->post('familias/verificar', 'App\\FamilyLinks::verify', ['as' => 'app.family.verify.store', 'filter' => 'permission:family.links.verify']);
+
+    // La consulta familiar filtra por usuario activo y vínculo verificado.
+    $routes->get('mis-atletas', 'App\\MyAthletes::index', ['as' => 'app.family.athletes', 'filter' => 'permission:family.athletes.view']);
+
     // Consultas de primera clase: acceso limitado a administración y utilero autorizado.
     $routes->get('consultas', 'App\\EnrollmentInquiries::index', ['as' => 'app.inquiries.index', 'filter' => 'permission:inquiries.view']);
     $routes->post('consultas/contactada', 'App\\EnrollmentInquiries::contacted', ['as' => 'app.inquiries.contacted', 'filter' => 'permission:inquiries.manage']);
