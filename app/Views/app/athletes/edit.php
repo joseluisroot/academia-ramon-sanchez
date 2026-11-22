@@ -40,6 +40,99 @@
   </form>
 </div>
 <div class="portal-panel">
+  <h2>Estado del atleta</h2>
+  <p class="portal-muted">Estado actual: <strong><?= esc(match ($athlete['status']) {'active' => 'Activo', 'inactive' => 'Inactivo', 'withdrawn' => 'Retirado', default => 'En revisión'}) ?></strong>. Los cambios conservan historial; un retiro definitivo no se reactiva desde este formulario.</p>
+  <?php if ($athlete['status'] !== 'withdrawn'): ?>
+    <form class="registry-form" method="post" action="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/estado'), 'attr') ?>">
+      <?= csrf_field() ?>
+      <div class="registry-fields">
+        <label>Nuevo estado
+          <select name="status" required>
+            <option value="">Seleccionar</option>
+            <?php if ($athlete['status'] === 'active'): ?>
+              <option value="inactive">Inactivo</option>
+              <option value="withdrawn">Retirado</option>
+            <?php else: ?>
+              <option value="active">Activo</option>
+              <option value="withdrawn">Retirado</option>
+            <?php endif ?>
+          </select>
+        </label>
+        <label>Motivo administrativo
+          <select name="reason" required>
+            <option value="">Seleccionar motivo</option>
+            <option value="temporary_pause">Pausa temporal</option>
+            <option value="family_request">Solicitud familiar</option>
+            <option value="administrative">Decisión administrativa</option>
+            <option value="returned">Reincorporación</option>
+          </select>
+        </label>
+      </div>
+      <div class="registry-actions"><button type="submit" class="portal-action-link registry-submit">Guardar estado</button></div>
+    </form>
+  <?php endif ?>
+  <h3 class="registry-subheading">Historial de estados</h3>
+  <div class="table-scroll">
+    <table class="access-table">
+      <thead><tr><th scope="col">Anterior</th><th scope="col">Nuevo</th><th scope="col">Motivo</th><th scope="col">Fecha</th></tr></thead>
+      <tbody>
+        <?php foreach ($statusHistory as $entry): ?>
+          <tr>
+            <td><?= esc($entry['from_status']) ?></td>
+            <td><?= esc($entry['to_status']) ?></td>
+            <td><?= esc($entry['reason_code']) ?></td>
+            <td><?= esc($entry['changed_at']) ?></td>
+          </tr>
+        <?php endforeach ?>
+        <?php if ($statusHistory === []): ?><tr><td colspan="4">Sin cambios de estado registrados.</td></tr><?php endif ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="portal-panel">
+  <h2>Seguimiento de consentimientos</h2>
+  <p class="portal-muted"><strong>Atención:</strong> esta pantalla solo permite registrar documentación pendiente, denegada o revocada. No acredita una autorización legal ni habilita publicar imágenes o datos de menores. Los documentos, versiones y firmas deberán definirse institucionalmente antes de la producción.</p>
+  <form class="registry-form" method="post" action="<?= esc(site_url('app/atletas/' . (int) $athlete['id'] . '/documentacion'), 'attr') ?>">
+    <?= csrf_field() ?>
+    <div class="registry-fields">
+      <label>Documento o consentimiento
+        <select name="type" required>
+          <option value="">Seleccionar</option>
+          <option value="image_use">Uso de imagen</option>
+          <option value="data_notice">Aviso de tratamiento de datos</option>
+        </select>
+      </label>
+      <label>Estado documental
+        <select name="state" required>
+          <option value="">Seleccionar</option>
+          <option value="pending">Pendiente</option>
+          <option value="declined">Denegado</option>
+          <option value="revoked">Revocado</option>
+        </select>
+      </label>
+    </div>
+    <div class="registry-actions"><button class="portal-action-link registry-submit" type="submit">Registrar estado documental</button></div>
+  </form>
+  <h3 class="registry-subheading">Historial documental</h3>
+  <div class="table-scroll">
+    <table class="access-table">
+      <thead><tr><th scope="col">Tipo</th><th scope="col">Estado</th><th scope="col">Fecha</th></tr></thead>
+      <tbody>
+        <?php foreach ($consentHistory as $entry): ?>
+          <tr>
+            <td><?= esc($entry['consent_type'] === 'image_use' ? 'Uso de imagen' : 'Aviso de datos') ?></td>
+            <td><?= esc(match ($entry['record_state']) {'pending' => 'Pendiente', 'declined' => 'Denegado', 'revoked' => 'Revocado', default => 'Sin validar'}) ?></td>
+            <td><?= esc($entry['recorded_at']) ?></td>
+          </tr>
+        <?php endforeach ?>
+        <?php if ($consentHistory === []): ?><tr><td colspan="3">Sin registros documentales. No existe autorización de imagen.</td></tr><?php endif ?>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="portal-panel">
   <h2>Historial de categorías</h2>
   <p class="portal-muted">Registro cronológico de la categoría inicial y de los cambios realizados por la administración.</p>
   <div class="table-scroll">
