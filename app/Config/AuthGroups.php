@@ -68,6 +68,7 @@ class AuthGroups extends ShieldAuthGroups
         'athletes.manage'      => 'Gestionar atletas autorizados',
         'family.athletes.view'  => 'Consultar únicamente atletas familiares vinculados y verificados',
         'family.links.verify'   => 'Verificar vínculo de padre o responsable con cuenta y atleta',
+        'consents.verify'       => 'Registrar aceptaciones documentadas revisadas institucionalmente',
         'training.manage'      => 'Gestionar entrenamientos y asistencia',
         'matches.manage'       => 'Gestionar partidos y convocatorias',
         'matches.verify'       => 'Verificar resultados oficiales',
@@ -91,7 +92,7 @@ class AuthGroups extends ShieldAuthGroups
         'institutional_admin' => [
             'portal.access', 'athletes.*', 'training.*', 'matches.*',
             'billing.*', 'uniforms.*', 'treasury.*', 'content.*',
-            'announcements.*', 'system.settings', 'audit.view', 'users.view', 'inquiries.*', 'family.links.verify',
+            'announcements.*', 'system.settings', 'audit.view', 'users.view', 'inquiries.*', 'family.links.verify', 'consents.verify',
         ],
         'access_manager' => ['portal.access', 'users.invite', 'users.assign', 'users.view'],
         'sports_director' => ['portal.access', 'athletes.view', 'training.manage', 'matches.*'],
