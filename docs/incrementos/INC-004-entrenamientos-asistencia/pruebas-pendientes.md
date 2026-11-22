@@ -69,7 +69,7 @@ Esta confirmación acredita la operación de alta y asignación en pantalla. No 
 ## Validación manual reportada — visibilidad del entrenador (21/11/2026)
 
 - [x] **ENT-SCOPE-MAN-04 (parcial)** El usuario confirma que, al acceder como entrenador, puede visualizar el listado de atletas desde el flujo de entrenamientos.
-- [ ] **ENT-SCOPE-MAN-05** Confirmar visualmente que el listado contiene exclusivamente atletas de las **dos categorías** asignadas y que no aparecen otros atletas.
+- [x] **ENT-SCOPE-MAN-05 (visual)** El usuario confirma el 22/11/2026 que el entrenador **solo visualiza jugadores de las categorías asignadas**. Queda pendiente la prueba negativa de acceso directo/POST a otras categorías.
 - [ ] **ENT-SCOPE-MAN-06** Confirmar que la cuenta de entrenador NO tiene acceso al listado administrativo global `/app/atletas`.
 - [ ] **ENT-SCOPE-MAN-07** Confirmar alta/corrección de asistencias, restricción por categoría en POST y efecto de revocar una asignación.
 
