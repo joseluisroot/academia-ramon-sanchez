@@ -53,6 +53,9 @@ $routes->group('app', ['filter' => ['session', 'permission:portal.access']], sta
     $routes->post('atletas/(:num)/estado', 'App\\AthleteAdministration::status/$1', ['as' => 'app.athletes.status', 'filter' => 'permission:athletes.manage']);
     $routes->post('atletas/(:num)/documentacion', 'App\\AthleteAdministration::consent/$1', ['as' => 'app.athletes.documentation', 'filter' => 'permission:athletes.manage']);
 
+    // Aceptaciones documentadas: autorización institucional diferenciada.
+    $routes->post('atletas/(:num)/documentacion/aceptacion', 'App\\AthleteAdministration::acceptance/$1', ['as' => 'app.athletes.consent.acceptance', 'filter' => 'permission:consents.verify']);
+
     // Dorsales por categoría y nuevos responsables, siempre con permisos del servidor.
     $routes->post('atletas/(:num)/dorsal', 'App\\AthleteJerseys::assign/$1', ['as' => 'app.athletes.jersey.assign', 'filter' => 'permission:athletes.manage']);
     $routes->post('atletas/(:num)/dorsal/liberar', 'App\\AthleteJerseys::release/$1', ['as' => 'app.athletes.jersey.release', 'filter' => 'permission:athletes.manage']);
