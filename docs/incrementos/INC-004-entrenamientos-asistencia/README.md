@@ -88,3 +88,16 @@ Abrir `http://localhost:8080/app/entrenamientos` con cuenta administradora. Crea
 - No se permite corregir una sesión cerrada ni existe cierre automático; la reapertura formal y aprobación de correcciones requieren procedimiento específico.
 
 **Para probar en WAMP:** actualizar rama, `php spark migrate --all`, crear una sesión ficticia del día, marcar presente/ausente/justificado, finalizar como administrador o director y acceder al reporte. Para cancelación, crear otra sesión sin asistencias. No finalizar sesiones reales de prueba: el cierre no se puede revertir aún.
+
+
+## Cuarto bloque — plantilla histórica al cierre (22/11/2026)
+
+- Migración `2026-11-22-000013_CreateTrainingSessionRoster.php`: `training_session_roster`, un atleta por entrenamiento con categoría capturada y fecha de congelamiento.
+- Al **finalizar** un entrenamiento se captura dentro de la misma transacción la plantilla activa de las categorías de la sesión, y se incorporan los atletas que ya tenían marcación conservando la categoría en la que se registró su asistencia.
+- En detalle de sesiones **finalizadas después de instalar 000013**, se muestra esa plantilla, incluso si posteriormente los atletas cambian de categoría o quedan inactivos. La consulta sigue filtrada en servidor por categorías asignadas al entrenador.
+- Las sesiones programadas continúan mostrando atletas activos de categorías actuales; las canceladas no muestran plantilla.
+- No se altera el estado de asistencia de quienes no fueron marcados. No hay denominador oficial para porcentajes.
+- **Limitación importante:** la plantilla representa los atletas conocidos *en el momento de cerrar*, no necesariamente los inscritos o convocados en el día del entrenamiento. Las sesiones finalizadas antes de esta migración **no tienen** plantilla histórica retroactiva: el detalle de plantilla puede estar vacío. No inventar un histórico mediante inferencia.
+- **Pendiente antes de cerrar INC-004:** reglas de captura en fecha efectiva de la sesión, altas/bajas tardías, política de reapertura, pruebas de datos antiguos, concurrencia y seguridad. Los reportes actualmente cuentan solo marcaciones verificadas de sesiones finalizadas.
+
+**Validación sugerida:** crear sesión ficticia de hoy, marcar asistencia y finalizar; comprobar plantilla. Posteriormente cambiar categoría o estado de un atleta ficticio y verificar que el detalle cerrado muestra la categoría histórica. No hacer pruebas irreversibles con atletas reales.
