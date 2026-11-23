@@ -6,6 +6,7 @@ namespace App\Controllers\App;
 
 use App\Controllers\BaseController;
 use App\Services\PortalNavigationService;
+use App\Services\PortalDashboardService;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Dashboard extends BaseController
@@ -27,6 +28,7 @@ class Dashboard extends BaseController
             'username' => (string) ($user->username ?? 'Usuario'),
             'groups'   => $user->getGroups(),
             'sections' => PortalNavigationService::sections($user),
+            'overview' => PortalDashboardService::build($user),
         ]);
     }
 }
