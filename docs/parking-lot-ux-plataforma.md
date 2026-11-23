@@ -109,3 +109,8 @@ Cualquier propuesta de modernización añadida aquí **no interrumpe por sí sol
 **QA pendiente:** menú para entrenador con dos categorías, padre sin hijos verificados, fundador, dirección deportiva, utilero, Junta y responsable de invitaciones; probar rutas directas no autorizadas y visualización móvil. Validar también el estado vacío sin permisos operativos.
 
 **Estado:** requerimiento institucional aceptado; navegación inicial implementada en INC-004; dashboard completo en parking lot transversal para ejecución evolutiva.
+
+
+### Avance del UX-PL-007 (22/11/2026)
+
+Se adelantó el **primer corte ejecutivo de `/app`**, motivado por la necesidad real de acceder profesionalmente a los módulos creados. Incluye hero institucional, indicadores de operaciones autorizadas, tarjetas de trabajo, acciones contextuales, diseño adaptable y estado vacío. Quedan en parking lot los dashboards avanzados con alertas personalizadas, gráficos, tareas pendientes, calendarios y widgets por función, además de un menú lateral/colapsable definitivo y análisis de métricas de negocio futuras.
