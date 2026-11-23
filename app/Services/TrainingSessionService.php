@@ -27,7 +27,7 @@ final class TrainingSessionService
         }
 
         $day = \DateTimeImmutable::createFromFormat('!Y-m-d', $date);
-        if ($day === false || $day->format('Y-m-d') !== $date || $date < date('Y-m-d')) {
+        if ($day === false || $day->format('Y-m-d') !== $date || $date < TrainingClock::today()) {
             throw new DomainException('Selecciona una fecha actual o futura válida.');
         }
 
@@ -66,7 +66,7 @@ final class TrainingSessionService
                 throw new DomainException('Una categoría no existe o está inactiva.');
             }
 
-            $now = date('Y-m-d H:i:s');
+            $now = TrainingClock::nowUtc();
             if (! $db->table('training_sessions')->insert([
                 'training_date' => $date,
                 'starts_at' => $starts . ':00',
@@ -123,7 +123,7 @@ final class TrainingSessionService
 
             $marks = $db->table('training_attendance')->where('session_id', $sessionId)->countAllResults();
 
-            if ($newStatus === 'completed' && ((string) $session['training_date'] > date('Y-m-d') || $marks === 0)) {
+            if ($newStatus === 'completed' && ((string) $session['training_date'] > TrainingClock::today() || $marks === 0)) {
                 throw new DomainException('Para finalizar, la sesión debe haber llegado a su fecha y tener al menos una asistencia registrada.');
             }
             if ($newStatus === 'cancelled' && $marks > 0) {
@@ -159,7 +159,7 @@ final class TrainingSessionService
                         'session_id' => $sessionId,
                         'athlete_id' => $athleteId,
                         'sports_category_id' => $categoryId,
-                        'captured_at' => date('Y-m-d H:i:s'),
+                        'captured_at' => TrainingClock::nowUtc(),
                     ])) {
                         throw new RuntimeException('No fue posible congelar la plantilla histórica.');
                     }
@@ -167,7 +167,7 @@ final class TrainingSessionService
             }
 
             $db->table('training_sessions')->where('id', $sessionId)->where('status', 'scheduled')
-                ->update(['status' => $newStatus, 'updated_at' => date('Y-m-d H:i:s')]);
+                ->update(['status' => $newStatus, 'updated_at' => TrainingClock::nowUtc()]);
             if ($db->affectedRows() !== 1) {
                 throw new RuntimeException('La sesión cambió durante esta operación.');
             }
@@ -177,7 +177,7 @@ final class TrainingSessionService
                 'from_status' => 'scheduled',
                 'to_status' => $newStatus,
                 'changed_by' => (int) $actor->id,
-                'changed_at' => date('Y-m-d H:i:s'),
+                'changed_at' => TrainingClock::nowUtc(),
             ])) {
                 throw new RuntimeException('No se pudo guardar el historial de la sesión.');
             }
@@ -213,7 +213,7 @@ final class TrainingSessionService
                 throw new DomainException('La sesión no existe o no admite cambios de asistencia.');
             }
 
-            if ((string) $session['training_date'] > date('Y-m-d')) {
+            if ((string) $session['training_date'] > TrainingClock::today()) {
                 throw new DomainException('No se permite registrar asistencia antes de la fecha de la sesión.');
             }
 
@@ -239,7 +239,7 @@ final class TrainingSessionService
 
             $existing = $db->table('training_attendance')->where('session_id', $sessionId)
                 ->where('athlete_id', $athleteId)->get()->getRowArray();
-            $now = date('Y-m-d H:i:s');
+            $now = TrainingClock::nowUtc();
 
             if ($existing === null) {
                 $ok = $db->table('training_attendance')->insert([
