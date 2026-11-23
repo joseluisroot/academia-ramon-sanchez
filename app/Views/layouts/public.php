@@ -7,6 +7,7 @@
     <meta name="theme-color" content="#071B49">
     <link rel="icon" type="image/svg+xml" href="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>">
     <title><?= esc($title ?? 'Academia Ramón Sánchez') ?></title>
+    <?php if (is_file(FCPATH . 'assets/css/tailwind.css')): ?><link rel="stylesheet" href="<?= esc(base_url('assets/css/tailwind.css'), 'attr') ?>"><?php endif ?>
     <link rel="stylesheet" href="<?= esc(base_url('assets/css/academia.css'), 'attr') ?>">
     <link rel="stylesheet" href="<?= esc(base_url('assets/css/editorial.css'), 'attr') ?>">
 </head>
