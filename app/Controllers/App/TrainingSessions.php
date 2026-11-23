@@ -147,7 +147,9 @@ final class TrainingSessions extends BaseController
                 $athletes = $historicalQuery->orderBy('c.code')->orderBy('a.last_name')
                     ->orderBy('a.first_name')->get()->getResultArray();
 
-                if ($supervisor && count($categories) === 1) {
+                $sessionCategoryCount = $db->table('training_session_categories')
+                    ->where('session_id', $id)->countAllResults();
+                if ($sessionCategoryCount === 1 && $ids !== []) {
                     // An unclassified legacy mark can be displayed in the only
                     // session category, but it remains NULL in persistent data.
                     $legacy = $db->table('training_attendance ta')
