@@ -112,3 +112,15 @@ Esta confirmación no demuestra aún aislamiento completo entre categorías ni s
 - [ ] **ENT-ROSTER-08** Sesión finalizada antes de migración 000013 queda sin plantilla histórica y se preservan marcaciones en base de datos.
 - [ ] **ENT-ROSTER-09** Validar que captura de roster al cierre difiere de la plantilla real a fecha de sesión en caso de altas/bajas tardías; no usar para porcentajes oficiales.
 - [ ] **ENT-ROSTER-10** Probar simultaneidad de cierre y cambios de marcaciones; verificar consistencia y evitar duplicados.
+
+
+## INC-004-HIS-001 — regresiones de historial y navegación (pendiente WAMP)
+
+- [ ] **HISBUG-01** Tras actualizar rama, la sesión U9 ya cerrada conserva la marca «Presente» y muestra el aviso de historial anterior si no existe roster.
+- [ ] **HISBUG-02** Una sesión de cierre posterior a 000013 muestra «Categoría histórica» y atletas congelados.
+- [ ] **HISBUG-03** Sesión cerrada antes de 000013: las marcas con categoría histórica se muestran; marca con categoría nula se identifica como «sin verificar» únicamente si la sesión tenía una categoría.
+- [ ] **HISBUG-04** En sesión multicategría, entrenador U7 no ve marcas, totales ni listado U9 aunque visite URL directa.
+- [ ] **HISBUG-05** La fecha de cierre almacenada como UTC se visualiza con hora local El Salvador; se evalúa la zona de registros anteriores si el servidor no era UTC.
+- [ ] **HISBUG-06** `/app` muestra enlaces de entrenamiento y reporte según cuenta; el menú del layout también permite llegar a esos módulos.
+- [ ] **HISBUG-07** Padre, utilero, entrenador, Junta y fundador ven únicamente opciones permitidas, sin acceso a otros menores por URL.
+- [ ] **HISBUG-08** No se introducen regresiones de CSRF, sesión, autorización y rendimiento con consultas de menú.
