@@ -73,3 +73,16 @@ Las propuestas transversales sugeridas durante el INC-003 se registran en [parki
 **Perfiles previstos:** fundadores/administradores, director deportivo, entrenadores con categorías asignadas, utilero, responsables familiares, delegado, miembros de Junta/Tesorería y colaboradores de comunicación. Mostrar solamente datos e indicadores del ámbito autorizado; **no** divulgar cobros ordinarios a miembros de Junta sin atribuciones, ni datos de otros menores.
 
 **Estado:** primera navegación contextual incorporada en INC-004; dashboard especializado con indicadores y tareas queda pendiente de diseño e implementación por incremento.
+
+
+## Panel ejecutivo contextual — primera versión funcional (22/11/2026)
+
+Se incorpora una mejora anticipada del portal `/app` por su impacto directo en la navegación cotidiana de los usuarios. El diseño se orienta a una academia deportiva institucional, moderna y profesional, con una experiencia distinta por perfil.
+
+- Encabezado institucional oscuro, escudo, jerarquía tipográfica, acciones principales y módulos operativos en tarjetas.
+- `PortalDashboardService`: indicadores reales y modestos de atletas activos, categorías y sesiones programadas **según permisos**; entrenador limitado a categorías asignadas, administrador/dirección con visión deportiva general, utilero con expedientes autorizados. Otros perfiles tienen resumen sin métricas no aprobadas.
+- La navegación sigue usando `PortalNavigationService`; enlaces solamente a acciones existentes. La vista **no** reemplaza la autorización de cada controlador.
+- No se inventan métricas financieras, valores de tesorería, porcentajes de asistencia ni cifras de menores fuera de cada ámbito.
+- Diseño responsive y estados vacíos. Los módulos INC-005–INC-012 agregarán sus tarjetas e indicadores cuando sus reglas de autorización estén implementadas.
+
+**Pendiente QA WAMP:** confirmar entrenador con dos categorías, dirección deportiva, fundador, utilero, padre y miembros de Junta; probar móviles y desempeño; no marcar como validado sin prueba del usuario.
