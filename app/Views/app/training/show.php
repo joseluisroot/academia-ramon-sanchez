@@ -48,7 +48,7 @@
             <tr>
               <td><?= esc($entry['from_status']) ?></td>
               <td><?= esc($entry['to_status']) ?></td>
-              <td><?= esc($entry['changed_at']) ?></td>
+              <td><?= esc(\App\Services\TrainingClock::displayUtc($entry['changed_at'])) ?></td>
             </tr>
           <?php endforeach ?>
         </tbody>
@@ -58,7 +58,10 @@
   <?php if (! $canRecord): ?>
     <p class="portal-muted">La asistencia está bloqueada si la fecha aún no ha llegado o si la sesión fue finalizada o cancelada.</p>
   <?php endif ?>
-  <?php if ($historicalRoster): ?>
+  <?php if ($legacyRoster): ?>
+    <p class="portal-muted"><strong>Registro anterior:</strong> esta sesión fue cerrada sin una plantilla histórica. Solo se recuperan asistencias efectivamente registradas. Cuando no se conoce con certeza la categoría histórica, se indica que está sin verificar; no se inventan ausencias.</p>
+  <?php endif ?>
+  <?php if ($historicalRoster && ! $legacyRoster): ?>
     <p class="portal-muted">Plantilla congelada al finalizar esta sesión. Los cambios posteriores de categoría o estado del atleta no alteran este listado. Los atletas sin marca siguen como «Sin marcar».</p>
   <?php endif ?>
   <div class="table-scroll">
@@ -89,7 +92,7 @@
             </td>
           </tr>
         <?php endforeach ?>
-        <?php if ($athletes === []): ?><tr><td colspan="4">No hay atletas activos en las categorías de esta sesión.</td></tr><?php endif ?>
+        <?php if ($athletes === []): ?><tr><td colspan="4">No hay atletas con información disponible para esta sesión y tu nivel de acceso.</td></tr><?php endif ?>
       </tbody>
     </table>
   </div>
