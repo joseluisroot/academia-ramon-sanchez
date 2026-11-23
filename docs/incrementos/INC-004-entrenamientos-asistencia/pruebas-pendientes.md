@@ -98,3 +98,17 @@ Esta confirmación no demuestra aún aislamiento completo entre categorías ni s
 - [ ] **ENT-CLOSE-18** Antes de premiación anual, definir denominador para porcentaje de asistencia, criterios de sesiones válidas y tratamiento de excusas.
 
 **Cierre INC-004 pendiente:** pruebas de permisos por categoría y POST manipulados, plantilla/roster histórico por entrenamiento, política de reapertura y QA en WAMP. No hacer merge ni considerar estadísticas aptas para premios anuales hasta resolverlo.
+
+
+## Cuarto bloque — plantilla histórica al cierre
+
+- [ ] **ENT-ROSTER-01** Migración 000013 crea `training_session_roster` sin alterar asistencias previas.
+- [ ] **ENT-ROSTER-02** Finalizar sesión ficticia con atletas activos de dos categorías: captura una única fila por atleta.
+- [ ] **ENT-ROSTER-03** Atleta con marca registrado en categoría diferente a la actual: la plantilla conserva categoría de la marca.
+- [ ] **ENT-ROSTER-04** Atleta sin marca permanece sin marca, no se convierte automáticamente en ausente.
+- [ ] **ENT-ROSTER-05** Tras cambiar la categoría o poner inactivo un atleta ficticio, el detalle de sesión finalizada mantiene su categoría de la plantilla capturada.
+- [ ] **ENT-ROSTER-06** Entrenador U7 no puede consultar la plantilla U9 de una sesión U7+U9 mediante detalle ni POST manipulado.
+- [ ] **ENT-ROSTER-07** Cancelación no crea plantilla. Fallo al crear plantilla revierte cierre e historial.
+- [ ] **ENT-ROSTER-08** Sesión finalizada antes de migración 000013 queda sin plantilla histórica y se preservan marcaciones en base de datos.
+- [ ] **ENT-ROSTER-09** Validar que captura de roster al cierre difiere de la plantilla real a fecha de sesión en caso de altas/bajas tardías; no usar para porcentajes oficiales.
+- [ ] **ENT-ROSTER-10** Probar simultaneidad de cierre y cambios de marcaciones; verificar consistencia y evitar duplicados.
