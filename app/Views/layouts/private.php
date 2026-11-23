@@ -12,29 +12,94 @@
 </head>
 <body class="portal-page">
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
-<header class="portal-header">
-  <div class="container portal-header-inner">
-    <a class="portal-brand" href="<?= esc(site_url('/app'), 'attr') ?>">
-      <img class="brand-logo" src="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>" alt="Escudo oficial de la Academia Ramón Sánchez" width="54" height="54">
-      <span><strong>RAMÓN SÁNCHEZ</strong><small>PORTAL PRIVADO</small></span>
+<?php
+  $portalUser = auth()->user();
+  $portalSections = \App\Services\PortalNavigationService::sections($portalUser);
+  $currentPortalPath = trim(service('uri')->getPath(), '/');
+  $isDashboard = $currentPortalPath === 'app';
+  $profileName = 'Mi cuenta';
+  if ($portalUser?->inGroup('institutional_admin')) {
+      $profileName = 'Administración';
+  } elseif ($portalUser?->inGroup('sports_director')) {
+      $profileName = 'Dirección deportiva';
+  } elseif ($portalUser?->inGroup('coach')) {
+      $profileName = 'Entrenador';
+  } elseif ($portalUser?->inGroup('equipment_manager')) {
+      $profileName = 'Utilero';
+  } elseif ($portalUser?->inGroup('guardian')) {
+      $profileName = 'Familia';
+  } elseif ($portalUser?->inGroup('board_treasurer')) {
+      $profileName = 'Tesorería de Junta';
+  } elseif ($portalUser?->inGroup('board_member')) {
+      $profileName = 'Junta Directiva';
+  } elseif ($portalUser?->inGroup('access_manager')) {
+      $profileName = 'Gestión de accesos';
+  }
+  $accountInitial = strtoupper(substr((string) ($portalUser->username ?? 'U'), 0, 1));
+?>
+<header class="institutional-header">
+  <div class="container institutional-topbar">
+    <a class="institutional-brand" href="<?= esc(site_url('app'), 'attr') ?>" aria-label="Academia Ramón Sánchez, ir al panel principal">
+      <span class="institutional-brand-logo"><img src="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>" alt="" width="48" height="48"></span>
+      <span class="institutional-brand-copy">
+        <strong>RAMÓN SÁNCHEZ</strong>
+        <small>ACADEMIA DE FÚTBOL <span aria-hidden="true">/</span> PLATAFORMA INSTITUCIONAL</small>
+      </span>
     </a>
-    <div class="portal-header-actions">
-      <a href="<?= esc(site_url('/'), 'attr') ?>">Ver sitio público</a>
-      <a class="portal-logout" href="<?= esc(url_to('logout'), 'attr') ?>">Cerrar sesión</a>
+    <div class="institutional-account-actions">
+      <span class="institutional-workspace-label">ESPACIO PRIVADO</span>
+      <div class="institutional-profile" aria-label="Perfil de acceso">
+        <span class="institutional-avatar" aria-hidden="true"><?= esc($accountInitial) ?></span>
+        <span class="institutional-profile-copy">
+          <strong><?= esc((string) ($portalUser->username ?? 'Usuario')) ?></strong>
+          <small><?= esc($profileName) ?></small>
+        </span>
+      </div>
+      <a class="institutional-site-link" href="<?= esc(site_url('/'), 'attr') ?>">Sitio web <span aria-hidden="true">↗</span></a>
+      <a class="institutional-exit" href="<?= esc(url_to('logout'), 'attr') ?>">Cerrar sesión</a>
     </div>
   </div>
-</header>
-<?php $portalSections = \App\Services\PortalNavigationService::sections(auth()->user()); ?>
-<nav class="container" aria-label="Navegación del portal" style="padding-top:12px;padding-bottom:4px">
-  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-    <a class="registry-cancel" href="<?= esc(site_url('app'), 'attr') ?>">Mi panel</a>
-    <?php foreach ($portalSections as $portalSection): ?>
-      <?php foreach ($portalSection['items'] as $portalItem): ?>
-        <a class="registry-cancel" href="<?= esc(site_url($portalItem['url']), 'attr') ?>"><?= esc($portalItem['label']) ?></a>
+  <nav class="institutional-navigation" aria-label="Menú principal del portal">
+    <div class="container institutional-nav-inner">
+      <a class="institutional-nav-home <?= $isDashboard ? 'is-current' : '' ?>" href="<?= esc(site_url('app'), 'attr') ?>" <?= $isDashboard ? 'aria-current="page"' : '' ?>>
+        <span class="institutional-nav-home-symbol" aria-hidden="true">▦</span> Panel principal
+      </a>
+      <?php foreach ($portalSections as $section): ?>
+        <?php
+          $sectionActive = false;
+          foreach ($section['items'] as $item) {
+              $itemPath = trim($item['url'], '/');
+              if ($currentPortalPath === $itemPath || str_starts_with($currentPortalPath, $itemPath . '/')) {
+                  $sectionActive = true;
+                  break;
+              }
+          }
+        ?>
+        <details class="institutional-nav-group <?= $sectionActive ? 'is-current' : '' ?>">
+          <summary aria-label="<?= esc($section['title'], 'attr') ?>">
+            <?= esc($section['title']) ?>
+            <span class="institutional-nav-caret" aria-hidden="true">⌄</span>
+          </summary>
+          <div class="institutional-nav-dropdown">
+            <span class="institutional-dropdown-heading"><?= esc($section['title']) ?></span>
+            <p><?= esc($section['description']) ?></p>
+            <?php foreach ($section['items'] as $item): ?>
+              <?php
+                $itemPath = trim($item['url'], '/');
+                $activeItem = $currentPortalPath === $itemPath || str_starts_with($currentPortalPath, $itemPath . '/');
+              ?>
+              <a href="<?= esc(site_url($item['url']), 'attr') ?>" class="<?= $activeItem ? 'is-current' : '' ?>" <?= $activeItem ? 'aria-current="page"' : '' ?>>
+                <span><?= esc($item['label']) ?></span><span aria-hidden="true">↗</span>
+              </a>
+            <?php endforeach ?>
+          </div>
+        </details>
       <?php endforeach ?>
-    <?php endforeach ?>
-  </div>
-</nav>
+      <span class="institutional-nav-spacer" aria-hidden="true"></span>
+      <span class="institutional-nav-context">ACCESO SEGÚN PERFIL</span>
+    </div>
+  </nav>
+</header>
 <main id="contenido" class="container portal-main">
   <?= $this->renderSection('content') ?>
 </main>
