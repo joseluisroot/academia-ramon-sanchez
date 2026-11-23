@@ -86,3 +86,17 @@ Se incorpora una mejora anticipada del portal `/app` por su impacto directo en l
 - Diseño responsive y estados vacíos. Los módulos INC-005–INC-012 agregarán sus tarjetas e indicadores cuando sus reglas de autorización estén implementadas.
 
 **Pendiente QA WAMP:** confirmar entrenador con dos categorías, dirección deportiva, fundador, utilero, padre y miembros de Junta; probar móviles y desempeño; no marcar como validado sin prueba del usuario.
+
+
+## Navegación institucional premium — ajuste visual del INC-004 (22/11/2026)
+
+La retroalimentación sobre el dashboard ejecutivo detectó que el navbar anterior (enlaces planos en una fila) no correspondía con la identidad visual profesional y elegante aprobada para la academia.
+
+Se reemplaza el encabezado del layout privado por una navegación institucional en dos niveles:
+- Franja de marca con escudo, identidad «Academia Ramón Sánchez», perfil de la sesión, acceso al sitio público y cierre de sesión.
+- Barra secundaria azul marino con «Panel principal» y menús agrupados por área funcional. Los desplegables se alimentan de `PortalNavigationService` y por tanto muestran exclusivamente las opciones permitidas al usuario.
+- Indicador visual de sección actual, estilos de foco y menú con `details/summary` operable por teclado, sin JavaScript obligatorio.
+- Diseño responsive: distribución de navegación en varias líneas para móviles y menús desplegables adaptados; no se agregan controles decorativos sin función.
+- No sustituye controles de servidor y no muestra acciones futuras que aún no existan.
+
+Pruebas de aceptación en `docs/incrementos/INC-004-entrenamientos-asistencia/pruebas-pendientes.md`. La navegación puede perfeccionarse con el diseño de dashboards definitivos de UX-PL-007.
