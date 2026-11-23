@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/private') ?>
 <?= $this->section('content') ?>
 
-<div class="executive-dashboard">
+<div class="executive-dashboard isolate">
   <section class="executive-hero" aria-labelledby="executive-heading">
     <div class="executive-hero-copy">
       <span class="executive-eyebrow"><span class="executive-pulse" aria-hidden="true"></span> ACADEMIA RAMÓN SÁNCHEZ · PORTAL PRIVADO</span>
