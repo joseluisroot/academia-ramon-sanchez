@@ -138,3 +138,17 @@ Esta confirmación no demuestra aún aislamiento completo entre categorías ni s
 - [ ] **DASH-08** Pantallas de 375px, tablet y escritorio sin desbordamiento, botones accionables y navegación por teclado.
 - [ ] **DASH-09** GET/POST a rutas no autorizadas continúa bloqueado pese al cambio visual; no se infiere autorización de un enlace.
 - [ ] **DASH-10** Conteos de sesiones compartidas U7+U9 no se duplican para el entrenador que tiene ambas categorías.
+
+
+## Navbar institucional ejecutivo — pruebas pendientes WAMP
+
+- [ ] **NAV-01** El encabezado muestra el escudo, marca institucional, nombre/perfil autenticado y enlaces funcionales al sitio público y cierre de sesión.
+- [ ] **NAV-02** Administrador ve menús deportivos, expedientes/familias, atención y accesos conforme a sus permisos efectivos.
+- [ ] **NAV-03** Entrenador ve menú de entrenamientos y reporte, sin acceso a expedientes globales, categorías de otros entrenadores ni administración de permisos.
+- [ ] **NAV-04** Padre/tutor, utilero y Junta únicamente ven las opciones autorizadas para su cuenta.
+- [ ] **NAV-05** Se destaca la sección activa sin atribuir estado «página actual» a un enlace genérico incorrecto.
+- [ ] **NAV-06** Menús desplegables abren con mouse, teclado y pantalla táctil; controles de foco accesibles; enlaces navegables.
+- [ ] **NAV-07** Responsive en 375px, tablet y escritorio: sin superposición del contenido, desplegables utilizables, cierre de sesión visible.
+- [ ] **NAV-08** Ocultar enlaces no permite acceso a URL directa no autorizada (HTTP 403 o rechazo previsto en rutas y servicios).
+- [ ] **NAV-09** Usuarios con más de un rol combinan solo opciones que efectivamente tienen autorizadas.
+- [ ] **NAV-10** No aparecen módulos «próximamente» en la navegación como enlaces inválidos.
