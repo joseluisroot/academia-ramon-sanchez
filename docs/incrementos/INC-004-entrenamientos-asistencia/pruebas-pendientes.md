@@ -166,3 +166,16 @@ Esta confirmación no demuestra aún aislamiento completo entre categorías ni s
 - [ ] **UI-VIS-08** Móvil 375px / tablet / escritorio, zoom 200%, navegación teclado, contraste, foco y ausencia de scroll horizontal general.
 - [ ] **UI-VIS-09** Revisión de permisos y accesos URL directos sin elevación por cambios de UI.
 - [ ] **UI-VIS-10** Verificación Lighthouse, rendimiento y formatos de medios. PR continúa borrador hasta aprobación.
+
+
+## Revisión de cierre — seguridad e integridad (22/11/2026)
+
+Código corregido; **sin marcar pruebas como ejecutadas**. Guía reproducible en [qa-cierre-seguridad.md](qa-cierre-seguridad.md).
+
+- [ ] **SEC-01–05** Aislamiento U7/U9, POST manipulado, revocación y rutas no autorizadas.
+- [ ] **SEC-06** El cambio de categoría tras una marca no permite corregir esa marca bajo categoría nueva; no muta categoría histórica.
+- [ ] **SEC-07–08** Cierre de sesión compartida y consultas filtradas por categoría, incluso totales.
+- [ ] **SEC-09** Sesiones programadas o canceladas no lanzan aviso de variable indefinida en la vista.
+- [ ] **SEC-10–12** Rechazos de cierres/cancelaciones inválidos y dobles operaciones.
+- [ ] **SEC-13** Marcas antiguas sin categoría se ven solo para supervisor como «sin verificar» cuando aplica.
+- [ ] **SEC-14–15** CSRF y competencia de dos cierres simultáneos.
