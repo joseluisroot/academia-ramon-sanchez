@@ -130,6 +130,42 @@ final class TrainingSessionService
                 throw new DomainException('No se puede cancelar una sesión con asistencias registradas.');
             }
 
+            if ($newStatus === 'completed') {
+                // Freeze the roster as observed at closure. Include previously marked
+                // athletes even if their current category/status has since changed.
+                $current = $db->table('athletes a')
+                    ->select('a.id AS athlete_id, a.sports_category_id')
+                    ->join('training_session_categories tc', 'tc.sports_category_id = a.sports_category_id')
+                    ->where('tc.session_id', $sessionId)->where('a.status', 'active')
+                    ->get()->getResultArray();
+
+                $marked = $db->table('training_attendance ta')
+                    ->select('ta.athlete_id, ta.sports_category_id')
+                    ->where('ta.session_id', $sessionId)
+                    ->where('ta.sports_category_id IS NOT NULL', null, false)
+                    ->get()->getResultArray();
+
+                $roster = [];
+                foreach ($current as $entry) {
+                    $roster[(int) $entry['athlete_id']] = (int) $entry['sports_category_id'];
+                }
+                foreach ($marked as $entry) {
+                    // Preserve the category explicitly recorded at attendance time.
+                    $roster[(int) $entry['athlete_id']] = (int) $entry['sports_category_id'];
+                }
+
+                foreach ($roster as $athleteId => $categoryId) {
+                    if (! $db->table('training_session_roster')->insert([
+                        'session_id' => $sessionId,
+                        'athlete_id' => $athleteId,
+                        'sports_category_id' => $categoryId,
+                        'captured_at' => date('Y-m-d H:i:s'),
+                    ])) {
+                        throw new RuntimeException('No fue posible congelar la plantilla histórica.');
+                    }
+                }
+            }
+
             $db->table('training_sessions')->where('id', $sessionId)->where('status', 'scheduled')
                 ->update(['status' => $newStatus, 'updated_at' => date('Y-m-d H:i:s')]);
             if ($db->affectedRows() !== 1) {
