@@ -124,3 +124,17 @@ Esta confirmación no demuestra aún aislamiento completo entre categorías ni s
 - [ ] **HISBUG-06** `/app` muestra enlaces de entrenamiento y reporte según cuenta; el menú del layout también permite llegar a esos módulos.
 - [ ] **HISBUG-07** Padre, utilero, entrenador, Junta y fundador ven únicamente opciones permitidas, sin acceso a otros menores por URL.
 - [ ] **HISBUG-08** No se introducen regresiones de CSRF, sesión, autorización y rendimiento con consultas de menú.
+
+
+## Panel ejecutivo contextual — validaciones pendientes
+
+- [ ] **DASH-01** Administración institucional ve indicadores deportivos de la academia y enlaces reales a entrenamientos, expedientes y verificaciones permitidas.
+- [ ] **DASH-02** Entrenador con dos categorías ve contadores solo de sus atletas, categorías y sesiones; nunca se incluyen otras categorías.
+- [ ] **DASH-03** Dirección deportiva ve las sesiones y sus indicadores generales, pero no una opción para asignar entrenadores si no tiene ese permiso.
+- [ ] **DASH-04** Padre ve panel familiar sin cifras administrativas ni datos de otras familias.
+- [ ] **DASH-05** Junta/Tesorería no reciben indicadores financieros falsos ni acceso a matrícula o mensualidades.
+- [ ] **DASH-06** Utilero ve únicamente sus funciones de registro y atención.
+- [ ] **DASH-07** Cuenta sin módulos operativos muestra estado vacío sin enlaces prohibidos; permisos múltiples no elevan privilegios.
+- [ ] **DASH-08** Pantallas de 375px, tablet y escritorio sin desbordamiento, botones accionables y navegación por teclado.
+- [ ] **DASH-09** GET/POST a rutas no autorizadas continúa bloqueado pese al cambio visual; no se infiere autorización de un enlace.
+- [ ] **DASH-10** Conteos de sesiones compartidas U7+U9 no se duplican para el entrenador que tiene ambas categorías.
