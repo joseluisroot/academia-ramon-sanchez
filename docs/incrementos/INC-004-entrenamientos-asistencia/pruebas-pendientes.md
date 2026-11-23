@@ -152,3 +152,17 @@ Esta confirmación no demuestra aún aislamiento completo entre categorías ni s
 - [ ] **NAV-08** Ocultar enlaces no permite acceso a URL directa no autorizada (HTTP 403 o rechazo previsto en rutas y servicios).
 - [ ] **NAV-09** Usuarios con más de un rol combinan solo opciones que efectivamente tienen autorizadas.
 - [ ] **NAV-10** No aparecen módulos «próximamente» en la navegación como enlaces inválidos.
+
+
+## Revisión visual transversal UI-2026 — pendiente WAMP
+
+- [ ] **UI-VIS-01** Portada pública impactante y legible con escudo institucional cuando no hay medios autorizados.
+- [ ] **UI-VIS-02** Menú público móvil despliega enlaces reales y CTA de contacto; teclado, touch y cierre navegador.
+- [ ] **UI-VIS-03** Galería no se muestra si fotografías no autorizadas o ausentes; no dejar imágenes sin permiso dentro de `public/`.
+- [ ] **UI-VIS-04** Con fotos legalmente autorizadas, probar grilla responsive, marcas de agua preservadas, `alt` y carga diferida.
+- [ ] **UI-VIS-05** Portal: navbar, sidebar/menú según alcance, dashboard y tablas/formularios mantienen identidad visual profesional.
+- [ ] **UI-VIS-06** Validación como roles: administrador, dirección deportiva, entrenador, familia, utilero y Junta.
+- [ ] **UI-VIS-07** Ejecutar `npm install && npm run css:build`, verificar carga del CSS de Tailwind sin desconfigurar vistas existentes.
+- [ ] **UI-VIS-08** Móvil 375px / tablet / escritorio, zoom 200%, navegación teclado, contraste, foco y ausencia de scroll horizontal general.
+- [ ] **UI-VIS-09** Revisión de permisos y accesos URL directos sin elevación por cambios de UI.
+- [ ] **UI-VIS-10** Verificación Lighthouse, rendimiento y formatos de medios. PR continúa borrador hasta aprobación.
