@@ -10,6 +10,7 @@
     <?php if (is_file(FCPATH . 'assets/css/tailwind.css')): ?><link rel="stylesheet" href="<?= esc(base_url('assets/css/tailwind.css'), 'attr') ?>"><?php endif ?>
     <link rel="stylesheet" href="<?= esc(base_url('assets/css/academia.css'), 'attr') ?>">
     <link rel="stylesheet" href="<?= esc(base_url('assets/css/portal.css'), 'attr') ?>">
+    <link rel="stylesheet" href="<?= esc(base_url('assets/css/experience.css'), 'attr') ?>">
 </head>
 <body class="portal-page">
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
