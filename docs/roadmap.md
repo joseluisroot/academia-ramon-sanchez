@@ -58,3 +58,18 @@ Las propuestas transversales sugeridas durante el INC-003 se registran en [parki
 **Dependencias:** UX-PL-006 (verificación de parentesco independiente del acceso digital); versión y texto formal aprobado para cada consentimiento; autenticación fuerte del firmante; controles de representación y posibles conflictos entre responsables; autorización específica para publicar. No generar PDF final de consentimiento sin plantilla aprobada ni afirmar validez jurídica automática.
 
 **Estado:** requisito de secuencia registrado, implementación diferida a INC-011; no interrumpir INC-004.
+
+
+## Navegación y dashboard por perfil — requisito transversal aprobado (22/11/2026)
+
+**Necesidad reportada:** la ruta privada `/app` no da acceso útil a todos los módulos que se van construyendo. El usuario solicita un dashboard especializado para cada perfil, con herramientas, indicadores, accesos y menú acordes a su función.
+
+**Aplicación progresiva:**
+- **Corrección inmediata dentro de INC-004:** catálogo central de navegación por capacidades y perfil, enlaces solo a módulos ya disponibles, panel `/app` con tarjetas reales y navegación persistente en el layout privado. Es navegación, **no** reemplaza filtros de rutas, autorización del servicio, aislamiento por categoría ni la verificación familiar.
+- **En cada INC-005 a INC-012:** integrar nuevas funciones al catálogo de opciones conforme se implementen, según perfil institucional.
+- **Modernización transversal de UI/UX:** diseñar dashboards completos, métricas seguras, componentes responsive, jerarquía de tareas, alertas y accesos rápidos por rol. Se registra como **UX-PL-007**.
+- **INC-013:** QA de navegación y filtrado para roles múltiples, padres, utilero, entrenadores, dirección deportiva, Junta y administradores; comprobar que ocultar un menú no sea la única barrera de acceso.
+
+**Perfiles previstos:** fundadores/administradores, director deportivo, entrenadores con categorías asignadas, utilero, responsables familiares, delegado, miembros de Junta/Tesorería y colaboradores de comunicación. Mostrar solamente datos e indicadores del ámbito autorizado; **no** divulgar cobros ordinarios a miembros de Junta sin atribuciones, ni datos de otros menores.
+
+**Estado:** primera navegación contextual incorporada en INC-004; dashboard especializado con indicadores y tareas queda pendiente de diseño e implementación por incremento.
