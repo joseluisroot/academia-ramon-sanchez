@@ -114,3 +114,13 @@ El usuario mostró captura de una sesión U9 finalizada con una marca **Presente
 **Navegación:** se entrega un primer panel `/app` con secciones reales por perfil, más enlaces persistentes filtrados por permiso; el dashboard completo se registró en UX-PL-007 y roadmap.
 
 **Validación:** actualizar rama, limpiar caché de navegación si procede, recargar la sesión finalizada y verificar encabezado/estado. No volver a registrar la asistencia existente ni editar filas directamente para «corregir» la vista.
+
+
+## Revisión de seguridad y consistencia — 22/11/2026
+
+Al revisar el código del INC-004 se corrigieron dos riesgos:
+1. **Estado de plantilla no inicializado:** en el detalle de sesiones programadas/canceladas `$rosterCount` no se definía antes de pasarse a la vista como `legacyRoster`. Ahora comienza en cero y únicamente se consulta para sesiones finalizadas.
+2. **Marcaciones históricas con cambio de categoría:** una asistencia previamente creada en U7 podía modificarse después de mover al atleta a U9 sin respetar la categoría original. Ahora la corrección se rechaza cuando la categoría actual no coincide con la categoría histórica de la marca o esa categoría histórica es nula. No se sobrescribe el campo `sports_category_id` durante una corrección.
+3. **Marcas legadas sin categoría:** su presentación como «sin verificar» en sesiones de una categoría se restringe exclusivamente al supervisor, para evitar exposición innecesaria de identidad a entrenadores cuando la atribución histórica no está probada.
+
+Se añadió `qa-cierre-seguridad.md` con preparación de datos ficticios, pruebas negativas y consultas SQL de solo lectura. **Los controles siguen pendientes de ejecución en WAMP**; no dar por cerrado el INC-004 hasta registrar los resultados. El cambio de categoría con registro previo requiere flujo de corrección administrativo/auditoría específico antes de producción.
