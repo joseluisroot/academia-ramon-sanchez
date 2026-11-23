@@ -24,6 +24,17 @@
     </div>
   </div>
 </header>
+<?php $portalSections = \App\Services\PortalNavigationService::sections(auth()->user()); ?>
+<nav class="container" aria-label="Navegación del portal" style="padding-top:12px;padding-bottom:4px">
+  <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+    <a class="registry-cancel" href="<?= esc(site_url('app'), 'attr') ?>">Mi panel</a>
+    <?php foreach ($portalSections as $portalSection): ?>
+      <?php foreach ($portalSection['items'] as $portalItem): ?>
+        <a class="registry-cancel" href="<?= esc(site_url($portalItem['url']), 'attr') ?>"><?= esc($portalItem['label']) ?></a>
+      <?php endforeach ?>
+    <?php endforeach ?>
+  </div>
+</nav>
 <main id="contenido" class="container portal-main">
   <?= $this->renderSection('content') ?>
 </main>
