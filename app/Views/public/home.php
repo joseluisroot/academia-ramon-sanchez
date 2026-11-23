@@ -1,7 +1,7 @@
 <?= $this->extend('layouts/public') ?>
 <?= $this->section('content') ?>
 
-<section class="hero editorial-hero">
+<section class="hero editorial-hero relative">
     <div class="container hero-grid editorial-hero-grid">
         <div class="hero-content">
             <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> ACADEMIA INTEGRAL DE FÚTBOL PROFESOR RAMÓN SÁNCHEZ</span>
