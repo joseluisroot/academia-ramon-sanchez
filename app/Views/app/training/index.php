@@ -18,7 +18,7 @@
   <form class="registry-form" method="post" action="<?= esc(site_url('/app/entrenamientos'), 'attr') ?>">
     <?= csrf_field() ?>
     <div class="registry-fields">
-      <label>Fecha <input type="date" name="training_date" min="<?= esc(date('Y-m-d'), 'attr') ?>" required></label>
+      <label>Fecha <input type="date" name="training_date" min="<?= esc($today, 'attr') ?>" required></label>
       <label>Hora de inicio <input type="time" name="starts_at" value="16:30" required></label>
       <label>Hora de finalización <input type="time" name="ends_at" value="18:00" required></label>
       <label>Instalación o lugar <input type="text" name="location_name" maxlength="120" minlength="3" placeholder="Cancha de entrenamiento" required></label>
