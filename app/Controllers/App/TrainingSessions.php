@@ -187,10 +187,29 @@ final class TrainingSessions extends BaseController
             'statusHistory' => $db->table('training_session_status_history')
                 ->select('from_status, to_status, changed_at')
                 ->where('session_id', $id)->orderBy('id', 'DESC')->get()->getResultArray(),
-            'attendanceTotals' => $db->table('training_attendance')
-                ->select('attendance_status, COUNT(id) AS quantity')
-                ->where('session_id', $id)->groupBy('attendance_status')->get()->getResultArray(),
+            'attendanceTotals' => $this->getScopedAttendanceTotals($db, $id, $supervisor, $ids),
         ]);
+    }
+
+    /** Total counts must never reveal athletes outside coach categories. */
+    private function getScopedAttendanceTotals(
+        \CodeIgniter\Database\BaseConnection $db,
+        int $sessionId,
+        bool $supervisor,
+        array $categoryIds,
+    ): array {
+        $query = $db->table('training_attendance')
+            ->select('attendance_status, COUNT(id) AS quantity')
+            ->where('session_id', $sessionId);
+
+        if (! $supervisor) {
+            if ($categoryIds === []) {
+                return [];
+            }
+            $query->whereIn('sports_category_id', $categoryIds);
+        }
+
+        return $query->groupBy('attendance_status')->get()->getResultArray();
     }
 
     public function changeStatus(int $sessionId): RedirectResponse|ResponseInterface
