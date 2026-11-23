@@ -4,13 +4,13 @@ Proyecto integral de **sitio web público** y **portal privado** de gestión de 
 
 ## Estado actual
 
-- Rama en desarrollo: `feature/inc-001-fundamentos`.
+- Rama de desarrollo vigente: `feature/inc-004-entrenamientos-asistencia` (PR #4 en borrador, encadenado a INC-001–INC-003).
 - Base oficial **CodeIgniter 4 App Starter** incorporada (framework instalado mediante Composer).
 - Primera portada institucional responsive en español: `app/Views/public/home.php`.
-- Estilos y tokens iniciales: `public/assets/css/academia.css` (CSS base provisional; integración Tailwind pendiente).
+- Sistema visual en evolución: `public/assets/css/academia.css`, `editorial.css`, `portal.css` y `experience.css`; primera integración progresiva de Tailwind v4 CLI preparada en `resources/css/tailwind.css`.
 - Arquitectura, reglas y roadmap documentados en `docs/`.
 - **En la rama, sin validar en WAMP:** configuración CodeIgniter Shield, login institucional, catálogo de roles/permisos, rutas protegidas `/app`, migraciones `persons` y `audit_logs`, modelos y primer panel privado.
-- **Pendiente:** instalación/verificación de Shield y migraciones, invitaciones por correo, administración de permisos, pruebas y controles por atleta/categoría. No desplegar en producción.
+- **Pendiente:** QA integral, revisión visual móvil, publicación condicionada de fotografías y cierre formal de incrementos. No desplegar en producción.
 
 ## Instalación y pruebas locales
 
@@ -33,3 +33,20 @@ PHP 8.2+ / CodeIgniter 4.7, MySQL, Tailwind CSS (siguiente fase), HTML5 y JavaSc
 ## Seguridad
 
 No subir `.env`, credenciales, archivos del directorio `writable` ni información real de menores. El directorio público del servidor es **`public/`**, no la raíz del repositorio.
+
+## Interfaz visual y galería
+
+El sitio público incorpora una nueva composición editorial y galería preparada para imágenes previamente autorizadas; por defecto **no publica fotografías de menores**. Consultar `docs/diseno/REVISION-UI-UX-2026-11-22.md` para selección de fotografías, autorización de imagen, licencia del fotógrafo y carga segura de medios.
+
+En el portal, el dashboard ejecutivo, navbar y los estilos comunes se adaptan a los permisos del usuario. La ocultación de enlaces no sustituye la autorización del backend.
+
+### Tailwind CSS v4 (opcional durante transición)
+
+```powershell
+npm install
+npm run css:build
+# Para desarrollo continuo:
+npm run css:dev
+```
+
+Los layouts cargan el CSS compilado localmente si existe; los estilos clásicos funcionan sin compilar Tailwind mientras migramos. No usar el CDN Play en producción.
