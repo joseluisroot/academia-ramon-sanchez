@@ -122,6 +122,46 @@ final class TrainingSessions extends BaseController
 
             $athletes = $rosterQuery->orderBy('c.code')->orderBy('a.last_name')->orderBy('a.first_name')
                 ->get()->getResultArray();
+
+            // Legacy: sessions closed before roster migration have no snapshot.
+            // Recover only actual attendance rows; never invent athletes/absences.
+            // If the historical category is NULL, include that mark only when
+            // the session had exactly one category. Otherwise leave it for
+            // administrator review rather than assigning an unproven category.
+            $rosterCount = $db->table('training_session_roster')
+                ->where('session_id', $id)->countAllResults();
+
+            if ($rosterCount === 0) {
+                $historicalQuery = $db->table('training_attendance ta')
+                    ->select('a.id, a.first_name, a.last_name, c.code AS category_code, ta.attendance_status')
+                    ->join('athletes a', 'a.id = ta.athlete_id')
+                    ->join('sports_categories c', 'c.id = ta.sports_category_id')
+                    ->where('ta.session_id', $id);
+
+                if ($ids === []) {
+                    $historicalQuery->where('ta.id', 0);
+                } else {
+                    $historicalQuery->whereIn('ta.sports_category_id', $ids);
+                }
+
+                $athletes = $historicalQuery->orderBy('c.code')->orderBy('a.last_name')
+                    ->orderBy('a.first_name')->get()->getResultArray();
+
+                if ($supervisor && count($categories) === 1) {
+                    // An unclassified legacy mark can be displayed in the only
+                    // session category, but it remains NULL in persistent data.
+                    $legacy = $db->table('training_attendance ta')
+                        ->select('a.id, a.first_name, a.last_name, ta.attendance_status')
+                        ->join('athletes a', 'a.id = ta.athlete_id')
+                        ->where('ta.session_id', $id)
+                        ->where('ta.sports_category_id IS NULL', null, false)
+                        ->get()->getResultArray();
+                    foreach ($legacy as $entry) {
+                        $entry['category_code'] = $categories[0]['category_code'] . ' (sin verificar)';
+                        $athletes[] = $entry;
+                    }
+                }
+            }
         } elseif ($session['status'] === 'cancelled') {
             $athletes = [];
         } else {
@@ -143,6 +183,7 @@ final class TrainingSessions extends BaseController
             'canRecord' => $session['status'] === 'scheduled' && (string) $session['training_date'] <= date('Y-m-d'),
             'canClose' => $supervisor && $session['status'] === 'scheduled',
             'historicalRoster' => $session['status'] === 'completed',
+            'legacyRoster' => $session['status'] === 'completed' && $rosterCount === 0,
             'statusHistory' => $db->table('training_session_status_history')
                 ->select('from_status, to_status, changed_at')
                 ->where('session_id', $id)->orderBy('id', 'DESC')->get()->getResultArray(),
