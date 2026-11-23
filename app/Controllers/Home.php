@@ -13,6 +13,9 @@ class Home extends BaseController
 
         if ($config->approvedForPublication) {
             foreach ($config->photos as $photo) {
+                if (($photo['approved'] ?? false) !== true) {
+                    continue;
+                }
                 $file = (string) ($photo['file'] ?? '');
                 // The filenames come only from the server-side curated catalog.
                 if ($file === '' || basename($file) !== $file || ! preg_match('/^[a-z0-9-]+\\.webp$/', $file)) {
