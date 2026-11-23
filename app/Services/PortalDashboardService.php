@@ -32,7 +32,7 @@ final class PortalDashboardService
             }
             $sessions->where('s.status', 'scheduled');
             $scheduled = $coach
-                ? (int) $sessions->select('COUNT(DISTINCT s.id) AS total', false)->get()->getRow('total')
+                ? (int) ($sessions->select('COUNT(DISTINCT s.id) AS total', false)->get()->getRowArray()['total'] ?? 0)
                 : (int) $sessions->countAllResults();
 
             $athletes = $db->table('athletes a')->where('a.status', 'active');
