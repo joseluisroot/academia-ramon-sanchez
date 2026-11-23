@@ -239,6 +239,20 @@ final class TrainingSessionService
 
             $existing = $db->table('training_attendance')->where('session_id', $sessionId)
                 ->where('athlete_id', $athleteId)->get()->getRowArray();
+            if ($existing !== null) {
+                // A change in athlete category after the original marking must
+                // never silently reassign or let another coach edit that mark.
+                $originalCategory = $existing['sports_category_id'] === null
+                    ? null : (int) $existing['sports_category_id'];
+                if ($originalCategory === null || $originalCategory !== (int) $athlete['sports_category_id']) {
+                    throw new DomainException('La marcación pertenece a una categoría histórica distinta o no verificada. Solicita revisión a dirección deportiva.');
+                }
+                if (! CoachCategoryScopeService::isSupervisor($actor)
+                    && ! in_array($originalCategory, CoachCategoryScopeService::allowedCategoryIds($actor), true)) {
+                    throw new DomainException('No puedes modificar una marcación fuera de tus categorías asignadas.');
+                }
+            }
+
             $now = TrainingClock::nowUtc();
 
             if ($existing === null) {
@@ -255,7 +269,7 @@ final class TrainingSessionService
                     throw new DomainException('La asistencia ya tiene ese estado.');
                 }
                 $ok = $db->table('training_attendance')->where('id', (int) $existing['id'])
-                    ->update(['attendance_status' => $status, 'sports_category_id' => $existing['sports_category_id'] ?? (int) $athlete['sports_category_id'], 'recorded_by' => (int) $actor->id, 'updated_at' => $now]);
+                    ->update(['attendance_status' => $status, 'recorded_by' => (int) $actor->id, 'updated_at' => $now]);
             }
 
             if (! $ok) {
