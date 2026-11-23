@@ -101,3 +101,16 @@ Abrir `http://localhost:8080/app/entrenamientos` con cuenta administradora. Crea
 - **Pendiente antes de cerrar INC-004:** reglas de captura en fecha efectiva de la sesión, altas/bajas tardías, política de reapertura, pruebas de datos antiguos, concurrencia y seguridad. Los reportes actualmente cuentan solo marcaciones verificadas de sesiones finalizadas.
 
 **Validación sugerida:** crear sesión ficticia de hoy, marcar asistencia y finalizar; comprobar plantilla. Posteriormente cambiar categoría o estado de un atleta ficticio y verificar que el detalle cerrado muestra la categoría histórica. No hacer pruebas irreversibles con atletas reales.
+
+
+## Incidencia INC-004-HIS-001 — asistencia y navegación del portal (22/11/2026)
+
+El usuario mostró captura de una sesión U9 finalizada con una marca **Presente: 1**, y la fila del atleta confirma **Presente**. La escritura de asistencia se evidencia en pantalla y en la base de datos, pero el encabezado **«Categoría actual»** señala que la pantalla capturada no corresponde a la última plantilla histórica ya subida. También se observó cierre almacenado el 23/11 a las 02:34, compatible con el día 22/11 a las 20:34 en El Salvador si el sello técnico se almacena en UTC.
+
+**Corrección de compatibilidad:** para sesiones cerradas antes de activar `training_session_roster`, el detalle recupera marcaciones existentes por categoría histórica cuando se conoce, sin inventar roster ni ausencias. Si la categoría antigua es nula, solo en sesiones de **una única categoría** se permite visualizar la marca con la etiqueta «sin verificar» sin modificar la base de datos. Se indica al usuario el estado de registro histórico. Se aisló además el resumen agregado de asistencias para que un entrenador de una categoría no vea totales de otra en sesiones mixtas.
+
+**Zona horaria:** `TrainingClock` usa el día deportivo `America/El_Salvador` para decidir fechas y el momento actual UTC para nuevos sellos técnicos, mostrando cambios de estado en hora local. Las marcas legadas con zona de origen incierta deben verificarse antes de conversiones masivas; no se cambia el valor persistido.
+
+**Navegación:** se entrega un primer panel `/app` con secciones reales por perfil, más enlaces persistentes filtrados por permiso; el dashboard completo se registró en UX-PL-007 y roadmap.
+
+**Validación:** actualizar rama, limpiar caché de navegación si procede, recargar la sesión finalizada y verificar encabezado/estado. No volver a registrar la asistencia existente ni editar filas directamente para «corregir» la vista.
