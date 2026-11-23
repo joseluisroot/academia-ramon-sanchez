@@ -100,3 +100,10 @@ Se reemplaza el encabezado del layout privado por una navegación institucional 
 - No sustituye controles de servidor y no muestra acciones futuras que aún no existan.
 
 Pruebas de aceptación en `docs/incrementos/INC-004-entrenamientos-asistencia/pruebas-pendientes.md`. La navegación puede perfeccionarse con el diseño de dashboards definitivos de UX-PL-007.
+
+
+## Prioridad visual transversal — revisión editorial y sistema de diseño (22/11/2026)
+
+A solicitud de la dirección del proyecto se realizó auditoría del código visual público/privado, se añadió una primera capa editorial, un sistema de refinamiento común y se preparó Tailwind CSS v4 CLI para adopción progresiva. Se habilitó la galería con autorización por fotografía y bandera global, desactivada por defecto. El material recibido **no** se publica en el repositorio antes de verificar los derechos de niños y fotógrafo.
+
+Revisión completa, mapa de archivos, criterios de privacidad y pruebas en `docs/diseno/REVISION-UI-UX-2026-11-22.md`. Mantener el PR #4 en borrador hasta verificar estos cambios en WAMP y completar QA del INC-004.
