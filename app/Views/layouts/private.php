@@ -86,7 +86,12 @@
             <?php foreach ($section['items'] as $item): ?>
               <?php
                 $itemPath = trim($item['url'], '/');
-                $activeItem = $currentPortalPath === $itemPath || str_starts_with($currentPortalPath, $itemPath . '/');
+                $activeItem = $currentPortalPath === $itemPath;
+              // Deep pages keep their parent section selected without marking
+              // the parent link as the current page.
+              if (! $activeItem && $itemPath === 'app/entrenamientos') {
+                  $activeItem = preg_match('~^app/entrenamientos/[0-9]+$~', $currentPortalPath) === 1;
+              }
               ?>
               <a href="<?= esc(site_url($item['url']), 'attr') ?>" class="<?= $activeItem ? 'is-current' : '' ?>" <?= $activeItem ? 'aria-current="page"' : '' ?>>
                 <span><?= esc($item['label']) ?></span><span aria-hidden="true">↗</span>
