@@ -105,14 +105,35 @@ final class TrainingSessions extends BaseController
 
         $ids = array_map(static fn (array $row): int => (int) $row['sports_category_id'], $categories);
 
-        $athletes = $ids === [] ? [] : $db->table('athletes a')
-            ->select('a.id, a.first_name, a.last_name, c.code AS category_code, ta.attendance_status')
-            ->join('sports_categories c', 'c.id = a.sports_category_id')
-            ->join('training_attendance ta', 'ta.athlete_id = a.id AND ta.session_id = ' . (int) $id, 'left')
-            ->where('a.status', 'active')
-            ->whereIn('a.sports_category_id', $ids)
-            ->orderBy('c.code')->orderBy('a.last_name')->orderBy('a.first_name')
-            ->get()->getResultArray();
+        if ($session['status'] === 'completed') {
+            // Immutable roster at closure, not the athlete's current category/status.
+            $rosterQuery = $db->table('training_session_roster tr')
+                ->select('a.id, a.first_name, a.last_name, c.code AS category_code, ta.attendance_status')
+                ->join('athletes a', 'a.id = tr.athlete_id')
+                ->join('sports_categories c', 'c.id = tr.sports_category_id')
+                ->join('training_attendance ta', 'ta.session_id = tr.session_id AND ta.athlete_id = tr.athlete_id', 'left')
+                ->where('tr.session_id', $id);
+
+            if ($ids === []) {
+                $rosterQuery->where('tr.id', 0);
+            } else {
+                $rosterQuery->whereIn('tr.sports_category_id', $ids);
+            }
+
+            $athletes = $rosterQuery->orderBy('c.code')->orderBy('a.last_name')->orderBy('a.first_name')
+                ->get()->getResultArray();
+        } elseif ($session['status'] === 'cancelled') {
+            $athletes = [];
+        } else {
+            $athletes = $ids === [] ? [] : $db->table('athletes a')
+                ->select('a.id, a.first_name, a.last_name, c.code AS category_code, ta.attendance_status')
+                ->join('sports_categories c', 'c.id = a.sports_category_id')
+                ->join('training_attendance ta', 'ta.athlete_id = a.id AND ta.session_id = ' . (int) $id, 'left')
+                ->where('a.status', 'active')
+                ->whereIn('a.sports_category_id', $ids)
+                ->orderBy('c.code')->orderBy('a.last_name')->orderBy('a.first_name')
+                ->get()->getResultArray();
+        }
 
         return view('app/training/show', [
             'title' => 'Asistencia · Academia Ramón Sánchez',
@@ -121,6 +142,7 @@ final class TrainingSessions extends BaseController
             'athletes' => $athletes,
             'canRecord' => $session['status'] === 'scheduled' && (string) $session['training_date'] <= date('Y-m-d'),
             'canClose' => $supervisor && $session['status'] === 'scheduled',
+            'historicalRoster' => $session['status'] === 'completed',
             'statusHistory' => $db->table('training_session_status_history')
                 ->select('from_status, to_status, changed_at')
                 ->where('session_id', $id)->orderBy('id', 'DESC')->get()->getResultArray(),
