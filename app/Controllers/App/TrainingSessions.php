@@ -7,6 +7,7 @@ namespace App\Controllers\App;
 use App\Controllers\BaseController;
 use App\Services\TrainingSessionService;
 use App\Services\CoachCategoryScopeService;
+use App\Services\TrainingClock;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 use DomainException;
@@ -42,6 +43,7 @@ final class TrainingSessions extends BaseController
         return view('app/training/index', [
             'title' => 'Entrenamientos · Academia Ramón Sánchez',
             'canSchedule' => $supervisor,
+            'today' => TrainingClock::today(),
             'sessions' => $query
                 ->orderBy('s.training_date', 'DESC')->orderBy('s.id', 'DESC')->limit(40)
                 ->get()->getResultArray(),
@@ -182,7 +184,7 @@ final class TrainingSessions extends BaseController
             'session' => $session,
             'categories' => $categories,
             'athletes' => $athletes,
-            'canRecord' => $session['status'] === 'scheduled' && (string) $session['training_date'] <= date('Y-m-d'),
+            'canRecord' => $session['status'] === 'scheduled' && (string) $session['training_date'] <= TrainingClock::today(),
             'canClose' => $supervisor && $session['status'] === 'scheduled',
             'historicalRoster' => $session['status'] === 'completed',
             'legacyRoster' => $session['status'] === 'completed' && $rosterCount === 0,
