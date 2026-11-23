@@ -58,9 +58,12 @@
   <?php if (! $canRecord): ?>
     <p class="portal-muted">La asistencia está bloqueada si la fecha aún no ha llegado o si la sesión fue finalizada o cancelada.</p>
   <?php endif ?>
+  <?php if ($historicalRoster): ?>
+    <p class="portal-muted">Plantilla congelada al finalizar esta sesión. Los cambios posteriores de categoría o estado del atleta no alteran este listado. Los atletas sin marca siguen como «Sin marcar».</p>
+  <?php endif ?>
   <div class="table-scroll">
     <table class="access-table">
-      <thead><tr><th scope="col">Atleta</th><th scope="col">Categoría actual</th><th scope="col">Asistencia registrada</th><th scope="col">Actualizar</th></tr></thead>
+      <thead><tr><th scope="col">Atleta</th><th scope="col"><?= $historicalRoster ? 'Categoría histórica' : 'Categoría actual' ?></th><th scope="col">Asistencia registrada</th><th scope="col">Actualizar</th></tr></thead>
       <tbody>
         <?php foreach ($athletes as $athlete): ?>
           <tr>
