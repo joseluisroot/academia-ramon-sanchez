@@ -1,25 +1,30 @@
 <?= $this->extend('layouts/public') ?>
 <?= $this->section('content') ?>
 
-<section class="hero">
-    <div class="container hero-grid">
+<section class="hero editorial-hero">
+    <div class="container hero-grid editorial-hero-grid">
         <div class="hero-content">
             <span class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> ACADEMIA INTEGRAL DE FÚTBOL PROFESOR RAMÓN SÁNCHEZ</span>
-            <h1>Formamos futbolistas.<br><em>Impulsamos valores.</em></h1>
-            <p>Un proyecto pedagógico de la comunidad Sitio del Niño, comprometido con la formación personal, social y deportiva de niños y jóvenes.</p>
+            <h1>El futuro se forma<br><em>jugando juntos.</em></h1>
+            <p>Formación futbolística y humana desde Sitio del Niño. Un espacio para aprender, competir con respeto y crecer como equipo.</p>
             <div class="hero-actions">
-                <a class="btn btn-primary" href="#contacto">Conoce la primera clase <span aria-hidden="true">↗</span></a>
-                <a class="btn btn-outline" href="#academia">Conoce nuestra academia</a>
+                <a class="btn btn-primary" href="#contacto">Conoce nuestra academia <span aria-hidden="true">↗</span></a>
+                <a class="btn btn-outline" href="#academia">Nuestra historia</a>
             </div>
-            <div class="hero-tags" aria-label="Valores formativos">
-                <span>Compañerismo</span><span>Respeto</span><span>Juego limpio</span>
+            <div class="hero-tags" aria-label="Nuestros valores">
+                <span>Disciplina</span><span>Compañerismo</span><span>Juego limpio</span>
             </div>
         </div>
-        <div class="hero-visual" aria-hidden="true">
-            <div class="hero-orbit orbit-one"></div>
-            <div class="hero-orbit orbit-two"></div>
-            <div class="sport-symbol">⚽</div>
-            <div class="floating-note"><strong>5 categorías</strong><small>U7 · U9 · U11 · U13 · U17</small></div>
+        <div class="editorial-hero-art">
+            <?php if ($publicPhotos !== []): ?>
+                <img class="editorial-hero-photo" src="<?= esc($publicPhotos[0]['src'], 'attr') ?>" alt="<?= esc($publicPhotos[0]['alt'], 'attr') ?>" width="900" height="670" fetchpriority="high" decoding="async">
+            <?php else: ?>
+                <div class="editorial-hero-brand" aria-hidden="true">
+                    <img src="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>" alt="" width="205" height="205">
+                    <span>FORMACIÓN · RESPETO · EQUIPO</span>
+                </div>
+            <?php endif ?>
+            <div class="editorial-hero-note"><span class="editorial-dot" aria-hidden="true"></span> COMPROMETIDOS CON EL FÚTBOL FORMATIVO</div>
         </div>
     </div>
 </section>
@@ -88,6 +93,26 @@
         </div>
     </div>
 </section>
+
+<?php if ($publicPhotos !== []): ?>
+<section id="galeria" class="section editorial-gallery-section" aria-labelledby="gallery-heading">
+    <div class="container">
+        <div class="editorial-gallery-top">
+            <div><span class="section-kicker">NUESTRA ACADEMIA EN ACCIÓN</span><h2 id="gallery-heading">Historias que se viven <em>en la cancha.</em></h2></div>
+            <p>Momentos de aprendizaje, trabajo en equipo y experiencias que fortalecen nuestra comunidad deportiva.</p>
+        </div>
+        <div class="editorial-gallery">
+            <?php foreach ($publicPhotos as $index => $photo): ?>
+                <figure class="editorial-gallery-item <?= $index === 0 ? 'editorial-gallery-featured' : '' ?>">
+                    <img src="<?= esc($photo['src'], 'attr') ?>" alt="<?= esc($photo['alt'], 'attr') ?>" loading="lazy" decoding="async" width="1100" height="760">
+                    <figcaption><span><?= esc($photo['caption']) ?></span><small>ACADEMIA RAMÓN SÁNCHEZ</small></figcaption>
+                </figure>
+            <?php endforeach ?>
+        </div>
+        <p class="editorial-photo-note">Fotografías compartidas con autorización de publicación y reconocimiento de los derechos correspondientes.</p>
+    </div>
+</section>
+<?php endif ?>
 
 <section id="fundamentacion" class="section">
     <div class="container section-grid">
