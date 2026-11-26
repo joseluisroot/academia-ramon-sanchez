@@ -74,3 +74,57 @@ Un corte aislado de prelanzamiento, sin migraciones ni cambios en los datos de l
 El diseño se simplificó a un solo impacto visual: **escudo oficial + «Algo grande está por comenzar» + comunidad deportiva + tres valores**. No se muestran fotografías, galerías, menús de navegación ni funcionalidades del sitio final.
 
 Para comprobarlo en WAMP, cambiar a `feature/prelanzamiento-web`, actualizar y abrir `http://localhost:8080/`. Si todavía aparece el sitio completo, revisar que la copia local esté en esa rama, que no exista `academy.launchMode = full` en el archivo `.env` y que el navegador no esté mostrando caché anterior. No es necesario PHP o MySQL en HostGator si se sube solamente la versión estática.
+
+
+## SEO y vista previa en redes sociales — 26/11/2026
+
+**URL canónica establecida para el prelanzamiento:** `https://academiaramonsanchez.com/`. Confirmar que este dominio sea el principal y que el SSL responda antes de dar por validado el despliegue.
+
+La versión HTML estática (`deploy/prelaunch/index.html`) y la vista CI4 (`app/Views/public/prelaunch.php`) incluyen:
+- `lang="es-SV"`, título único y meta description fiel a la identidad.
+- `rel="canonical"` absoluto HTTPS; `robots=index,follow,max-image-preview:large`.
+- Open Graph completo: `og:type`, `og:locale`, `og:site_name`, `og:url`, título, descripción, imagen absoluta HTTPS, tipo JPEG, dimensiones 1200×630 y texto alternativo.
+- `twitter:card=summary_large_image` y título, descripción e imagen para X; las plataformas que interpretan Open Graph pueden reutilizar el mismo arte.
+- JSON-LD `SportsOrganization` con nombre institucional, disciplina, ubicación general y logo. No se declaran cuentas sociales, teléfonos, emails, premios o fechas sin confirmación.
+- Archivos estáticos `robots.txt` y `sitemap.xml` que enumeran **únicamente la raíz del prelanzamiento**.
+
+**Archivo adicional obligatorio para que aparezca la miniatura en WhatsApp/Facebook:**
+
+```text
+assets/img/social/prelanzamiento-ramon-sanchez-v1.jpg
+```
+
+Se preparó aparte en el paquete de imagen social adjunto a esta entrega; **no se incluye como binario en la rama GitHub**. Es necesario **subirlo manualmente** al *document root* del dominio, manteniendo exactamente el nombre y la ruta indicados. No reemplazarlo con el SVG porque varias aplicaciones no usan SVG como miniatura OG. El archivo debe responder **200 OK** sin sesión, bloqueo de bots ni redirección a `index.html`, con tipo `image/jpeg`.
+
+### Archivos requeridos en la raíz del dominio (solo micrositio estático)
+
+```text
+<document-root>/
+├── index.html                          ← deploy/prelaunch/index.html
+├── robots.txt                          ← deploy/prelaunch/robots.txt
+├── sitemap.xml                         ← deploy/prelaunch/sitemap.xml
+└── assets/
+    ├── css/prelaunch.css               ← public/assets/css/prelaunch.css
+    └── img/
+        ├── brand/escudo-oficial.svg     ← public/assets/img/brand/escudo-oficial.svg
+        └── social/prelanzamiento-ramon-sanchez-v1.jpg ← paquete de imagen social
+```
+
+No subir `app/`, `vendor/`, `.env`, `writable/`, backups ni expediente de menores para esta etapa.
+
+### Checklist técnica de lanzamiento
+
+- [ ] `https://academiaramonsanchez.com/` carga y su código fuente contiene las etiquetas `og:*`, `twitter:*`, canonical y JSON-LD.
+- [ ] `https://academiaramonsanchez.com/assets/img/social/prelanzamiento-ramon-sanchez-v1.jpg` responde 200, es JPEG, mide 1200×630 y carga sin inicio de sesión.
+- [ ] `https://academiaramonsanchez.com/robots.txt` y `/sitemap.xml` responden 200.
+- [ ] HTTPS configurado y versión www/no-www consolidada con redirección 301 a la canónica; configurar esto en cPanel/host si procede.
+- [ ] Portada visible en móvil y escritorio; los enlaces internos privados siguen sin estar desplegados.
+- [ ] Validar URL mediante [Meta Sharing Debugger](https://developers.facebook.com/tools/debug/); forzar **Scrape Again** cuando la imagen previa está cacheada.
+- [ ] Compartir la URL en un chat de WhatsApp de prueba y en Facebook; comprobar imagen, título, descripción y destino. Instagram no garantiza tarjeta de vista previa en todas sus superficies.
+- [ ] Revisar la portada con [Google Rich Results Test](https://search.google.com/test/rich-results) o [Schema Validator](https://validator.schema.org/) y verificar datos estructurados. Su presencia no garantiza un resultado enriquecido.
+- [ ] Agregar propiedad del dominio y sitemap a Google Search Console solo si se desea indexar la página de expectativa; no subir contenidos internos aún.
+
+**Nota:** etiquetas correctas no obligan a una plataforma a mostrar una imagen. La miniatura final depende del acceso público de los bots, formato/medidas, caché y reglas propias de la red. Tampoco garantizan posiciones SEO.
+
+### Actualizar la vista previa tras lanzar oficialmente
+Al sustituir el micrositio, actualizar `og:title`, `og:description`, `og:image`, JSON-LD y sitemap para el contenido real. Usar nombre de archivo nuevo para la imagen OG y actualizar las etiquetas para evitar cachés obsoletas.
