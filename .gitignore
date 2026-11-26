@@ -124,3 +124,8 @@ _modules/*
 
 /results/
 /phpunit.xml
+
+# Modern frontend build (generated locally)
+/node_modules/
+/public/assets/css/tailwind.css
+/public/assets/css/tailwind.css.map

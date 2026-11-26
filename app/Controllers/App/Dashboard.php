@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controllers\App;
 
 use App\Controllers\BaseController;
+use App\Services\PortalNavigationService;
+use App\Services\PortalDashboardService;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class Dashboard extends BaseController
@@ -25,6 +27,8 @@ class Dashboard extends BaseController
             'title'    => 'Panel principal · Academia Ramón Sánchez',
             'username' => (string) ($user->username ?? 'Usuario'),
             'groups'   => $user->getGroups(),
+            'sections' => PortalNavigationService::sections($user),
+            'overview' => PortalDashboardService::build($user),
         ]);
     }
 }

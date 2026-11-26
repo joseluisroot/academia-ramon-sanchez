@@ -92,3 +92,25 @@ Cualquier propuesta de modernización añadida aquí **no interrumpe por sí sol
 **Estado:** parking lot — requerimiento ya identificado, pendiente de modelado, validación institucional, implementación y pruebas de seguridad. No interrumpir el flujo de incrementos por esta mejora; reconsiderar el alcance antes de producción porque afecta a las autorizaciones sobre datos de menores.
 
 **Pruebas futuras:** verificar responsable sin correo; cuenta no creada; invitación posterior; ambos padres con cuentas distintas; uno sin cuenta; revocación del acceso sin borrar parentesco; no acceso entre familias.
+
+
+## UX-PL-007 — Dashboard y menú integral según perfil
+
+**Origen:** consulta del usuario el 22/11/2026 al comprobar el expediente de un entrenamiento finalizado. La ruta `/app` incluía tarjetas no funcionales y faltaban enlaces claros a entrenamientos, asistencia y nuevos módulos.
+
+**Objetivo:** transformar la plataforma en espacios de trabajo distintos para administración/fundadores, dirección deportiva, entrenadores, padres/tutores, utilero, Junta/Tesorería, delegados y colaboradores. Cada perfil necesita menú, tarjetas, indicadores y pendientes de su ámbito, con diseño responsive y navegación accesible.
+
+**Primer paso implementado:** `PortalNavigationService` ofrece enlaces a módulos existentes basándose en permisos efectivos; `/app` y el menú privado reutilizan el catálogo. Se evita mostrar botones a módulos futuros hasta que existan.
+
+**Evolución planificada:** menú lateral o contextual responsive, agrupaciones por función, breadcrumbs, estados activos, vistas de resumen, métricas por rol y accesos rápidos; trabajar gradualmente conforme se habiliten módulos INC-005 a INC-012.
+
+**Reglas de seguridad:** no confiar únicamente en ocultar enlaces. Cada endpoint mantiene permisos y comprobación del alcance de categoría/atleta/familia. Roles múltiples combinan solo permisos efectivamente autorizados; Junta no ve mensualidades; padres no ven otros atletas.
+
+**QA pendiente:** menú para entrenador con dos categorías, padre sin hijos verificados, fundador, dirección deportiva, utilero, Junta y responsable de invitaciones; probar rutas directas no autorizadas y visualización móvil. Validar también el estado vacío sin permisos operativos.
+
+**Estado:** requerimiento institucional aceptado; navegación inicial implementada en INC-004; dashboard completo en parking lot transversal para ejecución evolutiva.
+
+
+### Avance del UX-PL-007 (22/11/2026)
+
+Se adelantó el **primer corte ejecutivo de `/app`**, motivado por la necesidad real de acceder profesionalmente a los módulos creados. Incluye hero institucional, indicadores de operaciones autorizadas, tarjetas de trabajo, acciones contextuales, diseño adaptable y estado vacío. Quedan en parking lot los dashboards avanzados con alertas personalizadas, gráficos, tareas pendientes, calendarios y widgets por función, además de un menú lateral/colapsable definitivo y análisis de métricas de negocio futuras.

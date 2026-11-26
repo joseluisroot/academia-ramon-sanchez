@@ -1,0 +1,14 @@
+{
+  "name": "academia-ramon-sanchez-ui",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Sistema de diseño de la Academia Ramón Sánchez (compilación estática, sin runtime frontend)",
+  "scripts": {
+    "css:dev": "tailwindcss -i ./resources/css/tailwind.css -o ./public/assets/css/tailwind.css --watch",
+    "css:build": "tailwindcss -i ./resources/css/tailwind.css -o ./public/assets/css/tailwind.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^4.3.0",
+    "@tailwindcss/cli": "^4.3.0"
+  }
+}

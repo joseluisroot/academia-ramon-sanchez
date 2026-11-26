@@ -58,3 +58,52 @@ Las propuestas transversales sugeridas durante el INC-003 se registran en [parki
 **Dependencias:** UX-PL-006 (verificación de parentesco independiente del acceso digital); versión y texto formal aprobado para cada consentimiento; autenticación fuerte del firmante; controles de representación y posibles conflictos entre responsables; autorización específica para publicar. No generar PDF final de consentimiento sin plantilla aprobada ni afirmar validez jurídica automática.
 
 **Estado:** requisito de secuencia registrado, implementación diferida a INC-011; no interrumpir INC-004.
+
+
+## Navegación y dashboard por perfil — requisito transversal aprobado (22/11/2026)
+
+**Necesidad reportada:** la ruta privada `/app` no da acceso útil a todos los módulos que se van construyendo. El usuario solicita un dashboard especializado para cada perfil, con herramientas, indicadores, accesos y menú acordes a su función.
+
+**Aplicación progresiva:**
+- **Corrección inmediata dentro de INC-004:** catálogo central de navegación por capacidades y perfil, enlaces solo a módulos ya disponibles, panel `/app` con tarjetas reales y navegación persistente en el layout privado. Es navegación, **no** reemplaza filtros de rutas, autorización del servicio, aislamiento por categoría ni la verificación familiar.
+- **En cada INC-005 a INC-012:** integrar nuevas funciones al catálogo de opciones conforme se implementen, según perfil institucional.
+- **Modernización transversal de UI/UX:** diseñar dashboards completos, métricas seguras, componentes responsive, jerarquía de tareas, alertas y accesos rápidos por rol. Se registra como **UX-PL-007**.
+- **INC-013:** QA de navegación y filtrado para roles múltiples, padres, utilero, entrenadores, dirección deportiva, Junta y administradores; comprobar que ocultar un menú no sea la única barrera de acceso.
+
+**Perfiles previstos:** fundadores/administradores, director deportivo, entrenadores con categorías asignadas, utilero, responsables familiares, delegado, miembros de Junta/Tesorería y colaboradores de comunicación. Mostrar solamente datos e indicadores del ámbito autorizado; **no** divulgar cobros ordinarios a miembros de Junta sin atribuciones, ni datos de otros menores.
+
+**Estado:** primera navegación contextual incorporada en INC-004; dashboard especializado con indicadores y tareas queda pendiente de diseño e implementación por incremento.
+
+
+## Panel ejecutivo contextual — primera versión funcional (22/11/2026)
+
+Se incorpora una mejora anticipada del portal `/app` por su impacto directo en la navegación cotidiana de los usuarios. El diseño se orienta a una academia deportiva institucional, moderna y profesional, con una experiencia distinta por perfil.
+
+- Encabezado institucional oscuro, escudo, jerarquía tipográfica, acciones principales y módulos operativos en tarjetas.
+- `PortalDashboardService`: indicadores reales y modestos de atletas activos, categorías y sesiones programadas **según permisos**; entrenador limitado a categorías asignadas, administrador/dirección con visión deportiva general, utilero con expedientes autorizados. Otros perfiles tienen resumen sin métricas no aprobadas.
+- La navegación sigue usando `PortalNavigationService`; enlaces solamente a acciones existentes. La vista **no** reemplaza la autorización de cada controlador.
+- No se inventan métricas financieras, valores de tesorería, porcentajes de asistencia ni cifras de menores fuera de cada ámbito.
+- Diseño responsive y estados vacíos. Los módulos INC-005–INC-012 agregarán sus tarjetas e indicadores cuando sus reglas de autorización estén implementadas.
+
+**Pendiente QA WAMP:** confirmar entrenador con dos categorías, dirección deportiva, fundador, utilero, padre y miembros de Junta; probar móviles y desempeño; no marcar como validado sin prueba del usuario.
+
+
+## Navegación institucional premium — ajuste visual del INC-004 (22/11/2026)
+
+La retroalimentación sobre el dashboard ejecutivo detectó que el navbar anterior (enlaces planos en una fila) no correspondía con la identidad visual profesional y elegante aprobada para la academia.
+
+Se reemplaza el encabezado del layout privado por una navegación institucional en dos niveles:
+- Franja de marca con escudo, identidad «Academia Ramón Sánchez», perfil de la sesión, acceso al sitio público y cierre de sesión.
+- Barra secundaria azul marino con «Panel principal» y menús agrupados por área funcional. Los desplegables se alimentan de `PortalNavigationService` y por tanto muestran exclusivamente las opciones permitidas al usuario.
+- Indicador visual de sección actual, estilos de foco y menú con `details/summary` operable por teclado, sin JavaScript obligatorio.
+- Diseño responsive: distribución de navegación en varias líneas para móviles y menús desplegables adaptados; no se agregan controles decorativos sin función.
+- No sustituye controles de servidor y no muestra acciones futuras que aún no existan.
+
+Pruebas de aceptación en `docs/incrementos/INC-004-entrenamientos-asistencia/pruebas-pendientes.md`. La navegación puede perfeccionarse con el diseño de dashboards definitivos de UX-PL-007.
+
+
+## Prioridad visual transversal — revisión editorial y sistema de diseño (22/11/2026)
+
+A solicitud de la dirección del proyecto se realizó auditoría del código visual público/privado, se añadió una primera capa editorial, un sistema de refinamiento común y se preparó Tailwind CSS v4 CLI para adopción progresiva. Se habilitó la galería con autorización por fotografía y bandera global, desactivada por defecto. El material recibido **no** se publica en el repositorio antes de verificar los derechos de niños y fotógrafo.
+
+Revisión completa, mapa de archivos, criterios de privacidad y pruebas en `docs/diseno/REVISION-UI-UX-2026-11-22.md`. Mantener el PR #4 en borrador hasta verificar estos cambios en WAMP y completar QA del INC-004.

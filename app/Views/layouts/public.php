@@ -7,7 +7,9 @@
     <meta name="theme-color" content="#071B49">
     <link rel="icon" type="image/svg+xml" href="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>">
     <title><?= esc($title ?? 'Academia Ramón Sánchez') ?></title>
+    <?php if (is_file(FCPATH . 'assets/css/tailwind.css')): ?><link rel="stylesheet" href="<?= esc(base_url('assets/css/tailwind.css'), 'attr') ?>"><?php endif ?>
     <link rel="stylesheet" href="<?= esc(base_url('assets/css/academia.css'), 'attr') ?>">
+    <link rel="stylesheet" href="<?= esc(base_url('assets/css/editorial.css'), 'attr') ?>">
 </head>
 <body>
 <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -22,9 +24,22 @@
             <a href="#mision-vision">Misión y visión</a>
             <a href="#categorias">Categorías</a>
             <a href="#beneficios">Formación</a>
+            <?php if (! empty($publicPhotos)): ?><a href="#galeria">Vida en la cancha</a><?php endif ?>
             <a class="nav-login" href="<?= esc(site_url('login'), 'attr') ?>">Ingresar</a>
             <a class="nav-cta" href="#contacto">Primera clase gratuita</a>
         </nav>
+        <details class="public-mobile-menu">
+            <summary aria-label="Abrir menú del sitio">Menú <span aria-hidden="true">☰</span></summary>
+            <nav class="public-mobile-list" aria-label="Menú móvil">
+                <a href="#academia">La academia</a>
+                <a href="#mision-vision">Misión y visión</a>
+                <a href="#categorias">Categorías</a>
+                <a href="#beneficios">Formación</a>
+                <?php if (! empty($publicPhotos)): ?><a href="#galeria">Vida en la cancha</a><?php endif ?>
+                <a href="#contacto">Solicitar información</a>
+                <a href="<?= esc(site_url('login'), 'attr') ?>">Ingresar al portal</a>
+            </nav>
+        </details>
     </div>
 </header>
 <main id="contenido">

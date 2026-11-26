@@ -1,58 +1,97 @@
 <?= $this->extend('layouts/private') ?>
 <?= $this->section('content') ?>
 
-<div class="portal-intro">
-  <span class="section-kicker">PLATAFORMA INTEGRAL</span>
-  <h1>Bienvenido al portal, <?= esc($username) ?>.</h1>
-  <p>Estás accediendo a un espacio privado de la Academia Ramón Sánchez. Los módulos se habilitarán conforme a tus permisos.</p>
-</div>
+<div class="executive-dashboard isolate">
+  <section class="executive-hero" aria-labelledby="executive-heading">
+    <div class="executive-hero-copy">
+      <span class="executive-eyebrow"><span class="executive-pulse" aria-hidden="true"></span> ACADEMIA RAMÓN SÁNCHEZ · PORTAL PRIVADO</span>
+      <div class="executive-greeting">Tu espacio de gestión</div>
+      <h1 id="executive-heading"><?= esc($overview['role']) ?></h1>
+      <p><?= esc($overview['subtitle']) ?></p>
+      <div class="executive-hero-actions">
+        <?php if ($overview['next'] !== null): ?>
+          <a class="executive-button executive-button-primary" href="<?= esc(site_url($overview['next']['url']), 'attr') ?>"><?= esc($overview['next']['label']) ?> <span aria-hidden="true">↗</span></a>
+        <?php endif ?>
+        <a class="executive-button executive-button-outline" href="#modulos">Explorar mis herramientas <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+    <div class="executive-hero-emblem" aria-hidden="true">
+      <img src="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>" alt="" width="170" height="170">
+      <span>DISCIPLINA · FORMACIÓN · EQUIPO</span>
+    </div>
+  </section>
 
-<div class="portal-panel">
-  <h2>Tu cuenta</h2>
-  <p><strong>Grupos asignados:</strong> <?= esc(implode(', ', $groups ?: ['Sin grupo'])) ?></p>
-  <p class="portal-muted">Por seguridad, esta vista no muestra información financiera ni expedientes de atletas. Los módulos de gestión se incorporarán en los siguientes incrementos.</p>
-</div>
-
-<?php if (auth()->user()?->can('users.assign')): ?>
-  <div class="portal-panel">
-    <h2>Administración de accesos</h2>
-    <p class="portal-muted">Como responsable designado, puedes asignar roles ordinarios con registro de auditoría.</p>
-    <a class="portal-action-link" href="<?= esc(site_url('app/accesos'), 'attr') ?>">Administrar accesos</a>
-    <a class="portal-action-link" href="<?= esc(site_url('app/invitaciones'), 'attr') ?>">Invitar usuarios</a>
+  <div class="executive-section-heading">
+    <div>
+      <span class="executive-label">RESUMEN OPERATIVO</span>
+      <h2>Panorama de tu actividad</h2>
+    </div>
+    <span class="executive-privacy"><span aria-hidden="true">●</span> Datos según tu perfil</span>
   </div>
-<?php endif ?>
 
-<?php if (auth()->user()?->can('inquiries.view')): ?>
-  <div class="portal-panel">
-    <h2>Atención a familias</h2>
-    <p class="portal-muted">Consulta las solicitudes de información recibidas desde el sitio web y registra las que ya fueron contactadas.</p>
-    <a class="portal-action-link" href="<?= esc(site_url('app/consultas'), 'attr') ?>">Ver consultas recibidas</a>
+  <?php if ($overview['metrics'] !== []): ?>
+    <div class="executive-metrics">
+      <?php foreach ($overview['metrics'] as $metric): ?>
+        <article class="executive-metric">
+          <span class="executive-metric-label"><?= esc($metric['label']) ?></span>
+          <strong class="executive-metric-value"><?= esc($metric['value']) ?></strong>
+          <small><?= esc($metric['note']) ?></small>
+        </article>
+      <?php endforeach ?>
+    </div>
+  <?php else: ?>
+    <div class="executive-empty-overview">
+      <div class="executive-empty-icon" aria-hidden="true">◎</div>
+      <div>
+        <strong>Un panel diseñado para tus funciones</strong>
+        <p>Los indicadores de tu área aparecerán conforme habilitemos sus módulos. Por ahora, accede directamente a tus herramientas autorizadas.</p>
+      </div>
+    </div>
+  <?php endif ?>
+
+  <div class="executive-section-heading" id="modulos">
+    <div>
+      <span class="executive-label">ACCESOS DE TRABAJO</span>
+      <h2>Tus herramientas</h2>
+    </div>
+    <span class="executive-section-count"><?= count($sections) ?> <?= count($sections) === 1 ? 'área disponible' : 'áreas disponibles' ?></span>
   </div>
-<?php endif ?>
 
-<?php if (auth()->user()?->can('athletes.manage')): ?>
-  <div class="portal-panel">
-    <h2>Expedientes deportivos</h2>
-    <p class="portal-muted">Registro administrativo de atletas, categorías y responsables. El acceso familiar se habilita únicamente tras verificar vínculos.</p>
-    <a class="portal-action-link" href="<?= esc(site_url('app/atletas'), 'attr') ?>">Gestionar atletas</a>
-    <?php if (auth()->user()?->can('family.links.verify')): ?>
-      <a class="portal-action-link" href="<?= esc(site_url('app/familias/verificar'), 'attr') ?>">Verificar familias</a>
-    <?php endif ?>
-  </div>
-<?php endif ?>
+  <?php if ($sections !== []): ?>
+    <div class="executive-modules">
+      <?php foreach ($sections as $index => $section): ?>
+        <article class="executive-module">
+          <div class="executive-module-header">
+            <span class="executive-module-number"><?= esc(str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT)) ?></span>
+            <span class="executive-module-status">Habilitado</span>
+          </div>
+          <h3><?= esc($section['title']) ?></h3>
+          <p><?= esc($section['description']) ?></p>
+          <div class="executive-module-links">
+            <?php foreach ($section['items'] as $item): ?>
+              <a href="<?= esc(site_url($item['url']), 'attr') ?>"><span><?= esc($item['label']) ?></span><span aria-hidden="true">↗</span></a>
+            <?php endforeach ?>
+          </div>
+        </article>
+      <?php endforeach ?>
+    </div>
+  <?php else: ?>
+    <div class="executive-empty-overview">
+      <div class="executive-empty-icon" aria-hidden="true">◌</div>
+      <div>
+        <strong>Aún no hay herramientas operativas habilitadas</strong>
+        <p>Tu cuenta tiene acceso al portal. La administración podrá ayudarte a revisar qué funciones corresponden a tu perfil.</p>
+      </div>
+    </div>
+  <?php endif ?>
 
-<?php if (auth()->user()?->inGroup('guardian')): ?>
-  <div class="portal-panel">
-    <h2>Mi equipo familiar</h2>
-    <p class="portal-muted">Consulta los atletas vinculados y verificados con tu cuenta.</p>
-    <a class="portal-action-link" href="<?= esc(site_url('app/mis-atletas'), 'attr') ?>">Ver mis atletas</a>
-  </div>
-<?php endif ?>
-
-<div class="portal-cards">
-  <article class="portal-card"><span aria-hidden="true">01</span><h3>Gestión deportiva</h3><p>Entrenamientos, convocatorias y resultados.</p><small>Próximamente</small></article>
-  <article class="portal-card"><span aria-hidden="true">02</span><h3>Administración</h3><p>Inscripciones, comprobantes y uniformes.</p><small>Próximamente</small></article>
-  <article class="portal-card"><span aria-hidden="true">03</span><h3>Comunicaciones</h3><p>Avisos y atención a familias.</p><small>Próximamente</small></article>
+  <aside class="executive-footnote">
+    <div>
+      <strong>Una plataforma para cada función de la academia.</strong>
+      <p>Los módulos se incorporan progresivamente. Tu panel muestra únicamente las opciones actualmente disponibles para tu cuenta.</p>
+    </div>
+    <span class="executive-footnote-mark" aria-hidden="true">RS</span>
+  </aside>
 </div>
 
 <?= $this->endSection() ?>

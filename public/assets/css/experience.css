@@ -1,0 +1,77 @@
+/* Academia Ramón Sánchez · Capa de refinamiento para todo el portal privado
+   Respeta los nombres heredados y centraliza acabados profesionales. */
+:root{
+  --private-bg:#f4f7fb;
+  --private-border:#dee7f1;
+  --private-ink:#0b2450;
+  --private-surface:#fff;
+  --private-muted:#61738d;
+  --private-focus:#91cafd;
+  --private-shadow:0 12px 38px rgba(13,34,78,.045);
+}
+.portal-page{background:var(--private-bg);color:#172945}
+.portal-page .container{width:min(1240px,calc(100% - 48px))}
+.portal-main{padding-block:44px 88px;min-height:70vh}
+.portal-intro{max-width:930px;margin-bottom:28px}
+.portal-intro h1{font-size:clamp(32px,3.5vw,46px);line-height:1.1;margin:12px 0 14px;letter-spacing:-.048em}
+.portal-intro>p{font-size:15px;line-height:1.73;max-width:780px}
+.portal-intro .section-kicker{font-size:10px;letter-spacing:.15em}
+.portal-panel{padding:clamp(19px,2.4vw,31px);border:1px solid var(--private-border);border-radius:19px;margin-bottom:20px;box-shadow:var(--private-shadow)}
+.portal-panel h2{font-size:clamp(19px,2vw,23px);letter-spacing:-.025em;line-height:1.28}
+.portal-muted{font-size:13px;line-height:1.75;color:var(--private-muted)}
+.registry-toolbar{gap:14px;margin-bottom:22px}
+.registry-toolbar h2{margin:0}
+.portal-action-link{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:43px;padding:11px 16px;background:var(--private-ink);border-radius:10px;box-shadow:0 7px 17px rgba(9,35,76,.095);font-size:13px;letter-spacing:-.003em;transition:background .18s ease,transform .18s ease}
+.portal-action-link:hover{background:#1c5393;transform:translateY(-1px)}
+.registry-cancel{font-size:13px;color:#155492;text-decoration:none;font-weight:750}
+.registry-cancel:hover{color:#062f67;text-decoration:underline;text-underline-offset:3px}
+.registry-fields{gap:18px}
+.registry-fields label,.registry-existing-label,.access-form label{font-size:12px;letter-spacing:.005em}
+.registry-fields input,.registry-fields select,.registry-existing-label select,.access-form input,.access-form select,.invitation-form input,.invitation-form select{min-height:46px;background:#fff;border:1px solid #d1dce9;box-shadow:0 1px 1px rgba(10,35,75,.025);border-radius:10px}
+.registry-fields :is(input,select):focus-visible,.registry-existing-label select:focus-visible,.access-form :is(input,select):focus-visible{outline:3px solid var(--private-focus);outline-offset:2px;border-color:#3e85c3}
+.portal-page fieldset{border:0}
+.portal-page legend{font-size:19px}
+.portal-page .auth-alert{border-radius:11px;border:1px solid transparent;padding:15px 18px}
+.portal-page .auth-alert-success{border-color:#c4e8d3}
+.portal-page .auth-alert-error{border-color:#f7cdd4}
+.table-scroll{overflow-x:auto;overscroll-behavior-x:contain;border:1px solid #e4eaf2;border-radius:12px}
+.access-table{min-width:690px;border-collapse:separate;border-spacing:0;margin:0}
+.access-table th{background:#f1f5fa;color:#536983;letter-spacing:.075em;font-size:10px;font-weight:850;white-space:nowrap;border-bottom:1px solid #e0e7f0}
+.access-table td{color:#1b3657;font-size:13px;line-height:1.5;border-bottom:1px solid #e9eef5}
+.access-table td strong{font-weight:750;color:#102956}
+.access-table tbody tr{transition:background .12s ease}
+.access-table tbody tr:hover{background:#f8fbff}
+.access-table tbody tr:last-child td{border-bottom:0}
+.access-table :is(th,td){padding:16px 17px}
+.portal-page button,.portal-page input,.portal-page select,.portal-page textarea{font-family:inherit}
+.portal-page :is(a,button,summary,input,select,textarea):focus-visible{outline:3px solid var(--private-focus);outline-offset:2px}
+.institutional-header{box-shadow:0 4px 23px rgba(7,27,73,.035)}
+.institutional-topbar{min-height:82px}
+.institutional-nav-inner{min-height:53px}
+.institutional-nav-home,.institutional-nav-group>summary{min-height:53px}
+.institutional-nav-dropdown{border-radius:14px;box-shadow:0 18px 55px rgba(5,24,65,.16)}
+.institutional-exit{background:#eef3fa;border:1px solid #dde7f2;color:#123b70}
+.institutional-exit:hover{background:#e3edf9;color:#0a315d}
+.institutional-profile-copy strong{font-size:12px}
+.institutional-avatar{border-radius:12px}
+.portal-footer{background:#fff;border-top:1px solid var(--private-border)}
+.executive-hero{box-shadow:0 20px 50px rgba(6,26,65,.12)}
+.executive-metric,.executive-module{box-shadow:var(--private-shadow)}
+.executive-module{border-radius:18px}
+.executive-module:hover{box-shadow:0 20px 45px rgba(12,38,85,.09)}
+.executive-footnote{border:1px solid #e0e8f2;background:#eef3f9}
+@media(max-width:720px){
+ .portal-page .container{width:min(1240px,calc(100% - 30px))}
+ .portal-main{padding-block:28px 64px}
+ .portal-intro{margin-bottom:22px}
+ .portal-panel{border-radius:15px}
+ .portal-action-link{width:auto}
+ .registry-toolbar{align-items:flex-start}
+ .access-table{min-width:660px}
+ .access-table :is(th,td){padding:13px 12px}
+ .institutional-topbar{min-height:unset}
+}
+@media(prefers-reduced-motion:reduce){
+ .portal-action-link,.access-table tbody tr{transition:none}
+ .portal-action-link:hover{transform:none}
+}
