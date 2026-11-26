@@ -3,7 +3,6 @@
 namespace Config;
 
 use CodeIgniter\Config\Filters as BaseFilters;
-use App\Filters\PrelaunchGate;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -26,7 +25,6 @@ class Filters extends BaseFilters
      * or [filter_name => [classname1, classname2, ...]]
      */
     public array $aliases = [
-        'prelaunch'     => PrelaunchGate::class,
         'csrf'          => CSRF::class,
         'toolbar'       => DebugToolbar::class,
         'honeypot'      => Honeypot::class,
@@ -74,7 +72,6 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            'prelaunch',
             // 'honeypot',
             'csrf',
             // 'invalidchars',
