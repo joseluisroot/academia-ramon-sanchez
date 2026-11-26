@@ -31,9 +31,6 @@
                 <h1><?= esc($title) ?></h1>
                 <p><?= esc($message) ?></p>
                 <div class="institutional-error-actions">
-                    <?php if (function_exists('auth') && auth()->loggedIn()): ?>
-                        <a class="btn institutional-error-primary" href="<?= esc(site_url('app'), 'attr') ?>">Volver al panel</a>
-                    <?php endif ?>
                     <a class="btn institutional-error-secondary" href="<?= esc(site_url('/'), 'attr') ?>">Ir al sitio principal</a>
                 </div>
             </div>
