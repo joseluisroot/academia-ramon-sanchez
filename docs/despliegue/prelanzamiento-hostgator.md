@@ -132,3 +132,25 @@ No subir `app/`, `vendor/`, `.env`, `writable/`, backups ni expediente de menore
 
 ### Actualizar la vista previa tras lanzar oficialmente
 Al sustituir el micrositio, actualizar `og:title`, `og:description`, `og:image`, JSON-LD y sitemap para el contenido real. Usar nombre de archivo nuevo para la imagen OG y actualizar las etiquetas para evitar cachés obsoletas.
+
+
+## Rutas inexistentes y página de error 404 (26/11/2026)
+
+**Síntoma reportado:** al solicitar `https://academiaramonsanchez.com/d` puede aparecer la portada repetida o un contenido inesperado. No se pudo comprobar de forma remota el código HTTP actual porque el servidor no respondió a la herramienta de inspección. El repositorio contiene una regla de reescritura de CodeIgniter en `public/.htaccess` que redirige URL inexistentes a `index.php`: **esa regla NO debe estar activa para el micrositio estático**.
+
+En esta rama se añadieron:
+
+- `deploy/prelaunch/.htaccess`, para declarar `DirectoryIndex index.html`, deshabilitar listado de directorios y usar `ErrorDocument 404 /404.html` sin redirigir a CodeIgniter.
+- `deploy/prelaunch/404.html`, página institucional breve, con escudo y enlace de retorno, `noindex,nofollow` y **sin canonical de la portada**.
+
+**Pasos en HostGator:**
+
+1. Identificar y respaldar el archivo `.htaccess` **actual del document root**, por ejemplo guardándolo fuera del directorio público; no sobrescribir reglas de seguridad/SSL/redirección sin revisar su necesidad.
+2. Eliminar exclusivamente la regla catch-all de CodeIgniter (`RewriteRule ... index.php/...`) o sustituir el `.htaccess` del micrositio con el de `deploy/prelaunch/.htaccess` **preservando cualquier redirección HTTPS/www requerida por el hosting**.
+3. Copiar `deploy/prelaunch/404.html` a `<document-root>/404.html` y `deploy/prelaunch/.htaccess` a `<document-root>/.htaccess`.
+4. Verificar con `curl -I https://academiaramonsanchez.com/d`: **HTTP 404**, no HTTP 200 ni redirección 302 a `/`. En el navegador se debe ver la página 404 institucional una sola vez.
+5. Verificar `curl -I https://academiaramonsanchez.com/`: **HTTP 200** y portada habitual. `/assets/css/prelaunch.css` y `/assets/img/brand/escudo-oficial.svg` también deben responder 200.
+6. Confirmar que el 404 no se indexa en buscadores. No usar una regla de SPA como `RewriteRule ^ /index.html [L]`, pues produce *soft 404*.
+7. Si el servidor sigue mostrando duplicados, revisar en cPanel las reglas `.htaccess` de directorios superiores, Error Pages y caché de HostGator/CDN, además de la prioridad `DirectoryIndex`.
+
+**Despliegue desde Git:** incluir también estos dos archivos en las tareas de copia del despliegue, preservando la configuración necesaria de SSL del hosting. El cambio existe en GitHub pero **no equivale a haberlo publicado en HostGator**.
