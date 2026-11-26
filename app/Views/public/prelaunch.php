@@ -21,7 +21,7 @@
     </header>
     <main class="launch-content" id="principal">
       <div class="crest-wrap">
-        <img src="<?= esc(base_url('assets/img/brand/escudo-oficial.svg'), 'attr') ?>" alt="Escudo oficial de la Academia Integral de Fútbol Profesor Ramón Sánchez" width="260" height="260" fetchpriority="high">
+        <img src="<?= esc(base_url('assets/img/brand/escudo-academia-oficial.png'), 'attr') ?>" alt="Escudo oficial de la Academia Integral de Fútbol Profesor Ramón Sánchez" width="260" height="260" fetchpriority="high">
       </div>
       <p class="eyebrow">UNA NUEVA ETAPA SE ACERCA</p>
       <h1>Algo grande está<br><span>por comenzar.</span></h1>
