@@ -14,17 +14,21 @@ El desarrollo completo continúa en WAMP y GitHub; no necesitamos desplegar Code
 ```text
 <document-root-del-dominio>/
 ├── index.html              ← deploy/prelaunch/index.html
+├── robots.txt              ← deploy/prelaunch/robots.txt
+├── sitemap.xml             ← deploy/prelaunch/sitemap.xml
 └── assets/
     ├── css/
     │   └── prelaunch.css   ← public/assets/css/prelaunch.css
     └── img/
-        └── brand/
-            └── escudo-oficial.svg ← public/assets/img/brand/escudo-oficial.svg
+        ├── brand/
+        │   └── escudo-oficial.svg ← public/assets/img/brand/escudo-oficial.svg
+        └── social/
+            └── prelanzamiento-ramon-sanchez-v1.jpg ← paquete de imagen social
 ```
 
 1. En **cPanel > Domains** confirmar qué carpeta es el *document root* del dominio. No asumir que sea `public_html` si el dominio es adicional.
 2. Asegurar SSL/TLS activo, DNS apuntando correctamente y que no haya otro `index.php` o `index.html` de un sitio previo que tome prioridad. Respaldar cualquier página existente antes de sustituirla.
-3. Subir exactamente los tres archivos indicados por el **Administrador de Archivos** o SFTP. Las carpetas `assets/css` y `assets/img/brand` deben existir. No copiar el repositorio completo ni `app/`, `vendor/`, `.env`, `writable/`, fotos de entrenamiento o backups.
+3. Subir exactamente los archivos del micrositio indicados por el **Administrador de Archivos** o SFTP. Las carpetas `assets/css` y `assets/img/brand` deben existir. No copiar el repositorio completo ni `app/`, `vendor/`, `.env`, `writable/`, fotos de entrenamiento o backups.
 4. Verificar el dominio por HTTPS desde un navegador privado, escritorio y teléfono. Comprobar carga de CSS, imagen del escudo (sin errores 404) y que `/app`, `/login` y cualquier ruta de registro devuelvan 404 (no formularios operativos).
 5. Confirmar que no haya listado de directorios y que no se publicaron datos de atletas ni imágenes provisionales de Facebook.
 6. Al lanzar oficialmente el sitio, retirar el `index.html` estático, desplegar la aplicación CI4 conforme a su propio procedimiento y hacer QA. Mantener un respaldo del micrositio para revertir.
