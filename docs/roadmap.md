@@ -107,16 +107,3 @@ Pruebas de aceptación en `docs/incrementos/INC-004-entrenamientos-asistencia/pr
 A solicitud de la dirección del proyecto se realizó auditoría del código visual público/privado, se añadió una primera capa editorial, un sistema de refinamiento común y se preparó Tailwind CSS v4 CLI para adopción progresiva. Se habilitó la galería con autorización por fotografía y bandera global, desactivada por defecto. El material recibido **no** se publica en el repositorio antes de verificar los derechos de niños y fotógrafo.
 
 Revisión completa, mapa de archivos, criterios de privacidad y pruebas en `docs/diseno/REVISION-UI-UX-2026-11-22.md`. Mantener el PR #4 en borrador hasta verificar estos cambios en WAMP y completar QA del INC-004.
-
-
-## Hito intermedio — página de expectativa antes del lanzamiento (26/11/2026)
-
-**Solicitud:** el dominio está configurado en HostGator y se desea presentar el escudo oficial y los valores formativos sin exponer todavía la plataforma ni utilizar el clásico aviso «sitio en construcción».
-
-**Entregables preparados:**
-- `app/Views/public/prelaunch.php` y `public/assets/css/prelaunch.css`: portada institucional de expectativa responsive, sin fotos de menores ni fechas inventadas.
-- `SiteLaunchMode` + `PrelaunchGate`: modo activable por entorno, con **prelaunch por defecto en producción**; WAMP conserva el sitio completo de desarrollo.
-- `deploy/prelaunch/index.html`: **versión estática recomendada** para HostGator, sin cargar PHP, DB, Shield ni módulos internos. Copiar solo el HTML, CSS y escudo oficial a la raíz pública del dominio.
-- Instrucciones y checklist: `docs/despliegue/prelanzamiento-hostgator.md`.
-
-**Aclaración:** escribir código y documentar su publicación no equivale a haber desplegado ni verificado el dominio. No publicar por ahora el CodeIgniter incompleto, fotos provisionales ni archivos privados. Esta actividad no cambia el alcance de INC-004 ni lo declara cerrado. Al lanzamiento formal retirar el HTML estático o cambiar el modo del aplicativo tras pruebas integrales.
