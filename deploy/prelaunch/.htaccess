@@ -1,0 +1,12 @@
+# HostGator / Apache: portada estática durante el prelanzamiento.
+# NO utilizar la regla de CodeIgniter que redirige todas las rutas a index.php.
+DirectoryIndex index.html
+Options -Indexes
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # El sitio de expectativa no tiene rutas dinámicas.
+    # Permitir al servidor responder 404 para cualquier ruta inexistente.
+    # Evitar reescrituras catch-all hacia / o index.php.
+</IfModule>
