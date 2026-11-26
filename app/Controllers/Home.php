@@ -3,18 +3,11 @@
 namespace App\Controllers;
 
 use Config\PublicGallery;
-use App\Services\SiteLaunchMode;
 
 class Home extends BaseController
 {
     public function index(): string
     {
-        if (SiteLaunchMode::isPrelaunch()) {
-            service('response')->setHeader('Cache-Control', 'public, max-age=300')
-                ->setHeader('X-Robots-Tag', 'index, follow');
-            return view('public/prelaunch');
-        }
-
         $config = config(PublicGallery::class);
         $photos = [];
 
