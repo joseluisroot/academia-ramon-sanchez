@@ -35,7 +35,7 @@ El desarrollo completo continúa en WAMP y GitHub; no necesitamos desplegar Code
 
 Se añadió la vista `app/Views/public/prelaunch.php`, `app/Services/SiteLaunchMode.php` y un filtro global `app/Filters/PrelaunchGate.php`.
 
-En producción, **el modo de prelanzamiento es el valor predeterminado**, y en WAMP/desarrollo se mantiene el sitio completo salvo configuración contraria.
+En esta rama dedicada, **el modo de prelanzamiento es el valor predeterminado tanto en producción como en WAMP**. Para visualizar temporalmente el sitio completo en esta rama se requiere configurar explícitamente `academy.launchMode = full`; para trabajar normalmente sobre el sitio completo, lo recomendado es cambiar a la rama de desarrollo funcional.
 
 Variables de ejemplo en `.env`:
 
@@ -67,3 +67,10 @@ Antes de una salida CI4: comprobar soporte PHP **8.2 o superior** (versión mín
 
 ## Alcance de este cambio
 Un corte aislado de prelanzamiento, sin migraciones ni cambios en los datos de la academia; INC-004 sigue abierto y su QA pendiente.
+
+
+## Nota de diseño y funcionamiento (26/11/2026)
+
+El diseño se simplificó a un solo impacto visual: **escudo oficial + «Algo grande está por comenzar» + comunidad deportiva + tres valores**. No se muestran fotografías, galerías, menús de navegación ni funcionalidades del sitio final.
+
+Para comprobarlo en WAMP, cambiar a `feature/prelanzamiento-web`, actualizar y abrir `http://localhost:8080/`. Si todavía aparece el sitio completo, revisar que la copia local esté en esa rama, que no exista `academy.launchMode = full` en el archivo `.env` y que el navegador no esté mostrando caché anterior. No es necesario PHP o MySQL en HostGator si se sube solamente la versión estática.
