@@ -52,6 +52,8 @@ $routes->group('tickets/eventos', ['filter' => ['session']], static function (Ro
     $routes->post('(:num)', 'App\\Tickets\\Events::update/$1');
     $routes->post('(:num)/tipos', 'App\\Tickets\\Events::addType/$1');
     $routes->post('(:num)/estado', 'App\\Tickets\\Events::changeStatus/$1');
+    $routes->post('(:num)/tipos/(:num)', 'App\\Tickets\\Events::updateType/$1/$2');
+    $routes->post('(:num)/tipos/(:num)/eliminar', 'App\\Tickets\\Events::deleteType/$1/$2');
 });
 
 // El portal privado exige sesión y permiso: no basta con tener una cuenta.

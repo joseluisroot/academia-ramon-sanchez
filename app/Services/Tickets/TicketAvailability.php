@@ -42,6 +42,9 @@ final class TicketAvailability
         if (preg_match('~^tickets/eventos/[1-9][0-9]*/(?:tipos|estado)$~D', $path)) {
             return $method === 'POST';
         }
+        if (preg_match('~^tickets/eventos/[1-9][0-9]*/tipos/[1-9][0-9]*(?:/eliminar)?$~D', $path)) {
+            return $method === 'POST';
+        }
         return in_array($method, $allowed[$path] ?? [], true);
     }
 }

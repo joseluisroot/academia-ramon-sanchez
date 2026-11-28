@@ -79,6 +79,30 @@ final class EventService
         });
     }
 
+    public function updateType(int $id, int $typeId, array $data, int $actor): void
+    {
+        $this->transaction(function () use ($id,$typeId,$data,$actor) {
+            $event=$this->locked($id);
+            $type=$this->db->table('ticket_types')->where('event_id',$id)->where('id',$typeId)->get()->getRowArray();
+            if ($event['status']!=='DRAFT' || !$type) throw new InvalidArgumentException('Tipo inexistente o evento no editable.');
+            $old=EventPolicy::seats((int)$type['quota'],(int)$type['adult_qty'],(int)$type['student_qty']);
+            $new=EventPolicy::seats($data['quota'],$data['adult_qty'],$data['student_qty']);
+            if ($this->allocated($id)-$old+$new>(int)$event['capacity']) throw new InvalidArgumentException('La cuota supera la capacidad disponible.');
+            if (!$this->db->table('ticket_types')->where('event_id',$id)->where('id',$typeId)->update($data)) throw new RuntimeException('No se pudo actualizar el tipo.');
+            $this->audit($actor,$id,'tickets.type.update');
+        });
+    }
+
+    public function deleteType(int $id, int $typeId, int $actor): void
+    {
+        $this->transaction(function () use ($id,$typeId,$actor) {
+            $event=$this->locked($id);
+            if ($event['status']!=='DRAFT') throw new InvalidArgumentException('Solo se eliminan tipos en borradores.');
+            if (!$this->db->table('ticket_types')->where('event_id',$id)->where('id',$typeId)->delete() || $this->db->affectedRows()!==1) throw new InvalidArgumentException('Tipo inexistente o no eliminable.');
+            $this->audit($actor,$id,'tickets.type.delete');
+        });
+    }
+
     public function changeStatus(int $id,string $to,int $actor): void
     {
         $this->transaction(function () use ($id,$to,$actor) {

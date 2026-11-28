@@ -47,7 +47,7 @@ final class Events extends BaseController
     }
     private function eventData(): array
     {
-        $name=$this->input('name'); $slug=$this->input('slug'); $venue=$this->input('venue');
+        $name=$this->input('name'); $slug=$this->input('slug'); if ($slug==='') $slug=EventPolicy::slug($name); $venue=$this->input('venue');
         if ($name==='' || mb_strlen($name)>150 || $venue==='' || mb_strlen($venue)>250 || !preg_match('~^[a-z0-9]+(?:-[a-z0-9]+)*$~D',$slug) || strlen($slug)>100) throw new InvalidArgumentException('Nombre, ubicación o identificador inválido.');
         $start=EventPolicy::utc($this->input('starts_at'));
         $from=EventPolicy::utc($this->input('access_from'));
@@ -76,18 +76,37 @@ final class Events extends BaseController
     {
         return $this->mutate(fn($svc,$actor)=>'tickets/eventos/'.$svc->save($id,$this->eventData(),$actor),'tickets/eventos/'.$id);
     }
+    private function typeData(): array
+    {
+            $name=$this->input('name'); $price=$this->input('price');
+            if ($name==='' || mb_strlen($name)>100 || !preg_match('~^[0-9]{1,10}(?:\\.[0-9]{1,2})?$~D',$price)) throw new InvalidArgumentException('Nombre o precio inválido.');
+            return ['name'=>$name,'price'=>$price,'adult_qty'=>$this->number('adult_qty',0,100),'student_qty'=>$this->number('student_qty',0,100),'quota'=>$this->number('quota',1,100000)];
+    }
     public function addType(int $id): ResponseInterface
     {
         return $this->mutate(function($svc,$actor) use($id) {
-            $name=$this->input('name'); $price=$this->input('price');
-            if ($name==='' || mb_strlen($name)>100 || !preg_match('~^[0-9]{1,10}(?:\\.[0-9]{1,2})?$~D',$price)) throw new InvalidArgumentException('Nombre o precio inválido.');
-            $svc->addType($id,['name'=>$name,'price'=>$price,'adult_qty'=>$this->number('adult_qty',0,100),'student_qty'=>$this->number('student_qty',0,100),'quota'=>$this->number('quota',1,100000)],$actor);
+            $svc->addType($id,$this->typeData(),$actor);
+            return 'tickets/eventos/'.$id;
+        },'tickets/eventos/'.$id);
+    }
+    public function updateType(int $id,int $typeId): ResponseInterface
+    {
+        return $this->mutate(function($svc,$actor) use($id,$typeId) {
+            $svc->updateType($id,$typeId,$this->typeData(),$actor);
+            return 'tickets/eventos/'.$id;
+        },'tickets/eventos/'.$id);
+    }
+    public function deleteType(int $id,int $typeId): ResponseInterface
+    {
+        return $this->mutate(function($svc,$actor) use($id,$typeId) {
+            $svc->deleteType($id,$typeId,$actor);
             return 'tickets/eventos/'.$id;
         },'tickets/eventos/'.$id);
     }
     public function changeStatus(int $id): ResponseInterface
     {
         return $this->mutate(function($svc,$actor) use($id) {
+            if ($this->input('confirmed')!=='yes') throw new InvalidArgumentException('Confirma el cambio de estado.');
             $svc->changeStatus($id,$this->input('status'),$actor);
             return 'tickets/eventos/'.$id;
         },'tickets/eventos/'.$id);
