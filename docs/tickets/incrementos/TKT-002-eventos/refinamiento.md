@@ -1,3 +1,6 @@
 # TKT-002.1
 Slug sugerido en nuevos formularios, editable y único por restricción DB; fallback servidor si vacío. Fechas sugeridas -30/+180 minutos sin sobrescribir ajustes manuales. Indicadores de cuotas, personas, valor nominal no recaudado y pliegos estimados. Edición/eliminación de tipos con POST, CSRF, administrador, bloqueo del evento y auditoría; solo DRAFT, sin cambiar capacidad máxima. Confirmación de estado mediante checkbox obligatorio en servidor y diálogo cliente. UI responsive.
 QA pendiente: pruebas unitarias, crear borrador nuevo (no reabrir eventos), modificar slug y fechas manuales, editar/eliminar tipo, exceso de capacidad, manipulación de ID de otro evento, POST sin CSRF, evento abierto inmutable, confirmación ausente, revisar auditoría y móvil. Sin migraciones ni dependencias. No desplegado.
+
+## Cierre QA — 28 noviembre 2026
+Usuario reportó 11/11 OK: slug, horarios, ajustes manuales, capacidad, ingresos, edición y eliminación, rechazo exceso, confirmación, móvil y pruebas automatizadas. Aceptación funcional reportada para commit 89ea651; no se recibió salida detallada de PHPUnit de este refinamiento. TKT-002 anterior: 6 tests, 30 assertions. No implica validación de producción.

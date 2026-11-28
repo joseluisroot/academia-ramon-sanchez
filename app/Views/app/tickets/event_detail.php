@@ -12,6 +12,7 @@ $statuses=['DRAFT'=>'Borrador','OPEN'=>'Abierto','CLOSED'=>'Cerrado','CANCELLED'
 <div><small><?= esc($label) ?></small><strong><?= esc((string)$value) ?></strong></div>
 <?php endforeach ?>
 </div>
+<?php if (auth()->user()->can('tickets.issue')): ?><p><a class="tickets-action" href="<?= esc($url.'/emision','attr') ?>">Emisión y lotes</a></p><?php endif ?>
 <section class="tickets-notice"><h2>Configuración</h2><p>Plantilla: <?= esc($event['print_template']) ?> · 4 × 6 / 12 × 18 pulgadas.</p>
 <?php if ($draft): ?><form class="tickets-form" method="post" action="<?= esc($url,'attr') ?>"><?= csrf_field() ?><?= view('app/tickets/event_fields',['event'=>$event]) ?><button>Guardar cambios</button></form><?php endif ?>
 </section>

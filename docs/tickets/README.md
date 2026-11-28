@@ -22,3 +22,5 @@ Confirmado: CI4 4.7.6 local, PHP 8.3.28, Shield, 17 migraciones ejecutadas, rama
 
 - [Especificaciones de impresión](impresion.md)
 - [TKT-002](incrementos/TKT-002-eventos/README.md)
+
+- [TKT-003.1 Emisión](incrementos/TKT-003-emision/README.md)
