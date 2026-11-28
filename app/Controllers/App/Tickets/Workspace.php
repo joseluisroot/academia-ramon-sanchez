@@ -26,6 +26,7 @@ final class Workspace extends BaseController
         }
 
         return $response->setBody(view('app/tickets/workspace', [
+            'canManageEvents' => $user->inGroup('institutional_admin') && $user->can('events.manage'),
             'username' => (string) ($user->username ?? 'Operador'),
         ]));
     }

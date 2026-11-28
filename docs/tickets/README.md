@@ -19,3 +19,6 @@ Estado: propuesta técnica para revisión, no implementada. Base Git: 48ab703. P
 - [Incremento](incrementos/TKT-000-fundamentos/README.md)
 
 Confirmado: CI4 4.7.6 local, PHP 8.3.28, Shield, 17 migraciones ejecutadas, rama feature/ars-tickets. Las reglas de operación son propuestas salvo aprobación expresa. No almacenar datos reales ni tokens en Git.
+
+- [Especificaciones de impresión](impresion.md)
+- [TKT-002](incrementos/TKT-002-eventos/README.md)

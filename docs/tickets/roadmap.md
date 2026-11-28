@@ -11,3 +11,5 @@
 | TKT-007 | Beneficios | Opcional, consumos independientes |
 | TKT-008 | QA y despliegue | Ensayo, respaldo y autorización |
 TKT-007 no bloquea MVP salvo decisión de Junta. QA continuo, no solo al final. No mezclar ramas de incrementos deportivos ni fotos. PR revisado hacia rama de despliegue, sin merge directo a main.
+
+Impresión confirmada: tarjeta vertical 4×6 pulgadas, pliego láser 12×18 pulgadas, 9 posiciones sin sangrado; diseño elegante de fondo blanco. Ver impresion.md. TKT-003 implementará plantilla y generación.

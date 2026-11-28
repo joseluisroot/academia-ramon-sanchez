@@ -44,6 +44,16 @@ $routes->get('tickets', 'App\\Tickets\\Workspace::index', [
     'filter' => ['session'],
 ]);
 
+// TKT-002: explicit event administration routes.
+$routes->group('tickets/eventos', ['filter' => ['session']], static function (RouteCollection $routes): void {
+    $routes->get('', 'App\\Tickets\\Events::index');
+    $routes->post('', 'App\\Tickets\\Events::create');
+    $routes->get('(:num)', 'App\\Tickets\\Events::show/$1');
+    $routes->post('(:num)', 'App\\Tickets\\Events::update/$1');
+    $routes->post('(:num)/tipos', 'App\\Tickets\\Events::addType/$1');
+    $routes->post('(:num)/estado', 'App\\Tickets\\Events::changeStatus/$1');
+});
+
 // El portal privado exige sesión y permiso: no basta con tener una cuenta.
 $routes->group('app', ['filter' => ['session', 'permission:portal.access']], static function (RouteCollection $routes): void {
     $routes->get('/', 'App\\Dashboard::index', ['as' => 'app.dashboard']);

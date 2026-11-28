@@ -16,6 +16,11 @@ final class TicketAvailability
         return $value === true || (is_string($value) && strtolower(trim($value)) === 'true');
     }
 
+    public static function isModulePath(string $path): bool
+    {
+        return $path === 'tickets' || str_starts_with($path, 'tickets/');
+    }
+
     /** Exact path/method pairs only. Never open the entire /app namespace. */
     public static function allowsDuringPrelaunch(string $path, string $method): bool
     {
@@ -31,6 +36,12 @@ final class TicketAvailability
             'sin-acceso' => ['GET'],
         ];
 
+        if ($path === 'tickets/eventos' || preg_match('~^tickets/eventos/[1-9][0-9]*$~D', $path)) {
+            return in_array($method, ['GET', 'POST'], true);
+        }
+        if (preg_match('~^tickets/eventos/[1-9][0-9]*/(?:tipos|estado)$~D', $path)) {
+            return $method === 'POST';
+        }
         return in_array($method, $allowed[$path] ?? [], true);
     }
 }

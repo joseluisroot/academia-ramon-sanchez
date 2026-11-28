@@ -23,7 +23,7 @@ final class PrelaunchGate implements FilterInterface
         $method = strtoupper($request->getMethod());
 
         // The module flag is independent of the general launch mode.
-        if ($path === 'tickets' && ! TicketAvailability::enabled()) {
+        if (TicketAvailability::isModulePath($path) && ! TicketAvailability::enabled()) {
             return service('response')->setStatusCode(404)
                 ->setHeader('Cache-Control', 'no-store, private')
                 ->setBody('Página no disponible.');

@@ -25,8 +25,9 @@
     <p>Espacio de trabajo para la gestión segura de entradas y control de accesos.</p>
   </section>
   <section class="tickets-notice" aria-label="Estado del sistema">
-    <h2>Fundamentos habilitados</h2>
-    <p>Tu acceso está autorizado. La creación de eventos, emisión de entradas y validación QR aún no están disponibles.</p>
+    <h2>Gestión de eventos</h2>
+    <?php if ($canManageEvents): ?><p><a class="tickets-action" href="<?= esc(site_url('tickets/eventos'), 'attr') ?>">Administrar eventos</a></p><?php endif ?>
+    <p>La emisión de entradas y validación QR aún no están disponibles.</p>
     <p>No se pueden emitir ni consumir entradas en este incremento.</p>
   </section>
   <a href="<?= esc(site_url('/'), 'attr') ?>">Volver al sitio institucional</a>
