@@ -1,0 +1,3 @@
+# UI/UX
+Identidad institucional existente, azul marino, diseño mobile-first, reutilizar CSS/layouts. Escáner con cámara HTTPS, alternativa manual y mensajes grandes: listo, procesando, autorizado, utilizado, no habilitado, anulado, desconocido, sin conexión. Texto y símbolos además de color. Mostrar correlativo, beneficio, hora y puerta; datos personales mínimos solo al supervisor. Confirmar presencia antes del consumo; bloquear escaneos repetidos en cliente mientras procesa, sin depender de ese bloqueo para seguridad.
+Admin: eventos → tipos → lotes → inventario → ventas → control → reportes. No mostrar acciones sin permiso. Operador no debe navegar por módulos ajenos. Pruebas con Android/iOS y permisos de cámara rechazados; revisar accesibilidad y luminosidad.

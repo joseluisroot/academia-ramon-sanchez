@@ -1,0 +1,5 @@
+# Despliegue
+Local: C:\wamp64\www\acedemia-ramon-sanchez; PHP CLI 8.3.28, CI4 4.7.6. Verificar MySQL efectivo, driver mysqli, extensiones QR/PDF, versión Apache/PHP web y pruebas base. Revisar lockfiles del stash sin recuperar fotos ni publicar datos. Versionar dependencias de aplicación en commit separado.
+Producción: confirmar si raíz apunta a public/ de CI4 o deploy/prelaunch estático; verificar HTTPS, PHP, DB, acceso CLI, backups, permisos writable y modo producción. No exponer raíz del repo. Probar en staging aislado.
+Secuencia propuesta: respaldo verificado, instalar dependencias bloqueadas, migraciones aditivas revisadas, flag apagado, pruebas, habilitar solo tickets, ensayo con operadores, aprobación. No migrar producción en TKT-000.
+Rollback: deshabilitar módulo y revertir código compatible; preservar ventas y auditoría, no ejecutar migrate:refresh ni rollback destructivo en evento activo. Recuperar respaldo solo con decisión de incidentes y conciliación. No publicar otros módulos.
