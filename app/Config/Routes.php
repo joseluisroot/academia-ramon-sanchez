@@ -51,6 +51,7 @@ $routes->group('tickets/eventos', ['filter' => ['session']], static function (Ro
     $routes->get('(:num)', 'App\\Tickets\\Events::show/$1');
     $routes->post('(:num)', 'App\\Tickets\\Events::update/$1');
     $routes->post('(:num)/tipos', 'App\\Tickets\\Events::addType/$1');
+    $routes->post('(:num)/emision/preview', 'App\\Tickets\\TicketPreview::create/$1');
     $routes->get('(:num)/emision', 'App\\Tickets\\Issuance::index/$1');
     $routes->post('(:num)/emision', 'App\\Tickets\\Issuance::create/$1');
     $routes->post('(:num)/estado', 'App\\Tickets\\Events::changeStatus/$1');

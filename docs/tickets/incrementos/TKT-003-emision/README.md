@@ -6,3 +6,6 @@ Generar una sola vez con php -r "echo bin2hex(random_bytes(32)), PHP_EOL;" y col
 Respaldar DB local, migrate --all, PHPUnit ARS Tickets. Crear evento ficticio OPEN con cuota 100, emitir 30 y 70; comprobar rangos 1–30 y 31–100, rechazar adicional, confirmar historial y audit_logs. Probar evento cerrado, tipo de otro evento, rol sin permiso, CSRF, flag apagado, ausencia de clave, reenvío idéntico y modificado, concurrencia y rollback ante fallo. No seleccionar secret_envelope ni hashes en pantallas ni logs. Probar recuperación con clave respaldada en entorno aislado. No emitir lotes reales hasta QA.
 ## Siguiente
 TKT-003.2 plantilla aprobada y PDF 4×6 / 12×18, QR dinámico; TKT-003.3 impresión/reimpresión, ticket_print_jobs y administración. Sin PDF ni venta ni validación en este corte. Migraciones y pruebas no ejecutadas por el autor remoto.
+
+## QA TKT-003.1 — cierre reportado 28 noviembre 2026
+Usuario confirmó 12/12: migración, clave, acceso, lotes 30 y 70, correlativos, cuotas, rechazo exceso, historial/auditoría, estado, permisos y pruebas automatizadas. Commit 94fec2c. Concurrencia, rollback forzado, reenvío y CSRF no confirmados de forma independiente. No implica aprobación de producción.
