@@ -38,6 +38,12 @@ service('auth')->routes($routes, ['except' => ['register']]);
 $routes->get('activar-cuenta/(:segment)', 'AccountActivation::show/$1', ['as' => 'account.activation.show']);
 $routes->post('activar-cuenta/(:segment)', 'AccountActivation::accept/$1', ['as' => 'account.activation.accept']);
 
+// TKT-001: workspace independiente, sin permiso portal.access.
+$routes->get('tickets', 'App\\Tickets\\Workspace::index', [
+    'as' => 'tickets.workspace',
+    'filter' => ['session'],
+]);
+
 // El portal privado exige sesión y permiso: no basta con tener una cuenta.
 $routes->group('app', ['filter' => ['session', 'permission:portal.access']], static function (RouteCollection $routes): void {
     $routes->get('/', 'App\\Dashboard::index', ['as' => 'app.dashboard']);

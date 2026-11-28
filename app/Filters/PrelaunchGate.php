@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filters;
 
 use App\Services\SiteLaunchMode;
+use App\Services\Tickets\TicketAvailability;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
@@ -18,11 +19,23 @@ final class PrelaunchGate implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
+        $path = trim($request->getUri()->getPath(), '/');
+        $method = strtoupper($request->getMethod());
+
+        // The module flag is independent of the general launch mode.
+        if ($path === 'tickets' && ! TicketAvailability::enabled()) {
+            return service('response')->setStatusCode(404)
+                ->setHeader('Cache-Control', 'no-store, private')
+                ->setBody('Página no disponible.');
+        }
+
         if (! SiteLaunchMode::isPrelaunch()) {
             return null;
         }
 
-        $path = trim($request->getUri()->getPath(), '/');
+        if (TicketAvailability::enabled() && TicketAvailability::allowsDuringPrelaunch($path, $method)) {
+            return null;
+        }
         if ($path === '' && strtoupper($request->getMethod()) === 'GET') {
             return null;
         }

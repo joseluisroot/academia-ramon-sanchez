@@ -81,6 +81,14 @@ final class PortalNavigationService
             ];
         }
 
+        if (\App\Services\Tickets\TicketAvailability::enabled() && $user->can('tickets.access')) {
+            $sections[] = [
+                'title' => 'ARS Tickets',
+                'description' => 'Espacio de gestión de eventos y entradas.',
+                'items' => [['label' => 'Eventos y entradas', 'url' => 'tickets']],
+            ];
+        }
+
         return $sections;
     }
 }

@@ -28,5 +28,10 @@ class Auth extends ShieldAuth
     {
         parent::__construct();
         $this->views['login'] = 'auth/login';
+        if (\App\Services\SiteLaunchMode::isPrelaunch()
+            && \App\Services\Tickets\TicketAvailability::enabled()) {
+            $this->redirects['login'] = '/tickets';
+            $this->redirects['force_reset'] = '/tickets';
+        }
     }
 }

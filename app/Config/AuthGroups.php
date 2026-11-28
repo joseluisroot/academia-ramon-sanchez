@@ -51,6 +51,10 @@ class AuthGroups extends ShieldAuthGroups
             'title' => 'Padre o responsable',
             'description' => 'Consulta privada de sus hijos.',
         ],
+        'ticket_operator' => [
+            'title' => 'Operador de eventos',
+            'description' => 'Acceso exclusivo al espacio de entradas; capacidades por evento en incrementos posteriores.',
+        ],
         'technical_support' => [
             'title' => 'Soporte técnico',
             'description' => 'Soporte limitado a tareas técnicas autorizadas.',
@@ -58,6 +62,16 @@ class AuthGroups extends ShieldAuthGroups
     ];
 
     public array $permissions = [
+        'tickets.access'       => 'Acceder al espacio ARS Tickets',
+        'events.manage'        => 'Administrar eventos',
+        'tickets.issue'        => 'Emitir entradas',
+        'tickets.print'        => 'Imprimir entradas',
+        'tickets.assign'       => 'Distribuir entradas',
+        'tickets.sell'         => 'Registrar ventas',
+        'tickets.validate'     => 'Validar entradas',
+        'tickets.cancel'       => 'Anular entradas',
+        'tickets.supervise'    => 'Supervisar incidencias',
+        'tickets.report'       => 'Consultar informes de eventos',
         'portal.access'        => 'Acceso al portal privado',
         'users.invite'         => 'Invitar usuarios autorizados',
         'users.assign'         => 'Asignar roles y permisos',
@@ -91,7 +105,7 @@ class AuthGroups extends ShieldAuthGroups
         // La designación de un responsable único de asignación se
         // representa mediante un grupo separado ('access_manager').
         'institutional_admin' => [
-            'portal.access', 'athletes.*', 'training.*', 'matches.*',
+            'portal.access', 'tickets.access', 'events.manage', 'tickets.issue', 'tickets.print', 'tickets.assign', 'tickets.sell', 'tickets.validate', 'tickets.cancel', 'tickets.supervise', 'tickets.report', 'athletes.*', 'training.*', 'matches.*',
             'billing.*', 'uniforms.*', 'treasury.*', 'content.*',
             'announcements.*', 'system.settings', 'audit.view', 'users.view', 'inquiries.*', 'family.links.verify', 'consents.verify', 'training.assign',
         ],
@@ -103,6 +117,7 @@ class AuthGroups extends ShieldAuthGroups
         'board_member' => ['portal.access', 'treasury.report', 'content.draft'],
         'media_contributor' => ['portal.access', 'content.draft'],
         'guardian' => ['portal.access', 'family.athletes.view', 'billing.view-own', 'treasury.view-family'],
+        'ticket_operator' => ['tickets.access'],
         'technical_support' => ['portal.access', 'system.support'],
     ];
 }
